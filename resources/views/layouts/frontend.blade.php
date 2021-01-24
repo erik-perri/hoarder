@@ -5,6 +5,13 @@
         {{ __('menu.app_name') }}
 
         <a href="{{ route('home') }}">{{ __('menu.home') }}</a>
+
+        @auth
+            <x-logout-link>{{ __('menu.logout') }}</x-logout-link>
+        @else
+            <a href="{{ route('login') }}">{{ __('menu.login') }}</a>
+            <a href="{{ route('register') }}">{{ __('menu.register') }}</a>
+        @endif
     </header>
 
     <section id="page-content">
