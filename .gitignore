@@ -6,6 +6,7 @@
 .env
 .env.backup
 .idea
+.php_cs.cache
 .phpstorm.meta.php
 .phpunit.result.cache
 _ide_helper.php
