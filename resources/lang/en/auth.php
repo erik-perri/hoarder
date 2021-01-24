@@ -28,7 +28,7 @@ return [
     'name_required' => 'Name is required.',
 
     /*
-     * Login/Register forms
+     * Login/Register
      */
 
     'forgot_password' => 'Forgot your password?',
@@ -48,7 +48,7 @@ return [
     'button.register' => 'Register',
 
     /*
-     * Forgot/reset password forms
+     * Forgot/Reset Password
      */
 
     'title.forgot_password' => 'Forgot Password',
@@ -58,4 +58,19 @@ return [
 
     'button.send_reset_link' => 'Email Password Reset Link',
     'button.reset_password' => 'Reset Password',
+
+    /*
+     * Verify Email
+     */
+
+    'title.verify_email' => 'Verify Email',
+
+    'verify_email_message' => 'Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn\'t receive the email, we will gladly send you another.',
+    'verification_link_sent' => 'A new verification link has been sent to the email address you provided during registration.',
+
+    'button.resend_verification_email' => 'Resend Verification Email',
+
+    'email_verified' => 'Email address verified.',
+    'email_verified_already' => 'Email address already verified.',
+
 ];
