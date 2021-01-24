@@ -3,6 +3,7 @@
 <x-frontend-layout>
     <h1>{{ __('auth.title.login') }}</h1>
 
+    <x-redirect-status />
     <x-validation-errors :errors="$errors">{{ __('auth.error_heading') }}</x-validation-errors>
 
     <form method="POST" action="{{ route('login') }}">
@@ -25,8 +26,8 @@
         </div>
 
         <div>
-            @if (Route::has('password.forgot'))
-                <a href="{{ route('password.forgot') }}">{{ __('auth.forgot_password') }}</a>
+            @if (Route::has('password.request'))
+                <a href="{{ route('password.request') }}">{{ __('auth.forgot_password') }}</a>
             @endif
 
             <x-forms.button>
