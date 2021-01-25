@@ -27,7 +27,7 @@ class LoginTest extends DuskTestCase
                     ->assertSee(__('auth.title.login'))
                     ->with(new LoginForm, fn ($browser) => $browser->submitForm($user->email, 'password'))
                     ->on(new HomePage)
-                    ->assertPresent('@logout_link')
+                    ->assertPresent('@logout-link')
                     ->logout();
         });
     }

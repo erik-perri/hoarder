@@ -21,15 +21,15 @@ class HomeTest extends DuskTestCase
             $user = User::factory()->create();
 
             $browser->visit(new HomePage)
-                    ->assertPresent('@login_link')
-                    ->assertPresent('@register_link')
-                    ->assertMissing('@logout_link');
+                    ->assertPresent('@login-link')
+                    ->assertPresent('@register-link')
+                    ->assertMissing('@logout-link');
 
             $browser->loginAs($user)
                     ->visit(new HomePage)
-                    ->assertMissing('@login_link')
-                    ->assertMissing('@register_link')
-                    ->assertPresent('@logout_link')
+                    ->assertMissing('@login-link')
+                    ->assertMissing('@register-link')
+                    ->assertPresent('@logout-link')
                     ->logout();
         });
     }
