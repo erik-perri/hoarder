@@ -24,8 +24,7 @@ class RegisterTest extends DuskTestCase
             /** @var User $user */
             $user = User::factory()->make();
 
-            $browser->logout()
-                    ->visit('/register')
+            $browser->visit('/register')
                     ->assertSee(__('auth.title.register'))
                     ->with(new RegisterForm, function ($browser) use ($user) {
                         return $browser->submitForm($user->name, $user->email, 'password');
@@ -46,8 +45,7 @@ class RegisterTest extends DuskTestCase
             /** @var User $user */
             $user = User::factory()->make();
 
-            $browser->logout()
-                    ->visit('/register')
+            $browser->visit('/register')
                     ->assertSee(__('auth.title.register'))
                     ->with(new RegisterForm, function ($browser) use ($user) {
                         return $browser->submitForm($user->name, $user->email, 'password', 'other');

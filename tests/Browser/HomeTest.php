@@ -29,7 +29,8 @@ class HomeTest extends DuskTestCase
                     ->visit(new HomePage)
                     ->assertMissing('@login_link')
                     ->assertMissing('@register_link')
-                    ->assertPresent('@logout_link');
+                    ->assertPresent('@logout_link')
+                    ->logout();
         });
     }
 }
