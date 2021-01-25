@@ -73,4 +73,9 @@ return [
     'email_verified' => 'Email address verified.',
     'email_verified_already' => 'Email address already verified.',
 
+    'verify_email.subject' => 'Verify Email Address',
+    'verify_email.link' => 'Verify Email Address',
+    'verify_email.line1' => 'Please click the button below to verify your email address.',
+    'verify_email.line2' => 'If you did not create an account, no further action is required.',
+
 ];
