@@ -95,7 +95,7 @@ class VerifyEmailTest extends TestCase
         $response->assertRedirect(RouteServiceProvider::HOME);
         $response->assertSessionMissing('status');
 
-        $verificationEmail = with(new VerifyEmail())->toMail($testUser)->toArray();
+        $verificationEmail = (new VerifyEmail())->toMail($testUser)->toArray();
 
         $response = $this->get($verificationEmail['actionUrl']);
         $response->assertRedirect(RouteServiceProvider::HOME);
