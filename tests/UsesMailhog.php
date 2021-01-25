@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Browser;
+namespace Tests;
 
 use App\Http\GuzzleHttp\GuzzleRequestFactory;
 use Http\Adapter\Guzzle7\Client as GuzzleAdapter;
@@ -11,7 +11,7 @@ use rpkamp\Mailhog\Specification\AndSpecification;
 use rpkamp\Mailhog\Specification\RecipientSpecification;
 use rpkamp\Mailhog\Specification\SubjectSpecification;
 
-trait MailhogTest
+trait UsesMailhog
 {
     private function createClient(): MailhogClient
     {

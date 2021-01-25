@@ -9,11 +9,12 @@ use Tests\Browser\Components\RegisterForm;
 use Tests\Browser\Pages\RegisterPage;
 use Tests\Browser\Pages\VerifyEmailPage;
 use Tests\DuskTestCase;
+use Tests\UsesMailhog;
 
 class RegisterTest extends DuskTestCase
 {
     use DatabaseMigrations;
-    use MailhogTest;
+    use UsesMailhog;
 
     /**
      * @throws \Throwable
