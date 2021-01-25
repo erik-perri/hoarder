@@ -13,7 +13,7 @@ use Tests\DuskTestCase;
 class RegisterTest extends DuskTestCase
 {
     use DatabaseMigrations;
-    use MailhogTestTrait;
+    use MailhogTest;
 
     /**
      * @throws \Throwable

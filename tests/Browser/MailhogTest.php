@@ -11,7 +11,7 @@ use rpkamp\Mailhog\Specification\AndSpecification;
 use rpkamp\Mailhog\Specification\RecipientSpecification;
 use rpkamp\Mailhog\Specification\SubjectSpecification;
 
-trait MailhogTestTrait
+trait MailhogTest
 {
     private function createClient(): MailhogClient
     {
