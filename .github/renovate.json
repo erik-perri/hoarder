@@ -2,6 +2,8 @@
     "extends": [
         "config:base",
         ":automergeMinor",
-        ":autodetectPinVersions"
-    ]
+        ":semanticCommits",
+        ":rebaseStalePrs"
+    ],
+    "rangeStrategy": "widen"
 }
