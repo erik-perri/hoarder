@@ -4,7 +4,7 @@ namespace Tests\Browser\Pages;
 
 use Laravel\Dusk\Browser;
 
-class HomePage extends Page
+class LoginPage extends Page
 {
     /**
      * Get the URL for the page.
@@ -13,7 +13,7 @@ class HomePage extends Page
      */
     public function url(): string
     {
-        return '/';
+        return '/login';
     }
 
     /**
@@ -34,10 +34,6 @@ class HomePage extends Page
      */
     public function elements(): array
     {
-        return [
-            '@login_link' => 'a[href="'.route('login').'"]',
-            '@register_link' => 'a[href="'.route('register').'"]',
-            '@logout_link' => 'a[href="'.route('logout').'"]',
-        ];
+        return [];
     }
 }
