@@ -23,7 +23,7 @@ class LoginTest extends DuskTestCase
             /** @var User $user */
             $user = User::factory()->create();
 
-            $browser->visit('/login')
+            $browser->visit(new LoginPage)
                     ->assertSee(__('auth.title.login'))
                     ->with(new LoginForm, fn ($browser) => $browser->submitForm($user->email, 'password'))
                     ->on(new HomePage)
@@ -41,7 +41,7 @@ class LoginTest extends DuskTestCase
             /** @var User $user */
             $user = User::factory()->create();
 
-            $browser->visit('/login')
+            $browser->visit(new LoginPage)
                     ->assertSee(__('auth.title.login'))
                     ->with(new LoginForm, fn ($browser) => $browser->submitForm($user->email, 'invalid'))
                     ->on(new LoginPage)
