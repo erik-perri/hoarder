@@ -31,21 +31,16 @@ class VerifyEmailTest extends TestCase
 
         $this->assertAuthenticated();
 
-        $verifyUrl = null;
         $createdUser = User::whereEmail($testUser->email)->firstOrFail();
-
-        $notificationMock->assertSentTo($createdUser, VerifyEmail::class,
-            function ($notification) use ($createdUser, &$verifyUrl) {
-                /** @var VerifyEmail $notification */
-                $notificationInfo = $notification->toMail($createdUser)->toArray();
-                $verifyUrl = $notificationInfo['actionUrl'] ?? null;
-
-                return $verifyUrl !== null;
-            });
-
-        self::assertNotNull($verifyUrl);
         self::assertNull($createdUser->email_verified_at);
 
+        $notifications = $notificationMock->sent($createdUser, VerifyEmail::class);
+        self::assertCount(1, $notifications);
+
+        $notificationInfo = $notifications[0]->toMail($createdUser)->toArray();
+        $verifyUrl = $notificationInfo['actionUrl'] ?? null;
+
+        self::assertNotNull($verifyUrl);
         $response = $this->get($verifyUrl);
         $response->assertSessionHas('status', __('auth.email_verified'));
 
@@ -101,7 +96,6 @@ class VerifyEmailTest extends TestCase
         $response->assertSessionMissing('status');
 
         $verificationEmail = with(new VerifyEmail())->toMail($testUser)->toArray();
-        self::assertTrue(isset($verificationEmail['actionUrl']));
 
         $response = $this->get($verificationEmail['actionUrl']);
         $response->assertRedirect(RouteServiceProvider::HOME);
