@@ -1,8 +1,7 @@
 {
     "extends": [
         "config:base",
-        "schedule:weekends",
-        ":automergeMinor"
-    ],
-    "rangeStrategy": "replace"
+        ":automergeMinor",
+        ":autodetectPinVersions"
+    ]
 }
