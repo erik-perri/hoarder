@@ -52,6 +52,13 @@ trait MailhogTestTrait
     {
         $messages = $this->findMailhogEmail($email, $subject);
 
-        self::assertGreaterThan(0, count($messages));
+        self::assertNotEmpty(
+            $messages,
+            sprintf(
+                'Failed asserting that Mailhog contains an email to "%s" with subject "%s"',
+                $email,
+                $subject
+            )
+        );
     }
 }
