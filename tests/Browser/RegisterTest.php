@@ -13,6 +13,7 @@ use Tests\DuskTestCase;
 class RegisterTest extends DuskTestCase
 {
     use DatabaseMigrations;
+    use MailhogTestTrait;
 
     /**
      * @throws \Throwable
@@ -31,6 +32,8 @@ class RegisterTest extends DuskTestCase
                     })
                     ->on(new VerifyEmailPage)
                     ->assertSee(__('auth.verify_email_message'));
+
+            $this->assertMailhogHasEmail($user->email, __('auth.verify_email.subject'));
         });
     }
 
