@@ -1,3 +1,3 @@
 # Hoarder
 
-Just messing with Laravel some.
+Not much here at the moment, just doing some testing in Laravel.
