@@ -3,7 +3,8 @@
         "config:base",
         ":automergeMinor",
         ":semanticCommits",
+        ":semanticCommitScopeDisabled",
+        ":preserveSemverRanges",
         ":rebaseStalePrs"
-    ],
-    "rangeStrategy": "widen"
+    ]
 }
