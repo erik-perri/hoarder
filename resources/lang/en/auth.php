@@ -51,6 +51,8 @@ return [
      * Forgot/Reset Password
      */
 
+    'token_required' => 'Token is required.',
+
     'title.forgot_password' => 'Forgot Password',
     'title.reset_password' => 'Reset Password',
 
