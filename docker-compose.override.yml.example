@@ -1,0 +1,24 @@
+# Copy this to `docker-compose.override.yml` to prevent syncing the vendor and storage directories with the host. This
+# speeds up the site while running via WSL2. We use a separate volume rather than just excluding to make the vendor
+# directory available to PhpStorm's docker helper, which is required to run tests in the container via PhpStorm.
+#
+# If this is enabled, you must run the following commands after bringing the container up for the first time:
+#
+#   docker-compose exec laravel.test mkdir -p /var/www/html/storage/{app,cache,framework/cache,framework/sessions,framework/views,logs}
+#   docker-compose exec laravel.test chown -R sail:sail /var/www/html/{storage,vendor}
+#   sail composer install
+#
+# You must also run `sail composer install` every time you update the composer dependencies to install them inside the
+# container.
+#
+services:
+    laravel.test:
+        volumes:
+            - sailvendor:/var/www/html/vendor
+            - sailstorage:/var/www/html/storage
+
+volumes:
+    sailvendor:
+        driver: local
+    sailstorage:
+        driver: local
