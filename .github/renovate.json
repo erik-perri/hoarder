@@ -1,9 +1,11 @@
 {
     "extends": [
         "config:base",
+        ":automergeBranch",
         ":automergeMinor",
         ":semanticCommits",
         ":semanticCommitScopeDisabled",
+        ":maintainLockFilesWeekly",
         ":rebaseStalePrs"
     ]
 }
