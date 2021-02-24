@@ -22,7 +22,7 @@
         "laravel/dusk": "6.13.0",
         "laravel/sail": "1.4.1",
         "matt-allan/laravel-code-style": "0.6.0",
-        "mockery/mockery": "1.4.2",
+        "mockery/mockery": "1.4.3",
         "nunomaduro/collision": "5.3.0",
         "php-http/guzzle7-adapter": "0.1.1",
         "phpunit/phpunit": "9.5.2",
