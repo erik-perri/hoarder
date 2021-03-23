@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e7b5be8619bcc9c89766a003ea2c03a2",
+    "content-hash": "e015a3a2f62f4edabaffeb356b8cc1cf",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -6466,16 +6466,16 @@
         },
         {
             "name": "laravel/dusk",
-            "version": "v6.13.0",
+            "version": "v6.14.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/dusk.git",
-                "reference": "59f9febbaf9559a8a744187f38c53bbd425edd93"
+                "reference": "c0560c3b2ebcb491bf2b45d275817e80f1851f0b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/dusk/zipball/59f9febbaf9559a8a744187f38c53bbd425edd93",
-                "reference": "59f9febbaf9559a8a744187f38c53bbd425edd93",
+                "url": "https://api.github.com/repos/laravel/dusk/zipball/c0560c3b2ebcb491bf2b45d275817e80f1851f0b",
+                "reference": "c0560c3b2ebcb491bf2b45d275817e80f1851f0b",
                 "shasum": ""
             },
             "require": {
@@ -6533,9 +6533,9 @@
             ],
             "support": {
                 "issues": "https://github.com/laravel/dusk/issues",
-                "source": "https://github.com/laravel/dusk/tree/v6.13.0"
+                "source": "https://github.com/laravel/dusk/tree/v6.14.0"
             },
-            "time": "2021-02-23T20:28:11+00:00"
+            "time": "2021-03-23T17:05:41+00:00"
         },
         {
             "name": "laravel/sail",
