@@ -23,7 +23,7 @@
         "laravel/sail": "1.4.11",
         "matt-allan/laravel-code-style": "0.6.0",
         "mockery/mockery": "1.4.3",
-        "nunomaduro/collision": "5.3.0",
+        "nunomaduro/collision": "5.4.0",
         "php-http/guzzle7-adapter": "1.0.0",
         "phpunit/phpunit": "9.5.4",
         "rpkamp/mailhog-client": "0.5.2"
