@@ -13,7 +13,7 @@
     "devDependencies": {
         "axios": "0.21.1",
         "husky": "6.0.0",
-        "laravel-mix": "6.0.18",
+        "laravel-mix": "6.0.19",
         "lint-staged": "10.5.4",
         "lodash": "4.17.21",
         "postcss": "8.2.14",
