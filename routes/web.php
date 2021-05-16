@@ -20,8 +20,8 @@ Route::get('/', fn () => view('home'))->name('home');
 
 require __DIR__.'/auth.php';
 
-Route::get('/collectibles', [CollectibleController::class, 'index'])
-     ->name('collectibles.collectible');
+Route::resource('collectibles', CollectibleController::class);
+
 Route::get('/collectibles/{collectible}', [CategoriesController::class, 'view'])
      ->name('collectibles.categories');
 Route::get('/collectibles/{collectible}/{category}', [ItemsController::class, 'view'])
