@@ -5,7 +5,7 @@
         {{ __('menu.app_name') }}
 
         <a href="{{ route('home') }}">{{ __('menu.home') }}</a>
-        <a href="{{ route('collectibles.collectibles') }}">{{ __('menu.collectibles') }}</a>
+        <a href="{{ route('collectibles.collectible') }}">{{ __('menu.collectibles') }}</a>
 
         @auth
             <x-logout-link>{{ __('menu.logout') }}</x-logout-link>
