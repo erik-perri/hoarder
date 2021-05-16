@@ -1,11 +1,12 @@
 {
     "extends": [
         "config:base",
+        "schedule:monthly",
         ":automergeBranch",
         ":automergeMinor",
         ":semanticCommits",
         ":semanticCommitScopeDisabled",
-        ":maintainLockFilesWeekly",
+        ":maintainLockFilesMonthly",
         ":rebaseStalePrs"
     ]
 }
