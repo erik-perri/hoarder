@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\Collectible\CategoriesController;
+use App\Http\Controllers\Collectible\CollectiblesController;
+use App\Http\Controllers\Collectible\ItemsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +19,12 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', fn () => view('home'))->name('home');
 
 require __DIR__.'/auth.php';
+
+Route::get('/collectibles', [CollectiblesController::class, 'view'])
+     ->name('collectibles.collectibles');
+Route::get('/collectibles/{collectible}', [CategoriesController::class, 'view'])
+     ->name('collectibles.categories');
+Route::get('/collectibles/{collectible}/{category}', [ItemsController::class, 'view'])
+    ->name('collectibles.items');
+Route::get('/collectibles/{collectible}/{category}/{item}', [ItemsController::class, 'single'])
+    ->name('collectibles.item');
