@@ -22,6 +22,7 @@ class FieldFactory extends Factory
     public function definition(): array
     {
         return [
+            'uuid' => $this->faker->uuid,
             'entity_type' => $this->faker->randomElement(['category', 'item']),
             'code' => $this->faker->randomAscii,
             'name' => $this->faker->words(3, true),

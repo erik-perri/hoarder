@@ -14,6 +14,7 @@ use Illuminate\Support\Carbon;
  *
  * @property int $id
  * @property int $collectible_id
+ * @property string $uuid
  * @property string $entity_type
  * @property string $code
  * @property string $name
@@ -28,6 +29,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Field query()
  * @method static Builder|Field whereCode($value)
  * @method static Builder|Field whereCollectibleId($value)
+ * @method static Builder|Field whereUuid($value)
  * @method static Builder|Field whereCreatedAt($value)
  * @method static Builder|Field whereEntityType($value)
  * @method static Builder|Field whereId($value)
