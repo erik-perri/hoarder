@@ -30,7 +30,7 @@ class CategoryController extends Controller
         $items = Collectible\Item::where([
             'collectible_id' => $category->collectible->id,
             'category_id' => $category->id,
-        ])->orderByRaw('CAST(field_values->>\'$."collector-number"\' AS UNSIGNED)')->paginate(30);
+        ])->orderByRaw('CAST(field_values->>\'$.collector_number\' AS UNSIGNED)')->paginate(30);
 
         return view('collectible.category.index', [
             'collectible' => $category->collectible,

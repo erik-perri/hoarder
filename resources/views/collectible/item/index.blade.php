@@ -20,7 +20,7 @@
                             {{ $item->field_values[$field->code] }}
                         @endif
 
-                        @if ($field->code === 'image-url')
+                        @if ($field->code === 'image_url')
                             <div><img src="{{ $item->field_values[$field->code] }}" alt="Item image" /></div>
                         @endif
                     @endif
