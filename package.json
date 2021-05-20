@@ -8,28 +8,46 @@
         "hot": "mix watch --hot",
         "prod": "npm run production",
         "production": "mix --production",
-        "prepare": "husky install"
+        "prepare": "husky install",
+        "test": "npx jest"
     },
     "dependencies": {
         "vue": "3.0.11"
     },
     "devDependencies": {
+        "@testing-library/vue": "6.4.2",
+        "@types/jest": "26.0.23",
         "@vue/compiler-sfc": "3.0.11",
         "axios": "0.21.1",
         "husky": "6.0.0",
+        "jest": "26.6.3",
         "laravel-mix": "6.0.19",
         "lint-staged": "11.0.0",
         "prettier": "2.3.0",
         "resolve-url-loader": "4.0.0",
         "sass": "1.32.13",
         "sass-loader": "11.1.1",
+        "ts-jest": "26.5.6",
         "ts-loader": "9.2.1",
         "typescript": "4.2.4",
+        "vue-jest": "5.0.0-alpha.9",
         "vue-loader": "16.2.0",
         "webpack": "5.37.1"
     },
     "lint-staged": {
         "*.{js,css,scss,md}": "prettier --write",
         "*.php": "vendor/bin/php-cs-fixer fix --config=.php_cs"
+    },
+    "jest": {
+        "rootDir": "resources/js",
+        "moduleFileExtensions": [
+            "ts",
+            "js",
+            "vue"
+        ],
+        "transform": {
+            ".*\\.ts$": "ts-jest",
+            ".*\\.vue$": "vue-jest"
+        }
     }
 }
