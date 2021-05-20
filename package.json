@@ -15,7 +15,6 @@
         "husky": "6.0.0",
         "laravel-mix": "6.0.19",
         "lint-staged": "11.0.0",
-        "lodash": "4.17.21",
         "prettier": "2.3.0",
         "resolve-url-loader": "^3.1.2",
         "sass": "^1.32.13",
