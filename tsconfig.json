@@ -10,7 +10,10 @@
         "module": "commonjs",
         "target": "es5",
         "sourceMap": true,
-        "strict": true
+        // https://v3.vuejs.org/guide/typescript-support.html#recommended-configuration
+        "strict": true,
+        "jsx": "preserve",
+        "moduleResolution": "node"
     },
     "exclude": [
         "node_modules"

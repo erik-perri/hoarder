@@ -10,7 +10,9 @@
 </head>
 <body>
 
-@yield('content')
+<div id="app">
+    @yield('content')
+</div>
 
 @section('scripts')
     <script type="text/javascript" src="{{ mix('/js/app.js') }}"></script>

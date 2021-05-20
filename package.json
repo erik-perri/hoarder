@@ -10,7 +10,11 @@
         "production": "mix --production",
         "prepare": "husky install"
     },
+    "dependencies": {
+        "vue": "3.0.11"
+    },
     "devDependencies": {
+        "@vue/compiler-sfc": "3.0.11",
         "axios": "0.21.1",
         "husky": "6.0.0",
         "laravel-mix": "6.0.19",
@@ -20,7 +24,9 @@
         "sass": "^1.32.13",
         "sass-loader": "^11.0.1",
         "ts-loader": "^9.2.1",
-        "typescript": "^4.2.4"
+        "typescript": "^4.2.4",
+        "vue-loader": "^16.1.0",
+        "webpack": "^5.37.1"
     },
     "lint-staged": {
         "*.{js,css,scss,md}": "prettier --write",
