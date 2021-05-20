@@ -41,7 +41,7 @@ class CollectibleFieldSeeder extends Seeder
                 [
                     'code' => 'card_count',
                     'name' => 'Card Count',
-                    'input_type' => 'integer',
+                    'input_type' => 'number',
                     'is_required' => false,
                 ],
                 [

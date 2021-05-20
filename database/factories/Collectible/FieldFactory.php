@@ -26,7 +26,7 @@ class FieldFactory extends Factory
             'entity_type' => $this->faker->randomElement(['category', 'item']),
             'code' => $this->faker->randomAscii,
             'name' => $this->faker->words(3, true),
-            'input_type' => $this->faker->randomElement(['text', 'date', 'integer']),
+            'input_type' => $this->faker->randomElement(['text', 'date', 'number']),
             'input_options' => [],
             'is_required' => $this->faker->boolean,
         ];
