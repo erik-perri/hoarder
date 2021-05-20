@@ -29,12 +29,12 @@ class CollectibleCriteriaBuilder
                         $condition['group_conditions']
                     );
                 });
-            } elseif (isset($condition['match_type'])) {
+            } elseif (isset($condition['match_field'])) {
                 $this->applyCondition(
                     $builder,
                     $groupIsOr,
-                    $condition['match_type'],
                     $condition['match_field'],
+                    $condition['match_comparison'],
                     $condition['match_value']
                 );
             } else {
@@ -46,15 +46,15 @@ class CollectibleCriteriaBuilder
     private function applyCondition(
         Builder $builder,
         bool $groupIsOr,
-        string $matchType,
         string $matchField,
+        string $matchComparison,
         string $matchValue
     ): void {
         if (! in_array($matchField, $this->allowedFields, true)) {
             throw new \InvalidArgumentException('Invalid condition, unknown field specified');
         }
 
-        switch ($matchType) {
+        switch ($matchComparison) {
             case 'exact':
                 $builder->{$groupIsOr ? 'orWhere' : 'where'}('field_values->'.$matchField, '=', $matchValue);
                 break;
@@ -67,7 +67,7 @@ class CollectibleCriteriaBuilder
                 break;
 
             default:
-                throw new \InvalidArgumentException('Invalid condition, invalid match_type supplied');
+                throw new \InvalidArgumentException('Invalid condition, invalid match_comparison supplied');
         }
     }
 }
