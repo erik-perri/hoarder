@@ -1,0 +1,18 @@
+{
+    "files": [
+        "resources/js/app.ts"
+    ],
+    "include": [
+        "resources/js/**/*.ts",
+        "resources/js/**/*.vue"
+    ],
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "es5",
+        "sourceMap": true,
+        "strict": true
+    },
+    "exclude": [
+        "node_modules"
+    ]
+}
