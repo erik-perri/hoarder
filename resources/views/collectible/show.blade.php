@@ -8,11 +8,12 @@
 
     <x-redirect-status />
 
+    <div>
+        <a href="{{ route('collectibles.search', ['collectible' => $collectible]) }}">Search</a>
     @auth
-        <div>
-            <a href="{{ route('collectibles.edit', ['collectible' => $collectible]) }}">Edit</a>
-        </div>
+        <a href="{{ route('collectibles.edit', ['collectible' => $collectible]) }}">Edit</a>
     @endif
+    </div>
 
     <ul>
     @foreach($categories as $category)

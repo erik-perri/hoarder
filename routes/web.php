@@ -3,6 +3,7 @@
 use App\Http\Controllers\Collectible\CategoryController;
 use App\Http\Controllers\Collectible\CollectibleController;
 use App\Http\Controllers\Collectible\ItemController;
+use App\Http\Controllers\Collectible\SearchController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,6 +20,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', fn () => view('home'))->name('home');
 
 require __DIR__.'/auth.php';
+
+Route::get('/collectible/{collectible}/search', [SearchController::class, 'search'])
+     ->name('collectibles.search');
 
 Route::resource('collectibles', CollectibleController::class);
 Route::resource('categories', CategoryController::class);
