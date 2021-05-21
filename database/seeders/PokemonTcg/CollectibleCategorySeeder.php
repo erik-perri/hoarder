@@ -34,7 +34,7 @@ class CollectibleCategorySeeder extends Seeder
                     'series' => $editionInfo['series'],
                     'card_count' => $editionInfo['total'],
                     'logo_url' => $editionInfo['images']['logo'] ?? null,
-                ]),
+                ], static fn ($v) => $v !== null),
             ]);
         }
     }

@@ -39,7 +39,7 @@ class CollectibleItemSeeder extends Seeder
                         'rarity' => $cardInfo['rarity'] ?? null,
                         'artist' => $cardInfo['artist'] ?? null,
                         'image_url' => $cardInfo['images']['large'] ?? $cardInfo['images']['small'] ?? null,
-                    ]),
+                    ], static fn ($v) => $v !== null),
                 ]);
             }
         }

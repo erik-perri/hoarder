@@ -36,7 +36,7 @@ class CollectibleCategorySeeder extends Seeder
                     'only_foil' => $editionInfo['foil_only'],
                     'only_non_foil' => $editionInfo['nonfoil_only'],
                     'logo_url' => $editionInfo['icon_svg_uri'] ?? null,
-                ]),
+                ], static fn ($v) => $v !== null),
             ]);
         }
     }
