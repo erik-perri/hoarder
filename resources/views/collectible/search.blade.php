@@ -11,14 +11,23 @@
     <form method="get" action="{{ route('collectibles.search', ['collectible' => $collectible]) }}">
         @csrf
 
-        <filter-builder input-name="filter"
-                        :conditions="{{ json_encode($filter, JSON_THROW_ON_ERROR) }}"
+        <strong>Category filter</strong>
+        <filter-builder input-name="categoryFilter"
+                        :conditions="{{ json_encode($categoryFilter, JSON_THROW_ON_ERROR) }}"
+                        :fields="{{ json_encode($categoryFields, JSON_THROW_ON_ERROR) }}"></filter-builder>
+
+        <strong>Item filter</strong>
+        <filter-builder input-name="itemFilter"
+                        :conditions="{{ json_encode($itemFilter, JSON_THROW_ON_ERROR) }}"
                         :fields="{{ json_encode($itemFields, JSON_THROW_ON_ERROR) }}"></filter-builder>
         <button type="submit">Search</button>
     </form>
 
     @if ($results && count($results))
-        <?php $appends = ['filter' => request()->get('filter')]; ?>
+        <?php $appends = [
+            'categoryFilter' => request()->get('categoryFilter'),
+            'itemFilter' => request()->get('itemFilter'),
+        ]; ?>
         <x-pagination :appends="$appends" :items="$results" />
 
         <ul>
