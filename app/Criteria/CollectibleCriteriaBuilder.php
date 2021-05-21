@@ -55,15 +55,53 @@ class CollectibleCriteriaBuilder
         }
 
         switch ($matchComparison) {
-            case 'exact':
+            case 'equals':
                 $builder->{$groupIsOr ? 'orWhere' : 'where'}('field_values->'.$matchField, '=', $matchValue);
+                break;
+            case 'does not equal':
+                $builder->{$groupIsOr ? 'orWhere' : 'where'}('field_values->'.$matchField, '!=', $matchValue);
                 break;
 
             case 'contains':
+                $builder->{$groupIsOr ? 'orWhere' : 'where'}('field_values->'.$matchField, 'LIKE', '%'.$matchValue.'%');
+                break;
+            case 'does not contain':
+                $builder->{$groupIsOr ? 'orWhere' : 'where'}('field_values->'.$matchField, 'NOT LIKE', '%'.$matchValue.'%');
+                break;
+
+            case 'starts with':
+                $builder->{$groupIsOr ? 'orWhere' : 'where'}('field_values->'.$matchField, 'LIKE', $matchValue.'%');
+                break;
+            case 'does not start with':
+                $builder->{$groupIsOr ? 'orWhere' : 'where'}('field_values->'.$matchField, 'NOT LIKE', $matchValue.'%');
+                break;
+
+            case 'ends with':
+                $builder->{$groupIsOr ? 'orWhere' : 'where'}('field_values->'.$matchField, 'LIKE', '%'.$matchValue);
+                break;
+            case 'does not end with':
+                $builder->{$groupIsOr ? 'orWhere' : 'where'}('field_values->'.$matchField, 'NOT LIKE', '%'.$matchValue);
+                break;
+
+            case 'tags_contains':
                 $builder->{$groupIsOr ? 'orWhereJsonContains' : 'whereJsonContains'}(
                     'field_values->'.$matchField,
                     $matchValue
                 );
+                break;
+
+            case 'bool':
+                switch ($matchValue) {
+                    case 'true':
+                        $builder->{$groupIsOr ? 'orWhere' : 'where'}('field_values->'.$matchField, '=', true);
+                        break;
+                    case 'false':
+                        $builder->{$groupIsOr ? 'orWhere' : 'where'}('field_values->'.$matchField, '=', false);
+                        break;
+                    case 'unset':
+                        $builder->{$groupIsOr ? 'orWhereNull' : 'whereNull'}('field_values->'.$matchField);
+                        break;
+                }
                 break;
 
             default:
