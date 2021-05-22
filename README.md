@@ -27,9 +27,9 @@ to the WSL filesystem using the following steps:
 
 1. Copy `docker-compose.override.yml.example` to `docker-compose.override.yml`
 2. Restart containers with `docker-compose stop` and `docker-compose up -d`
-3. Setup paths in container (`docker-compose exec laravel.test mkdir -p /var/www/html/storage/app /var/www/html/storage/cache /var/www/html/storage/framework/cache /var/www/html/storage/framework/sessions /var/www/html/storage/framework/views /var/www/html/storage/logs`)
-4. Fix permissions in container (`docker-compose exec laravel.test chown -R sail:sail /var/www/html/storage /var/www/html/vendor`)
-5. Install composer dependencies in container (`docker-compose exec laravel.test composer install`)
+3. Setup paths in container with `docker-compose exec laravel.test mkdir -p /var/www/html/storage/app /var/www/html/storage/cache /var/www/html/storage/framework/cache /var/www/html/storage/framework/sessions /var/www/html/storage/framework/views /var/www/html/storage/logs`
+4. Fix permissions in container with `docker-compose exec laravel.test chown -R sail:sail /var/www/html/storage /var/www/html/vendor`
+5. Install composer dependencies in container with `docker-compose exec laravel.test composer install`
 6. Restart containers again with `docker-compose stop` and `docker-compose up -d`
 
 This has the drawback of requiring the `composer install` to be run inside the container each time `composer.json` is
