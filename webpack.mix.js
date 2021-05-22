@@ -39,3 +39,9 @@ mix
       port: WEBPACK_DEV_SERVER_PORT,
     },
   });
+
+if (mix.inProduction()) {
+  mix.version();
+} else {
+  mix.sourceMaps();
+}
