@@ -3,6 +3,7 @@
 namespace App\Models\Collectible;
 
 use App\Models\Collectible;
+use Database\Factories\Collectible\FieldFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -24,12 +25,12 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read Collectible $collectible
+ * @method static FieldFactory factory(...$parameters)
  * @method static Builder|Field newModelQuery()
  * @method static Builder|Field newQuery()
  * @method static Builder|Field query()
  * @method static Builder|Field whereCode($value)
  * @method static Builder|Field whereCollectibleId($value)
- * @method static Builder|Field whereUuid($value)
  * @method static Builder|Field whereCreatedAt($value)
  * @method static Builder|Field whereEntityType($value)
  * @method static Builder|Field whereId($value)
@@ -38,6 +39,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Field whereIsRequired($value)
  * @method static Builder|Field whereName($value)
  * @method static Builder|Field whereUpdatedAt($value)
+ * @method static Builder|Field whereUuid($value)
  * @mixin \Eloquent
  */
 class Field extends Model

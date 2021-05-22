@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Collectible\Category;
 use App\Models\Collectible\Field;
 use App\Models\Collectible\Item;
+use Database\Factories\CollectibleFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -29,6 +30,7 @@ use Illuminate\Support\Carbon;
  * @property-read int|null $fields_count
  * @property-read Collection|Item[] $items
  * @property-read int|null $items_count
+ * @method static CollectibleFactory factory(...$parameters)
  * @method static Builder|Collectible newModelQuery()
  * @method static Builder|Collectible newQuery()
  * @method static Builder|Collectible query()

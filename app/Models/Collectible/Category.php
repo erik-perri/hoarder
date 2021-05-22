@@ -3,6 +3,7 @@
 namespace App\Models\Collectible;
 
 use App\Models\Collectible;
+use Database\Factories\Collectible\CategoryFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -27,6 +28,7 @@ use Illuminate\Support\Carbon;
  * @property-read Collection|Item[] $items
  * @property-read int|null $items_count
  * @property-read Category|null $parent
+ * @method static CategoryFactory factory(...$parameters)
  * @method static Builder|Category newModelQuery()
  * @method static Builder|Category newQuery()
  * @method static Builder|Category query()
