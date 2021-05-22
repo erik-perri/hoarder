@@ -24,7 +24,7 @@
     />
 
     &nbsp;<a href="#" v-if="!editing" @click.prevent="editing = true">Edit</a>
-    &nbsp;<a href="#" v-if="!editing" @click.prevent="deleteItem()">Delete</a>
+    &nbsp;<a href="#" @click.prevent="deleteItem()">Delete</a>
   </div>
 </template>
 
