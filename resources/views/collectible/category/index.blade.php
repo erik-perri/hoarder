@@ -31,7 +31,7 @@
                             <a target="_blank" href="{{ $category->field_values[$field->code] }}">
                                 <img style="max-height: 150px"
                                      src="{{ $category->field_values[$field->code] }}"
-                                     alt="Item image" />
+                                     alt="Category image" />
                             </a>
                         @endif
                     @endif
@@ -41,6 +41,7 @@
         </tbody>
     </table>
 
+    <h2>Items</h2>
     <ul>
         @foreach($items as $item)
             <li>
