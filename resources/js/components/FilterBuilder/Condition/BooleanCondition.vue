@@ -1,14 +1,22 @@
 <template>
   <span class="match-option-boolean">
     <span v-if="editing">
-      <select role="combobox" v-model="currentValue" ref="value">
+      <select v-model="currentComparison" ref="comparison" required>
+        <option v-for="(label, value) in comparisonOptions" :value="value">
+          {{ label }}
+        </option>
+      </select>
+      <select v-model="currentValue" ref="value" required>
         <option>true</option>
         <option>false</option>
         <option>unset</option>
       </select>
       <button @click.prevent="validateAndSave">Save</button>
     </span>
-    <span v-else>{{ currentValue }}</span>
+    <span v-else>
+      {{ comparisonOptions[currentComparison] }}&nbsp;
+      {{ currentValue }}
+    </span>
   </span>
 </template>
 
@@ -20,17 +28,11 @@ export default defineComponent({
   extends: BaseCondition,
   data() {
     return {
-      currentComparison: 'bool',
+      comparisonOptions: {
+        boolean_is: 'is',
+        boolean_is_not: 'is not',
+      } as Record<string, string>,
     };
-  },
-  methods: {
-    validateAndSave() {
-      if (!this.currentValue) {
-        (this.$refs.value as HTMLElement)?.focus();
-      } else {
-        this.emitSave();
-      }
-    },
   },
 });
 </script>

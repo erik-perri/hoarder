@@ -1,20 +1,18 @@
 <template>
   <span class="match-option-text">
     <span v-if="editing">
-      <select v-model="currentComparison" ref="comparison">
-        <option>equals</option>
-        <option>contains</option>
-        <option>starts with</option>
-        <option>ends with</option>
-        <option>does not equal</option>
-        <option>does not contains</option>
-        <option>does not start with</option>
-        <option>does not end with</option>
+      <select v-model="currentComparison" ref="comparison" required>
+        <option v-for="(label, value) in comparisonOptions" :value="value">
+          {{ label }}
+        </option>
       </select>
-      <input type="text" v-model="currentValue" ref="value" />
+      <input type="text" v-model="currentValue" ref="value" required />
       <button @click.prevent="validateAndSave">Save</button>
     </span>
-    <span v-else>{{ currentComparison }}&nbsp;{{ currentValue }}</span>
+    <span v-else>
+      {{ comparisonOptions[currentComparison] }}&nbsp;
+      {{ currentValue }}
+    </span>
   </span>
 </template>
 
@@ -24,16 +22,19 @@ import BaseCondition from './BaseCondition.vue';
 
 export default defineComponent({
   extends: BaseCondition,
-  methods: {
-    validateAndSave() {
-      if (!this.currentComparison) {
-        (this.$refs.comparison as HTMLElement)?.focus();
-      } else if (!this.currentValue) {
-        (this.$refs.value as HTMLElement)?.focus();
-      } else {
-        this.emitSave();
-      }
-    },
+  data() {
+    return {
+      comparisonOptions: {
+        text_equals: 'equals',
+        text_contains: 'contains',
+        text_starts_with: 'starts with',
+        text_ends_with: 'ends with',
+        text_does_not_equal: 'does not equal',
+        text_does_not_contain: 'does not contains',
+        text_does_not_start_with: 'does not start',
+        text_does_not_end_with: 'does not end with',
+      } as Record<string, string>,
+    };
   },
 });
 </script>

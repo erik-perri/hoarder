@@ -28,6 +28,15 @@ export default defineComponent({
         value: this.currentValue,
       });
     },
+    validateAndSave() {
+      if (this.$refs.comparison && !this.currentComparison) {
+        (this.$refs.comparison as HTMLElement)?.focus();
+      } else if (this.$refs.value && !this.currentValue) {
+        (this.$refs.value as HTMLElement)?.focus();
+      } else {
+        this.emitSave();
+      }
+    },
   },
 });
 </script>
