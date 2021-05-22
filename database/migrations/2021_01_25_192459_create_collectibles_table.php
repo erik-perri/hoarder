@@ -19,6 +19,8 @@ class CreateCollectiblesTable extends Migration
             $table->string('name');
             $table->timestamps();
 
+            // TODO Available stock options (Conditions, Languages, Tags, etc)
+
             $table->foreign('created_by_id')
                   ->references('id')
                   ->on('users')
