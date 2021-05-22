@@ -25,6 +25,8 @@
                             @else
                                 @if ($field->input_type === 'boolean')
                                     {{ $category->field_values[$field->code] ? 'Yes' : 'No' }}
+                                @elseif ($field->input_type === 'textarea')
+                                    {!! nl2br(e($item->field_values[$field->code])) !!}
                                 @else
                                     {{ $category->field_values[$field->code] }}
                                 @endif
