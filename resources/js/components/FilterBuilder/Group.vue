@@ -7,7 +7,7 @@
         v-if="item.group_type"
         :id="index"
         :group-type="item.group_type"
-        :conditions="item.group_conditions"
+        :conditions="JSON.parse(JSON.stringify(item.group_conditions))"
         :fields="this.fields"
         @group-changed="groupChanged"
         @delete-group="deleteItem(index)"
@@ -45,6 +45,7 @@ import {
   FilterConditions,
   isFilterCondition,
   ConditionOptions,
+  isFilterGroup,
 } from './types';
 import Condition from './Condition.vue';
 
@@ -84,7 +85,16 @@ export default defineComponent({
         match_field: '',
       } as FilterCondition);
     },
-    groupChanged(/*index: number, changes: Array<Record<string, string>>*/) {
+    groupChanged(index: number, changes: FilterGroup) {
+      if (!isFilterGroup(this.items[index])) {
+        throw new Error('groupChanged called on non-group item');
+      }
+
+      this.items[index] = {
+        group_type: changes.group_type,
+        group_conditions: changes.group_conditions,
+      } as FilterGroup;
+
       this.emitChanges();
     },
     conditionChanged(index: number, changes: ConditionOptions) {
@@ -101,11 +111,10 @@ export default defineComponent({
       this.emitChanges();
     },
     emitChanges() {
-      this.$emit(
-        'groupChanged',
-        this.id,
-        JSON.parse(JSON.stringify(this.items))
-      );
+      this.$emit('groupChanged', this.id, {
+        group_type: this.groupType,
+        group_conditions: JSON.parse(JSON.stringify(this.items)),
+      });
     },
     deleteItem(index: number) {
       this.items.splice(index, 1);
