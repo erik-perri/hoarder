@@ -9,19 +9,34 @@
 
     <table>
         <tbody>
+        <tr>
+            <td>Collectible</td>
+            <td><a href="{{ route('collectibles.show', ['collectible' => $collectible]) }}">{{ $collectible->name }}</a>
+            </td>
+        </tr>
+        <tr>
+            <td>Category</td>
+            <td><a href="{{ route('categories.show', ['category' => $category]) }}">{{ $category->name }}</a></td>
+        </tr>
         @foreach($collectible->fields->where('entity_type', 'item') as $field)
             <tr>
                 <td>{{ $field->name}}</td>
                 <td>
                     @if (isset($item->field_values[$field->code]))
-                        @if (is_array($item->field_values[$field->code]))
-                            {{ implode(', ', $item->field_values[$field->code]) }}
-                        @else
-                            {{ $item->field_values[$field->code] }}
-                        @endif
+                        <div>
+                            @if (is_array($item->field_values[$field->code]))
+                                {{ implode(', ', $item->field_values[$field->code]) }}
+                            @else
+                                {{ $item->field_values[$field->code] }}
+                            @endif
+                        </div>
 
                         @if ($field->code === 'image_url')
-                            <div><img src="{{ $item->field_values[$field->code] }}" alt="Item image" /></div>
+                            <a target="_blank" href="{{ $item->field_values[$field->code] }}">
+                                <img style="max-height: 150px"
+                                     src="{{ $item->field_values[$field->code] }}"
+                                     alt="Item image" />
+                            </a>
                         @endif
                     @endif
                 </td>
