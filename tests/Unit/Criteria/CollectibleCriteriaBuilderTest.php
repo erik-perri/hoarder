@@ -21,7 +21,7 @@ class CollectibleCriteriaBuilderTest extends TestCase
 
         $builder->apply($mock, true, [
             [
-                'match_comparison' => 'equals',
+                'match_comparison' => 'text_equals',
                 'match_field' => 'artist',
                 'match_value' => 'Artist Name',
             ],
@@ -49,12 +49,12 @@ class CollectibleCriteriaBuilderTest extends TestCase
                 'group_type' => 'or',
                 'group_conditions' => [
                     [
-                        'match_comparison' => 'equals',
+                        'match_comparison' => 'text_equals',
                         'match_field' => 'artist',
                         'match_value' => 'Artist One',
                     ],
                     [
-                        'match_comparison' => 'equals',
+                        'match_comparison' => 'text_equals',
                         'match_field' => 'artist',
                         'match_value' => 'Artist Two',
                     ],
@@ -74,7 +74,7 @@ class CollectibleCriteriaBuilderTest extends TestCase
 
         $builder->apply($mock, true, [
             [
-                'match_comparison' => 'equals',
+                'match_comparison' => 'text_equals',
                 'match_field' => 'name',
                 'match_value' => 'Item Name',
             ],
