@@ -28,8 +28,8 @@ class CollectibleCategorySeeder extends Seeder
                 'name' => $editionInfo['name'],
                 'field_values' => array_filter([
                     'code' => $editionInfo['code'],
-                    'released_on' => new \DateTime($editionInfo['released_at'],
-                        new \DateTimeZone('America/Los_Angeles')),
+                    'released_on' => (new \DateTime($editionInfo['released_at'],
+                        new \DateTimeZone('America/Los_Angeles')))->format('Y-m-d'),
                     'set_type' => $editionInfo['set_type'],
                     'card_count' => $editionInfo['card_count'],
                     'digital' => $editionInfo['digital'],

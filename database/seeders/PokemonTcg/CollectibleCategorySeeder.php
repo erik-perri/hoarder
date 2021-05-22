@@ -29,8 +29,8 @@ class CollectibleCategorySeeder extends Seeder
                 'field_values' => array_filter([
                     'code' => $editionInfo['id'],
                     'ptcgo_code' => $editionInfo['ptcgoCode'] ?? null,
-                    'released_on' => new \DateTime($editionInfo['releaseDate'],
-                        new \DateTimeZone('America/Los_Angeles')),
+                    'released_on' => (new \DateTime($editionInfo['releaseDate'],
+                        new \DateTimeZone('America/Los_Angeles')))->format('Y-m-d'),
                     'series' => $editionInfo['series'],
                     'card_count' => $editionInfo['total'],
                     'logo_url' => $editionInfo['images']['logo'] ?? null,
