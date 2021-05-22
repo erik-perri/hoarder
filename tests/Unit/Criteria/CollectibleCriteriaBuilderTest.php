@@ -18,18 +18,12 @@ class CollectibleCriteriaBuilderTest extends TestCase
         /** @var MockObject|Builder $mock */
         $mock = $this->createMock(Builder::class);
         $mock->expects(self::once())->method('orWhere');
-        $mock->expects(self::once())->method('orWhereJsonContains');
 
         $builder->apply($mock, true, [
             [
                 'match_comparison' => 'equals',
                 'match_field' => 'artist',
                 'match_value' => 'Artist Name',
-            ],
-            [
-                'match_comparison' => 'tags_contains',
-                'match_field' => 'types',
-                'match_value' => 'Type Name',
             ],
         ]);
     }
@@ -49,7 +43,6 @@ class CollectibleCriteriaBuilderTest extends TestCase
 
             return true;
         }));
-        $mock->expects(self::once())->method('whereJsonContains');
 
         $builder->apply($mock, false, [
             [
@@ -66,11 +59,6 @@ class CollectibleCriteriaBuilderTest extends TestCase
                         'match_value' => 'Artist Two',
                     ],
                 ],
-            ],
-            [
-                'match_comparison' => 'tags_contains',
-                'match_field' => 'types',
-                'match_value' => 'Type Name',
             ],
         ]);
     }
