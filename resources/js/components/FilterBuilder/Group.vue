@@ -1,11 +1,11 @@
 <template>
   <div class="filter-group">
-    <div v-for="(item, index) in items">
+    <div v-for="(item, index) in items" :key="item.id">
       <div v-if="index > 0" class="group-type">{{ groupType }}</div>
 
       <Group
         v-if="item.group_type"
-        :id="index"
+        :id="item.id"
         :group-type="item.group_type"
         :conditions="JSON.parse(JSON.stringify(item.group_conditions))"
         :fields="this.fields"
@@ -15,7 +15,7 @@
 
       <Condition
         v-else
-        :id="index"
+        :id="item.id"
         :available-fields="this.fields"
         :start-editing="item.match_field === ''"
         :field="item.match_field"
@@ -39,6 +39,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { v4 as uuid } from 'uuid';
 import {
   FilterCondition,
   FilterGroup,
@@ -76,12 +77,14 @@ export default defineComponent({
     },
     addGroup(type: 'or' | 'and') {
       this.items.push({
+        id: uuid(),
         group_type: type,
         group_conditions: [],
       } as FilterGroup);
     },
     addCondition() {
       this.items.push({
+        id: uuid(),
         match_field: '',
       } as FilterCondition);
     },
@@ -91,6 +94,7 @@ export default defineComponent({
       }
 
       this.items[index] = {
+        ...this.items[index],
         group_type: changes.group_type,
         group_conditions: changes.group_conditions,
       } as FilterGroup;
@@ -103,6 +107,7 @@ export default defineComponent({
       }
 
       this.items[index] = {
+        ...this.items[index],
         match_field: changes.field,
         match_comparison: changes.comparison,
         match_value: changes.value,

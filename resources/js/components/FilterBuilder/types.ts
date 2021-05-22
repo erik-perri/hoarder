@@ -1,11 +1,13 @@
 export type GroupType = 'and' | 'or';
 
 export interface FilterGroup {
+  id?: string;
   group_type: GroupType;
   group_conditions: FilterConditions;
 }
 
 export interface FilterCondition {
+  id?: string;
   match_field: string;
   match_comparison: string;
   match_value: string;

@@ -1,7 +1,7 @@
 <template>
   <div class="filter-builder">
     <Group
-      :conditions="JSON.parse(JSON.stringify(this.conditions))"
+      :conditions="group.group_conditions"
       :fields="this.fields"
       :can-delete="false"
       group-type="and"
@@ -13,8 +13,14 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { v4 as uuid } from 'uuid';
 import Group from './Group.vue';
-import { FilterConditions } from './types';
+import {
+  FilterConditions,
+  FilterGroup,
+  isFilterCondition,
+  isFilterGroup,
+} from './types';
 
 export default defineComponent({
   components: { Group },
@@ -34,17 +40,60 @@ export default defineComponent({
   },
   data() {
     return {
+      group: this.addIdsToGroup({
+        group_conditions: this.conditions as FilterConditions,
+      }),
       filter: this.conditions,
     };
   },
   methods: {
+    addIdsToGroup(group: FilterGroup): FilterGroup {
+      const result = {
+        id: group.id || uuid(),
+        group_type: group.group_type,
+        group_conditions: [] as FilterConditions,
+      } as FilterGroup;
+
+      for (const condition of group.group_conditions) {
+        if (isFilterGroup(condition)) {
+          result.group_conditions.push(this.addIdsToGroup(condition));
+        } else if (isFilterCondition(condition)) {
+          result.group_conditions.push({
+            id: condition.id || uuid(),
+            ...condition,
+          });
+        }
+      }
+
+      return result;
+    },
+    removeIdsFromGroup(group: FilterGroup): FilterGroup {
+      const result = {
+        group_type: group.group_type,
+        group_conditions: [] as FilterConditions,
+      } as FilterGroup;
+
+      for (const condition of group.group_conditions) {
+        if (isFilterGroup(condition)) {
+          result.group_conditions.push(this.removeIdsFromGroup(condition));
+        } else if (isFilterCondition(condition)) {
+          result.group_conditions.push({
+            ...condition,
+            id: undefined,
+          });
+        }
+      }
+
+      return result;
+    },
     encodeForUrl(filter: FilterConditions) {
       return JSON.stringify(filter);
     },
     groupChanged(id: number, changed: FilterGroup) {
+      const groupWithoutIds = this.removeIdsFromGroup(changed);
       // The group passes up a group structure but we only care about the
       // conditions at this level.
-      this.filter = changed.group_conditions;
+      this.filter = groupWithoutIds.group_conditions;
     },
   },
 });

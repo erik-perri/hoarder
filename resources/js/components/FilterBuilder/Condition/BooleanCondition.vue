@@ -2,7 +2,11 @@
   <span class="match-option-boolean">
     <span v-if="editing">
       <select v-model="currentComparison" ref="comparison" required>
-        <option v-for="(label, value) in comparisonOptions" :value="value">
+        <option
+          v-for="(label, value) in comparisonOptions"
+          :value="value"
+          :key="value"
+        >
           {{ label }}
         </option>
       </select>

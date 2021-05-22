@@ -12,12 +12,14 @@
         "test": "npx jest"
     },
     "dependencies": {
+        "uuid": "8.3.2",
         "vue": "3.0.11"
     },
     "devDependencies": {
         "@testing-library/vue": "6.4.2",
         "@tsconfig/recommended": "^1.0.1",
         "@types/jest": "26.0.23",
+        "@types/uuid": "8.3.0",
         "@vue/compiler-sfc": "3.0.11",
         "axios": "0.21.1",
         "husky": "6.0.0",
