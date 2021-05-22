@@ -27,7 +27,11 @@
                             @if (is_array($item->field_values[$field->code]))
                                 {{ implode(', ', $item->field_values[$field->code]) }}
                             @else
-                                {{ $item->field_values[$field->code] }}
+                                @if ($field->input_type === 'boolean')
+                                    {{ $item->field_values[$field->code] ? 'Yes' : 'No' }}
+                                @else
+                                    {{ $item->field_values[$field->code] }}
+                                @endif
                             @endif
                         </div>
 
@@ -38,6 +42,8 @@
                                      alt="Item image" />
                             </a>
                         @endif
+                    @elseif ($field->input_type === 'boolean')
+                        unset
                     @endif
                 </td>
             </tr>

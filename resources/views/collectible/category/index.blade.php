@@ -23,7 +23,11 @@
                             @if (is_array($category->field_values[$field->code]))
                                 {{ implode(', ', $category->field_values[$field->code]) }}
                             @else
-                                {{ $category->field_values[$field->code] }}
+                                @if ($field->input_type === 'boolean')
+                                    {{ $category->field_values[$field->code] ? 'Yes' : 'No' }}
+                                @else
+                                    {{ $category->field_values[$field->code] }}
+                                @endif
                             @endif
                         </div>
 
@@ -34,6 +38,8 @@
                                      alt="Category image" />
                             </a>
                         @endif
+                    @elseif ($field->input_type === 'boolean')
+                        unset
                     @endif
                 </td>
             </tr>
