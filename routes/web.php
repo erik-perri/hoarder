@@ -4,6 +4,7 @@ use App\Http\Controllers\Collectible\CategoryController;
 use App\Http\Controllers\Collectible\CollectibleController;
 use App\Http\Controllers\Collectible\ItemController;
 use App\Http\Controllers\Collectible\SearchController;
+use App\Http\Controllers\Collection\CollectionController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,3 +28,4 @@ Route::get('/collectible/{collectible}/search', [SearchController::class, 'searc
 Route::resource('collectibles', CollectibleController::class);
 Route::resource('categories', CategoryController::class);
 Route::resource('items', ItemController::class);
+Route::resource('collections', CollectionController::class);
