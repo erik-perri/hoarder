@@ -23,13 +23,14 @@ class DatabaseSeeder extends Seeder
         //      Tcgplayer, etc).
         $this->call([
             CollectibleSeeder::class,
+            CollectionSeeder::class,
             PokemonTcg\CollectibleFieldSeeder::class,
             PokemonTcg\CollectibleCategorySeeder::class,
             PokemonTcg\CollectibleItemSeeder::class,
             MagicTcg\CollectibleFieldSeeder::class,
             MagicTcg\CollectibleCategorySeeder::class,
             MagicTcg\CollectibleItemSeeder::class,
-            MagicTcg\CollectibleStockSeeder::class,
+            MagicTcg\CollectionStockSeeder::class,
         ]);
     }
 }

@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Models\Collectible;
+namespace App\Models\Collection;
 
-use App\Models\User;
-use Database\Factories\Collectible\StockFactory;
+use App\Models\Collectible\Item;
+use App\Models\Collection;
+use Database\Factories\Collection\StockFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -11,10 +12,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
 
 /**
- * App\Models\Collectible\Stock.
+ * App\Models\Collection\Stock.
  *
  * @property int $id
- * @property int $user_id
+ * @property int $collection_id
  * @property int $item_id
  * @property int $count
  * @property string $condition
@@ -22,12 +23,13 @@ use Illuminate\Support\Carbon;
  * @property array $tags
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ * @property-read Collection $collection
  * @property-read Item $item
- * @property-read User $owner
  * @method static StockFactory factory(...$parameters)
  * @method static Builder|Stock newModelQuery()
  * @method static Builder|Stock newQuery()
  * @method static Builder|Stock query()
+ * @method static Builder|Stock whereCollectionId($value)
  * @method static Builder|Stock whereCondition($value)
  * @method static Builder|Stock whereCount($value)
  * @method static Builder|Stock whereCreatedAt($value)
@@ -36,7 +38,6 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Stock whereLanguage($value)
  * @method static Builder|Stock whereTags($value)
  * @method static Builder|Stock whereUpdatedAt($value)
- * @method static Builder|Stock whereUserId($value)
  * @mixin \Eloquent
  */
 class Stock extends Model
@@ -48,7 +49,7 @@ class Stock extends Model
      *
      * @var string
      */
-    protected $table = 'collectible_stock';
+    protected $table = 'collection_stock';
 
     /**
      * The attributes that should be cast to native types.
@@ -64,8 +65,8 @@ class Stock extends Model
         return $this->belongsTo(Item::class);
     }
 
-    public function owner(): BelongsTo
+    public function collection(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Collection::class);
     }
 }

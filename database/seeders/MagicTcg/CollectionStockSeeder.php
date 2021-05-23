@@ -3,10 +3,10 @@
 namespace Database\Seeders\MagicTcg;
 
 use App\Models\Collectible;
-use App\Models\User;
+use App\Models\Collection;
 use Illuminate\Database\Seeder;
 
-class CollectibleStockSeeder extends Seeder
+class CollectionStockSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -16,11 +16,7 @@ class CollectibleStockSeeder extends Seeder
      */
     public function run(): void
     {
-        $user = User::first();
-        if (! $user) {
-            throw new \Exception('No user');
-        }
-
+        $collection = Collection::firstOrFail();
         $stockItems = [
             ['Al-abara\'s Carpet', 'Legends', []],
             ['Eureka', 'Legends', ['language' => 'it']],
@@ -45,8 +41,8 @@ class CollectibleStockSeeder extends Seeder
                 throw new \Exception(sprintf('Failed to locate "%s" in "%s" for stock seed', $name, $category));
             }
 
-            Collectible\Stock::factory()->create(array_merge($factoryData, [
-                'user_id' => $user->id,
+            Collection\Stock::factory()->create(array_merge($factoryData, [
+                'collection_id' => $collection->id,
                 'item_id' => $item->id,
             ]));
         }

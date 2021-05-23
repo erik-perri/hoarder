@@ -8,6 +8,7 @@
         <a href="{{ route('collectibles.index') }}">{{ __('menu.collectibles') }}</a>&nbsp;
 
         @auth
+            <a href="{{ route('collections.index') }}">{{ __('menu.collections') }}</a>&nbsp;
             <x-logout-link>{{ __('menu.logout') }}</x-logout-link>&nbsp;
         @else
             <a href="{{ route('login') }}">{{ __('menu.login') }}</a>&nbsp;

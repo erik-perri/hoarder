@@ -1,8 +1,8 @@
 <?php
 
-namespace Database\Factories\Collectible;
+namespace Database\Factories\Collection;
 
-use App\Models\Collectible;
+use App\Models\Collection;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class StockFactory extends Factory
@@ -12,7 +12,7 @@ class StockFactory extends Factory
      *
      * @var string
      */
-    protected $model = Collectible\Stock::class;
+    protected $model = Collection\Stock::class;
 
     /**
      * Define the model's default state.
@@ -22,7 +22,7 @@ class StockFactory extends Factory
     public function definition(): array
     {
         return [
-            'count' => $this->faker->numberBetween(1, 10),
+            'count' => $this->faker->numberBetween(1, 4),
             'condition' => $this->faker->randomElement([
                 'Mint',
                 'Near Mint',

@@ -4,18 +4,18 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCollectibleStockTable extends Migration
+class CreateCollectionStockTable extends Migration
 {
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('collectible_stock', function (Blueprint $table) {
+        Schema::create('collection_stock', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('collection_id');
             $table->unsignedBigInteger('item_id');
             $table->unsignedInteger('count');
             $table->string('condition');
@@ -23,9 +23,9 @@ class CreateCollectibleStockTable extends Migration
             $table->jsonb('tags'); // TODO Switch to joined table? spatie/laravel-tags?
             $table->timestamps();
 
-            $table->foreign('user_id')
+            $table->foreign('collection_id')
                   ->references('id')
-                  ->on('users')
+                  ->on('collections')
                   ->cascadeOnDelete();
 
             // TODO We should probably not delete the stock record if an item is deleted. One potential option is
@@ -43,8 +43,8 @@ class CreateCollectibleStockTable extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::dropIfExists('collectible_stock');
+        Schema::dropIfExists('collection_stock');
     }
 }

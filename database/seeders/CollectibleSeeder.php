@@ -21,10 +21,7 @@ class CollectibleSeeder extends Seeder
      */
     public function run(): void
     {
-        $user = User::first();
-        if (! $user) {
-            throw new \Exception('No user');
-        }
+        $user = User::firstOrFail();
 
         Collectible::factory()->create([
             'created_by_id' => $user->id,
