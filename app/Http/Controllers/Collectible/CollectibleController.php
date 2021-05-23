@@ -122,10 +122,10 @@ class CollectibleController extends Controller
     {
         if (! $collectible->delete()) {
             return redirect()->route('collectibles.edit', ['collectible' => $collectible])
-                             ->withErrors('collectible.messages.delete_failed');
+                             ->withErrors(__('collectible.messages.delete_failed'));
         }
 
         return redirect()->route('collectibles.index')
-                         ->with('status', 'collectible.messages.delete_success');
+                         ->with('status', __('collectible.messages.delete_success'));
     }
 }
