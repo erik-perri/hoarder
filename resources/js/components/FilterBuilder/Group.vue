@@ -27,10 +27,14 @@
     </div>
 
     <div class="add-condition">
-      <button @click.prevent="addGroup('or')">Add "or" group</button>&nbsp;
-      <button @click.prevent="addGroup('and')">Add "and" group</button>&nbsp;
-      <button @click.prevent="addCondition">Add condition</button>&nbsp;
-      <a href="#" @click.prevent="deleteGroup()" v-if="canDelete">
+      <span v-if="groupType !== 'or'">
+        &nbsp;<button @click.prevent="addGroup('or')">Add "or" group</button>
+      </span>
+      <span v-if="groupType !== 'and'">
+        &nbsp;<button @click.prevent="addGroup('and')">Add "and" group</button>
+      </span>
+      &nbsp;<button @click.prevent="addCondition">Add condition</button>
+      &nbsp;<a href="#" @click.prevent="deleteGroup" v-if="canDelete">
         Delete group
       </a>
     </div>
