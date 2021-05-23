@@ -1,5 +1,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { v4 as uuid } from 'uuid';
 
 export default defineComponent({
   abstract: true,
@@ -17,6 +18,7 @@ export default defineComponent({
   emits: ['save'],
   data() {
     return {
+      id: uuid(),
       currentComparison: this.comparison,
       currentValue: this.value,
     };

@@ -1,7 +1,13 @@
 <template>
-  <span class="match-option-boolean">
-    <span v-if="editing">
-      <select v-model="currentComparison" ref="comparison" required>
+  <div class="match-option-boolean">
+    <div v-if="editing">
+      <label :for="`comparison-${this.id}`">Comparison</label>
+      <select
+        :id="`comparison-${this.id}`"
+        v-model="currentComparison"
+        ref="comparison"
+        required
+      >
         <option
           v-for="(label, value) in comparisonOptions"
           :value="value"
@@ -10,18 +16,26 @@
           {{ label }}
         </option>
       </select>
-      <select v-model="currentValue" ref="value" required>
+
+      <label :for="`value-${this.id}`">Value</label>
+      <select
+        :id="`value-${this.id}`"
+        v-model="currentValue"
+        ref="value"
+        required
+      >
         <option>true</option>
         <option>false</option>
         <option>unset</option>
       </select>
+
       <button @click.prevent="validateAndSave">Save</button>
-    </span>
-    <span v-else>
+    </div>
+    <div v-else>
       {{ comparisonOptions[currentComparison] }}&nbsp;
       {{ currentValue }}
-    </span>
-  </span>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">

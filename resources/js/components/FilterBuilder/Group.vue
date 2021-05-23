@@ -59,7 +59,7 @@ let highestGroupId = 0;
 export default defineComponent({
   components: { Condition },
   props: {
-    id: [Number, String],
+    id: String,
     conditions: Array,
     fields: Array,
     groupType: String,
@@ -92,7 +92,8 @@ export default defineComponent({
         match_field: '',
       } as FilterCondition);
     },
-    groupChanged(index: number, changes: FilterGroup) {
+    groupChanged(modifiedId: string, changes: FilterGroup) {
+      const index = this.items.findIndex((item) => item.id === modifiedId);
       if (!isFilterGroup(this.items[index])) {
         throw new Error('groupChanged called on non-group item');
       }
@@ -105,7 +106,8 @@ export default defineComponent({
 
       this.emitChanges();
     },
-    conditionChanged(index: number, changes: ConditionOptions) {
+    conditionChanged(modifiedId: string, changes: ConditionOptions) {
+      const index = this.items.findIndex((item) => item.id === modifiedId);
       if (!isFilterCondition(this.items[index])) {
         throw new Error('conditionChanged called on non-condition item');
       }

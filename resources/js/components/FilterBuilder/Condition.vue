@@ -1,8 +1,9 @@
 <template>
-  <div class="filter-match">
-    <span v-if="editing">
-      <select v-model="options.field">
-        <option value="">Select field</option>
+  <div class="filter-condition">
+    <div v-if="editing" class="condition-input">
+      <label :for="`field-${this.id}`">Field</label>
+      <select v-model="options.field" :id="`field-${this.id}`">
+        <option value=""></option>
         <option
           v-for="field in availableFields"
           :value="field.code"
@@ -11,8 +12,8 @@
           {{ field.name }}
         </option>
       </select>
-    </span>
-    <span v-else>{{ fieldName }}&nbsp;</span>
+    </div>
+    <div v-else>{{ fieldName }}&nbsp;</div>
 
     <component
       v-if="!!fieldTypeComponent"
@@ -42,7 +43,7 @@ import BooleanCondition from './Condition/BooleanCondition.vue';
 export default defineComponent({
   components: { BooleanCondition },
   props: {
-    id: [Number, String],
+    id: String,
     startEditing: Boolean,
     availableFields: Array,
     field: String,
@@ -119,3 +120,10 @@ export default defineComponent({
   },
 });
 </script>
+
+<style lang="scss">
+.filter-condition {
+  display: flex;
+  flex-direction: row;
+}
+</style>

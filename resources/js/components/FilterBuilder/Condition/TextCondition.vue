@@ -1,7 +1,13 @@
 <template>
   <span class="match-option-text">
     <span v-if="editing">
-      <select v-model="currentComparison" ref="comparison" required>
+      <label :for="`comparison-${this.id}`">Comparison</label>
+      <select
+        :id="`comparison-${this.id}`"
+        v-model="currentComparison"
+        ref="comparison"
+        required
+      >
         <option
           v-for="(label, value) in comparisonOptions"
           :value="value"
@@ -10,7 +16,16 @@
           {{ label }}
         </option>
       </select>
-      <input type="text" v-model="currentValue" ref="value" required />
+
+      <label :for="`value-${this.id}`">Text</label>
+      <input
+        :id="`value-${this.id}`"
+        type="text"
+        v-model="currentValue"
+        ref="value"
+        required
+      />
+
       <button @click.prevent="validateAndSave">Save</button>
     </span>
     <span v-else>
