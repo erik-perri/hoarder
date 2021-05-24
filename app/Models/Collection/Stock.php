@@ -60,6 +60,16 @@ class Stock extends Model
         'tags' => 'array',
     ];
 
+    /**
+     * The relations to eager load on every query.
+     *
+     * @var array
+     */
+    protected $with = [
+        'item',
+        'item.category',
+    ];
+
     public function item(): BelongsTo
     {
         return $this->belongsTo(Item::class);
