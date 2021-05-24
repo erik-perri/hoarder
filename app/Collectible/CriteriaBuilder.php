@@ -1,12 +1,14 @@
 <?php
 
-namespace App\Criteria;
+namespace App\Collectible;
 
 use Illuminate\Database\Query\Builder;
 
 // TODO Rename this to better describe what it does
-// TODO Refactor this to use an injected list of matcher instead of the unmanageable switch
-class CollectibleCriteriaBuilder
+// TODO Refactor this to use an injected list of matchers instead of the unmanageable switch
+//      Injected list item needs to contain key builder (field_values->$key) so fields outside of JSON can be applied in
+//      the same criteria as fields inside (item.name = $name && item.field_values->artist = $artist).
+class CriteriaBuilder
 {
     private array $allowedFields;
 

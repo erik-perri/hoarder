@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\Collectible;
 
-use App\Criteria\CollectibleCriteriaBuilder;
+use App\Collectible\ItemSearcher;
 use App\Http\Controllers\Controller;
 use App\Models\Collectible;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Collection;
 
 class SearchController extends Controller
 {
@@ -30,8 +29,8 @@ class SearchController extends Controller
         $categoryFilter = $this->getFilterFromRequest($request, 'categoryFilter');
         $itemFilter = $this->getFilterFromRequest($request, 'itemFilter');
 
-        $builder = Collectible\Item::getQuery()->where('collectible_id', '=', $collectible->id);
-        $items = $this->applyFilterToBuilder($builder, $itemFilter, $itemFields, $categoryFilter, $categoryFields);
+        $searcher = new ItemSearcher();
+        $items = $searcher->search($collectible, $categoryFilter, $itemFilter);
 
         return view('collectible.search', [
             'collectible' => $collectible,
@@ -73,47 +72,6 @@ class SearchController extends Controller
         }
 
         return json_decode($filterInput, true, 32, JSON_THROW_ON_ERROR);
-    }
-
-    /**
-     * @param Builder $builder
-     * @param array|null $itemFilter
-     * @param Collection $itemFields
-     * @param array|null $categoryFilter
-     * @param Collection $categoryFields
-     * @return Builder|null
-     */
-    private function applyFilterToBuilder(
-        Builder $builder,
-        ?array $itemFilter,
-        Collection $itemFields,
-        ?array $categoryFilter,
-        Collection $categoryFields
-    ): ?Builder {
-        if (empty($itemFilter) && empty($categoryFilter)) {
-            return null;
-        }
-
-        $criteria = new CollectibleCriteriaBuilder($itemFields->pluck('code')->toArray());
-
-        if (! empty($categoryFilter)) {
-            $builder->whereIn('category_id', static function (Builder $builder) use ($categoryFilter, $categoryFields) {
-                $categoryCriteria = new CollectibleCriteriaBuilder($categoryFields->pluck('code')->toArray());
-                $categoryCriteria->apply(
-                    $builder->select('id')->from('collectible_categories'),
-                    false,
-                    $categoryFilter
-                );
-            });
-        }
-
-        if (! empty($itemFilter)) {
-            $criteria->apply($builder, false, $itemFilter);
-        }
-
-        $builder->orderBy('name');
-
-        return $builder;
     }
 
     /**

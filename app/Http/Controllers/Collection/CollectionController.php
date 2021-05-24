@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Collection;
 
+use App\Collectible\ItemSearcher;
+use App\Collectible\StockSearcher;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Collection\CollectionCreateRequest;
 use App\Http\Requests\Collection\CollectionEditRequest;
@@ -90,8 +92,16 @@ class CollectionController extends Controller
      */
     public function show(Collection $collection): View
     {
+        $goals = Collection\Goal::whereCollectionId($collection->id)->get();
+        $progress = [];
+        if (count($goals)) {
+            $progress = $this->getGoalsProgress($goals);
+        }
+
         return view('collection.show', [
             'collection' => $collection,
+            'goals' => $goals,
+            'progress' => $progress,
         ]);
     }
 
@@ -159,5 +169,42 @@ class CollectionController extends Controller
             $otherCollection->is_default = false;
             $otherCollection->save();
         }
+    }
+
+    /**
+     * @param Collection\Goal[]|\Illuminate\Database\Eloquent\Collection $goals
+     * @return array[]
+     */
+    private function getGoalsProgress(\Illuminate\Database\Eloquent\Collection $goals): array
+    {
+        $progress = [];
+        foreach ($goals as $goal) {
+            $itemSearcher = new ItemSearcher();
+            $items = $itemSearcher->search(
+                $goal->collection->collectible,
+                $goal->category_criteria,
+                $goal->item_criteria
+            );
+
+            $stockSearcher = new StockSearcher();
+            $stock = $stockSearcher->search(
+                $goal->collection,
+                $goal->category_criteria,
+                $goal->item_criteria,
+                $goal->stock_criteria
+            );
+
+            $total = $items ? $items->count('id') : 0;
+            $stocked = $stock ? $stock->distinct()->count('item_id') : 0;
+            $percent = ($total && $stocked ? round(($stocked / $total) * 100) : 0);
+
+            $progress[$goal->id] = [
+                'total' => $total,
+                'stocked' => $stocked,
+                'percent' => $percent,
+            ];
+        }
+
+        return $progress;
     }
 }

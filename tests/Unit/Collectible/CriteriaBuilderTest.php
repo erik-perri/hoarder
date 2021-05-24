@@ -1,19 +1,19 @@
 <?php
 
-namespace Tests\Unit\Criteria;
+namespace Tests\Unit\Collectible;
 
-use App\Criteria\CollectibleCriteriaBuilder;
+use App\Collectible\CriteriaBuilder;
 use Illuminate\Database\Query\Builder;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 // TODO Figure out a better way to test this class, this seems awkward and will not scale well as we add more match
 //      types.
-class CollectibleCriteriaBuilderTest extends TestCase
+class CriteriaBuilderTest extends TestCase
 {
     public function testNormal(): void
     {
-        $builder = new CollectibleCriteriaBuilder(['artist', 'types']);
+        $builder = new CriteriaBuilder(['artist', 'types']);
 
         /** @var MockObject|Builder $mock */
         $mock = $this->createMock(Builder::class);
@@ -30,7 +30,7 @@ class CollectibleCriteriaBuilderTest extends TestCase
 
     public function testGroup(): void
     {
-        $builder = new CollectibleCriteriaBuilder(['artist', 'types']);
+        $builder = new CriteriaBuilder(['artist', 'types']);
 
         /** @var MockObject|Builder $subMock */
         $subMock = $this->createMock(Builder::class);
@@ -65,7 +65,7 @@ class CollectibleCriteriaBuilderTest extends TestCase
 
     public function testInvalidField(): void
     {
-        $builder = new CollectibleCriteriaBuilder(['artist', 'types']);
+        $builder = new CriteriaBuilder(['artist', 'types']);
 
         /** @var MockObject|Builder $mock */
         $mock = $this->createMock(Builder::class);
