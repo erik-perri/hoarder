@@ -31,6 +31,7 @@ class DatabaseSeeder extends Seeder
             MagicTcg\CollectibleCategorySeeder::class,
             MagicTcg\CollectibleItemSeeder::class,
             MagicTcg\CollectionStockSeeder::class,
+            MagicTcg\CollectionGoalSeeder::class,
         ]);
     }
 }

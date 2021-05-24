@@ -25,6 +25,17 @@ class CollectionStockSeeder extends Seeder
             ['Orim, Samite Healer', 'Tempest', []],
             ['Suleiman\'s Legacy', 'Visions', ['tags' => ['artist proof']]],
             ['Sustaining Spirit', 'Alliances', []],
+            ['Sliver Queen', 'Stronghold', []],
+            ['Sliver Queen', 'Stronghold', ['tags' => ['signed']]],
+            ['Mox Diamond', 'Stronghold', []],
+            ['Volrath\'s Stronghold', 'Stronghold', []],
+            ['Dream Halls', 'Stronghold', []],
+            ['Grave Pact', 'Stronghold', []],
+            ['Ensnaring Bridge', 'Stronghold', []],
+            ['Hermit Druid', 'Stronghold', []],
+            ['Burgeoning', 'Stronghold', []],
+            ['Volrath\'s Shapeshifter', 'Stronghold', []],
+            ['Horn of Greed', 'Stronghold', []],
         ];
 
         foreach ($stockItems as [$name, $category, $factoryData]) {
