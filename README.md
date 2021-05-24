@@ -1,6 +1,7 @@
 # Hoarder
 
-Not much here at the moment, just doing some testing in Laravel.
+There is not much here at the moment, I am just doing some testing to get more familiar with Laravel. The project is an
+attempt at building a collection manager for various collectibles.
 
 Warning: The database takes a long time to seed and makes a lot of external API requests.
 
@@ -18,7 +19,8 @@ Warning: The database takes a long time to seed and makes a lot of external API 
     any defined collectibles or items (and the UI to create them is not complete). Cancelling the seed will leave you
     with incomplete collectible data, but will not cause any issues if you get tired of waiting for the seed.
 
-8. Browse the dev site at [http://localhost/](http://localhost/)
+8. Browse the dev site at [http://localhost/](http://localhost/). If the database was seeded you can login with
+   `user@example.com`/`password`.
 
 ### Docker, Windows, and WSL2
 
