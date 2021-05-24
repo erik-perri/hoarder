@@ -30,7 +30,8 @@ class SearchController extends Controller
         $categoryFilter = $this->getFilterFromRequest($request, 'categoryFilter');
         $itemFilter = $this->getFilterFromRequest($request, 'itemFilter');
 
-        $items = $this->getItemsFromFilter($itemFilter, $itemFields, $categoryFilter, $categoryFields);
+        $builder = Collectible\Item::getQuery()->where('collectible_id', '=', $collectible->id);
+        $items = $this->applyFilterToBuilder($builder, $itemFilter, $itemFields, $categoryFilter, $categoryFields);
 
         return view('collectible.search', [
             'collectible' => $collectible,
@@ -75,13 +76,15 @@ class SearchController extends Controller
     }
 
     /**
+     * @param Builder $builder
      * @param array|null $itemFilter
      * @param Collection $itemFields
      * @param array|null $categoryFilter
      * @param Collection $categoryFields
      * @return Builder|null
      */
-    private function getItemsFromFilter(
+    private function applyFilterToBuilder(
+        Builder $builder,
         ?array $itemFilter,
         Collection $itemFields,
         ?array $categoryFilter,
@@ -92,7 +95,6 @@ class SearchController extends Controller
         }
 
         $criteria = new CollectibleCriteriaBuilder($itemFields->pluck('code')->toArray());
-        $builder = Collectible\Item::getQuery();
 
         if (! empty($categoryFilter)) {
             $builder->whereIn('category_id', static function (Builder $builder) use ($categoryFilter, $categoryFields) {
