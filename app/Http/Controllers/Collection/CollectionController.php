@@ -161,6 +161,9 @@ class CollectionController extends Controller
                          ->with('status', __('collection.messages.delete_success'));
     }
 
+    /**
+     * @param Collection $collection
+     */
     private function removeOtherDefaults(Collection $collection): void
     {
         foreach (Collection::where('id', '!=', $collection->id)

@@ -62,6 +62,18 @@ class Field extends Model
         'input_options' => 'array',
     ];
 
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'id',
+        'collectible_id',
+        'created_at',
+        'updated_at',
+    ];
+
     public function collectible(): BelongsTo
     {
         return $this->belongsTo(Collectible::class);

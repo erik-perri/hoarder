@@ -73,4 +73,14 @@ class Collectible extends Model
     {
         return $this->hasManyThrough(Collectible\Item::class, Collectible\Category::class);
     }
+
+    public function jsonSerializeFields(bool $group = true): array
+    {
+        $fields = $this->fields->map(fn ($field) => $field->jsonSerialize());
+        if ($group) {
+            return $fields->groupBy('entity_type')->toArray();
+        }
+
+        return $fields->toArray();
+    }
 }

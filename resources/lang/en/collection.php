@@ -26,4 +26,24 @@ return [
     'messages.delete_failed' => 'Failed to delete collection.',
     'messages.delete_success' => 'Collection deleted.',
 
+    'goal.title.create' => 'Create Goal',
+    'goal.title.edit' => 'Edit Goal',
+
+    'goal.label.name' => 'Goal name',
+
+    'goal.button.save' => 'Save',
+    'goal.button.delete' => 'Delete this goal',
+
+    'goal.messages.name_required' => 'Name is required.',
+    'goal.messages.name_unique' => 'A goal with this name already exists.',
+    'goal.messages.category_criteria_json' => 'Invalid category filter.',
+    'goal.messages.item_criteria_json' => 'Invalid item filter.',
+
+    'goal.messages.create_failed' => 'Failed to create goal.',
+    'goal.messages.create_success' => 'Goal created.',
+    'goal.messages.save_failed' => 'Failed to save goal.',
+    'goal.messages.save_success' => 'Goal saved.',
+    'goal.messages.delete_failed' => 'Failed to delete goal.',
+    'goal.messages.delete_success' => 'Goal deleted.',
+
 ];

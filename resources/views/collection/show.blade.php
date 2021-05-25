@@ -16,6 +16,7 @@
 
     <h2>Goals</h2>
     <div>
+        <a href="{{ route('collections.goals.create', ['collection' => $collection]) }}">Create Goal</a>
         @if ($goals)
             <ul>
                 @foreach($goals as $goal)
@@ -23,6 +24,7 @@
                         {{ $goal->name }}: {{ $progress[$goal->id]['percent'] ?? 0 }}%
                                          ({{ $progress[$goal->id]['stocked'] ?? 0 }}
                                           / {{ $progress[$goal->id]['total'] ?? 0 }})
+                        <a href="{{ route('collections.goals.edit', ['collection' => $collection, 'goal' => $goal]) }}">Edit</a>
                     </li>
                 @endforeach
             </ul>

@@ -6,7 +6,6 @@ use App\Collectible\ItemSearcher;
 use App\Http\Controllers\Controller;
 use App\Models\Collectible;
 use Illuminate\Contracts\View\View;
-use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -24,7 +23,7 @@ class SearchController extends Controller
             $this->setupTestRequest($request);
         }
 
-        [$itemFields, $categoryFields] = $this->getCollectibleFields($collectible);
+        ['item' => $itemFields, 'category' => $categoryFields] = $collectible->jsonSerializeFields();
 
         $categoryFilter = $this->getFilterFromRequest($request, 'categoryFilter');
         $itemFilter = $this->getFilterFromRequest($request, 'itemFilter');
@@ -34,28 +33,12 @@ class SearchController extends Controller
 
         return view('collectible.search', [
             'collectible' => $collectible,
-            'categoryFields' => $categoryFields->values()->all(),
+            'categoryFields' => $categoryFields,
             'categoryFilter' => $categoryFilter,
-            'itemFields' => $itemFields->values()->all(),
+            'itemFields' => $itemFields,
             'itemFilter' => $itemFilter,
             'results' => $items ? $items->paginate(30) : null,
         ]);
-    }
-
-    private function getCollectibleFields(Collectible $collectible): array
-    {
-        $fields = $collectible->fields->map(fn ($field) => [
-            'uuid' => $field->uuid,
-            'name' => $field->name,
-            'code' => $field->code,
-            'input_type' => $field->input_type,
-            'entity_type' => $field->entity_type,
-        ])->groupBy('entity_type');
-
-        return [
-            $fields['item'],
-            $fields['category'],
-        ];
     }
 
     /**

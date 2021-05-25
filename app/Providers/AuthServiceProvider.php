@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Collection;
 use App\Policies\CollectionPolicy;
+use App\Policies\GoalPolicy;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -17,6 +18,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         Collection::class => CollectionPolicy::class,
+        Collection\Goal::class => GoalPolicy::class,
     ];
 
     /**
