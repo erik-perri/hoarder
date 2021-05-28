@@ -1,11 +1,14 @@
 <?php
 
-namespace App\Collectible;
+namespace App\Collectible\Search;
 
+use App\Collectible\FieldFactory;
+use App\Criteria\CriteriaApplier;
 use App\Models\Collectible;
 use Illuminate\Database\Query\Builder;
 
-// TODO Refactor so item and category filter are not in search so this could be passed to StockSearcher and reused?
+// TODO Refactor so item and category filter are not in search method so this could be passed to StockSearcher and
+//      reused?
 class ItemSearcher
 {
     /**
@@ -25,24 +28,11 @@ class ItemSearcher
             $builder = Collectible\Item::getQuery()->where('collectible_id', '=', $collectible->id);
         }
 
-        [$itemFields, $categoryFields] = $this->getAvailableFields($collectible);
+        $factory = new FieldFactory();
+        $itemFields = $factory->createItemFields($collectible);
+        $categoryFields = $factory->createCategoryFields($collectible);
 
         return $this->applyCriteriaToBuilder($builder, $categoryCriteria, $categoryFields, $itemCriteria, $itemFields);
-    }
-
-    /**
-     * @param Collectible $collectible
-     * @return array
-     */
-    private function getAvailableFields(Collectible $collectible): array
-    {
-        $fields = $collectible->fields->groupBy('entity_type');
-
-        /* @noinspection StaticInvocationViaThisInspection */
-        return [
-            $fields['item']->pluck('code')->toArray(),
-            $fields['category']->pluck('code')->toArray(),
-        ];
     }
 
     /**
@@ -53,7 +43,7 @@ class ItemSearcher
      * @param array $itemFields
      * @return Builder|null
      */
-    private function applyCriteriaToBuilder(
+    public function applyCriteriaToBuilder(
         Builder $builder,
         array $categoryCriteria,
         array $categoryFields,
@@ -61,24 +51,24 @@ class ItemSearcher
         array $itemFields
     ): ?Builder {
         if (empty($itemCriteria) && empty($categoryCriteria)) {
-            return null;
+            throw new \InvalidArgumentException('No criteria supplied');
         }
 
-        $itemBuilder = new CriteriaBuilder($itemFields);
-
         if (! empty($categoryCriteria)) {
-            $builder->whereIn('category_id', static function (Builder $builder) use ($categoryFilter, $categoryFields) {
-                $categoryBuilder = new CriteriaBuilder($categoryFields);
-                $categoryBuilder->apply(
-                    $builder->select('id')->from('collectible_categories'),
-                    false,
-                    $categoryCriteria
-                );
-            });
+            $builder->whereIn('category_id',
+                static function (Builder $builder) use ($categoryCriteria, $categoryFields) {
+                    $applier = new CriteriaApplier($categoryFields);
+                    $applier->apply(
+                        $builder->select('id')->from('collectible_categories'),
+                        false,
+                        $categoryCriteria
+                    );
+                });
         }
 
         if (! empty($itemCriteria)) {
-            $itemBuilder->apply($builder, false, $itemCriteria);
+            $applier = new CriteriaApplier($itemFields);
+            $applier->apply($builder, false, $itemCriteria);
         }
 
         return $builder;

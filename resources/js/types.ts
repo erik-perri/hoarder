@@ -1,7 +1,6 @@
 export interface CollectibleField {
-  uuid: string;
-  name: string;
-  code: string;
+  display_name: string;
+  identifier: string;
   input_type:
     | 'text'
     | 'date'

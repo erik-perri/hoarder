@@ -6,10 +6,10 @@
         <option value=""></option>
         <option
           v-for="field in availableFields"
-          :value="field.code"
-          :key="field.code"
+          :value="field.identifier"
+          :key="field.identifier"
         >
-          {{ field.name }}
+          {{ field.display_name }}
         </option>
       </select>
     </div>
@@ -93,7 +93,7 @@ export default defineComponent({
     },
     getFieldInfo(): CollectibleField | undefined {
       return (this.availableFields as CollectibleField[]).find(
-        (field) => field.code === this.options.field
+        (field) => field.identifier === this.options.field
       );
     },
   },
@@ -115,7 +115,7 @@ export default defineComponent({
     fieldName(): string | undefined {
       const info = this.getFieldInfo();
 
-      return info?.name;
+      return info?.display_name;
     },
   },
 });

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Collectible;
+namespace App\Collectible\Search;
 
 use App\Models\Collection;
 use App\Models\Collection\Stock;

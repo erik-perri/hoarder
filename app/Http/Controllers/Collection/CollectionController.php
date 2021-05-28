@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Collection;
 
-use App\Collectible\ItemSearcher;
-use App\Collectible\StockSearcher;
+use App\Collectible\Search\ItemSearcher;
+use App\Collectible\Search\StockSearcher;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Collection\CollectionCreateRequest;
 use App\Http\Requests\Collection\CollectionEditRequest;

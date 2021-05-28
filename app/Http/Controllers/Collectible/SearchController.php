@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers\Collectible;
 
-use App\Collectible\ItemSearcher;
+use App\Collectible\FieldFactory;
+use App\Collectible\Search\ItemSearcher;
 use App\Http\Controllers\Controller;
 use App\Models\Collectible;
 use Illuminate\Contracts\View\View;
@@ -14,22 +15,35 @@ class SearchController extends Controller
     /**
      * @param Collectible $collectible
      * @param Request $request
+     * @param FieldFactory $fieldFactory
      * @return Response|View
      * @throws \JsonException
      */
-    public function search(Collectible $collectible, Request $request): View
+    public function search(Collectible $collectible, Request $request, FieldFactory $fieldFactory): View
     {
         if ($collectible->id === 1) {
             $this->setupTestRequest($request);
         }
 
-        ['item' => $itemFields, 'category' => $categoryFields] = $collectible->jsonSerializeFields();
-
+        $categoryFields = $fieldFactory->createCategoryFields($collectible);
         $categoryCriteria = $this->getCriteriaFromRequest($request, 'category_criteria');
+
+        $itemFields = $fieldFactory->createItemFields($collectible);
         $itemCriteria = $this->getCriteriaFromRequest($request, 'item_criteria');
 
         $searcher = new ItemSearcher();
-        $items = $searcher->search($collectible, $categoryCriteria, $itemCriteria);
+
+        $builder = Collectible\Item::getQuery()->where('collectible_id', '=', $collectible->id);
+
+        if (! empty($categoryCriteria) || ! empty($itemCriteria)) {
+            $searcher->applyCriteriaToBuilder(
+                $builder,
+                $categoryCriteria,
+                $categoryFields,
+                $itemCriteria,
+                $itemFields
+            );
+        }
 
         return view('collectible.search', [
             'collectible' => $collectible,
@@ -37,7 +51,7 @@ class SearchController extends Controller
             'categoryCriteria' => $categoryCriteria,
             'itemFields' => $itemFields,
             'itemCriteria' => $itemCriteria,
-            'results' => $items ? $items->paginate(30) : null,
+            'results' => $builder->paginate(30),
         ]);
     }
 
