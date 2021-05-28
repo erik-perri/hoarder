@@ -1,5 +1,5 @@
 <template>
-  <div class="filter-builder">
+  <div class="criteria-builder">
     <Group
       :conditions="group.group_conditions"
       :fields="this.fields"
@@ -7,7 +7,7 @@
       group-type="and"
       @group-changed="groupChanged"
     />
-    <input type="hidden" :value="encodeForUrl(filter)" :name="inputName" />
+    <input type="hidden" :value="encodeForUrl(criteria)" :name="inputName" />
   </div>
 </template>
 
@@ -16,10 +16,10 @@ import { defineComponent } from 'vue';
 import { v4 as uuid } from 'uuid';
 import Group from './Group.vue';
 import {
-  FilterConditions,
-  FilterGroup,
-  isFilterCondition,
-  isFilterGroup,
+  CriteriaConditions,
+  CriteriaGroup,
+  isCriteriaCondition,
+  isCriteriaGroup,
 } from './types';
 
 export default defineComponent({
@@ -41,23 +41,23 @@ export default defineComponent({
   data() {
     return {
       group: this.addIdsToGroup({
-        group_conditions: this.conditions as FilterConditions,
+        group_conditions: this.conditions as CriteriaConditions,
       }),
-      filter: this.conditions,
+      criteria: this.conditions,
     };
   },
   methods: {
-    addIdsToGroup(group: FilterGroup): FilterGroup {
+    addIdsToGroup(group: CriteriaGroup): CriteriaGroup {
       const result = {
         id: group.id || uuid(),
         group_type: group.group_type,
-        group_conditions: [] as FilterConditions,
-      } as FilterGroup;
+        group_conditions: [] as CriteriaConditions,
+      } as CriteriaGroup;
 
       for (const condition of group.group_conditions) {
-        if (isFilterGroup(condition)) {
+        if (isCriteriaGroup(condition)) {
           result.group_conditions.push(this.addIdsToGroup(condition));
-        } else if (isFilterCondition(condition)) {
+        } else if (isCriteriaCondition(condition)) {
           result.group_conditions.push({
             id: condition.id || uuid(),
             ...condition,
@@ -67,16 +67,16 @@ export default defineComponent({
 
       return result;
     },
-    removeIdsFromGroup(group: FilterGroup): FilterGroup {
+    removeIdsFromGroup(group: CriteriaGroup): CriteriaGroup {
       const result = {
         group_type: group.group_type,
-        group_conditions: [] as FilterConditions,
-      } as FilterGroup;
+        group_conditions: [] as CriteriaConditions,
+      } as CriteriaGroup;
 
       for (const condition of group.group_conditions) {
-        if (isFilterGroup(condition)) {
+        if (isCriteriaGroup(condition)) {
           result.group_conditions.push(this.removeIdsFromGroup(condition));
-        } else if (isFilterCondition(condition)) {
+        } else if (isCriteriaCondition(condition)) {
           result.group_conditions.push({
             ...condition,
             id: undefined,
@@ -86,21 +86,21 @@ export default defineComponent({
 
       return result;
     },
-    encodeForUrl(filter: FilterConditions) {
-      return JSON.stringify(filter);
+    encodeForUrl(criteria: CriteriaConditions) {
+      return JSON.stringify(criteria);
     },
-    groupChanged(id: number, changed: FilterGroup) {
+    groupChanged(id: number, changed: CriteriaGroup) {
       const groupWithoutIds = this.removeIdsFromGroup(changed);
       // The group passes up a group structure but we only care about the
       // conditions at this level.
-      this.filter = groupWithoutIds.group_conditions;
+      this.criteria = groupWithoutIds.group_conditions;
     },
   },
 });
 </script>
 
 <style lang="scss">
-.filter-builder {
+.criteria-builder {
   margin-bottom: 15px;
 }
 </style>

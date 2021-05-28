@@ -11,22 +11,22 @@
     <form method="get" action="{{ route('collectibles.search', ['collectible' => $collectible]) }}">
         @csrf
 
-        <strong>Category filter</strong>
-        <filter-builder input-name="categoryFilter"
-                        :conditions="{{ json_encode($categoryFilter, JSON_THROW_ON_ERROR) }}"
-                        :fields="{{ json_encode($categoryFields, JSON_THROW_ON_ERROR) }}"></filter-builder>
+        <strong>Category criteria</strong>
+        <criteria-builder input-name="category_criteria"
+                          :conditions="{{ json_encode($categoryCriteria, JSON_THROW_ON_ERROR) }}"
+                          :fields="{{ json_encode($categoryFields, JSON_THROW_ON_ERROR) }}"></criteria-builder>
 
-        <strong>Item filter</strong>
-        <filter-builder input-name="itemFilter"
-                        :conditions="{{ json_encode($itemFilter, JSON_THROW_ON_ERROR) }}"
-                        :fields="{{ json_encode($itemFields, JSON_THROW_ON_ERROR) }}"></filter-builder>
+        <strong>Item criteria</strong>
+        <criteria-builder input-name="item_criteria"
+                          :conditions="{{ json_encode($itemCriteria, JSON_THROW_ON_ERROR) }}"
+                          :fields="{{ json_encode($itemFields, JSON_THROW_ON_ERROR) }}"></criteria-builder>
         <button type="submit">Search</button>
     </form>
 
     @if ($results && count($results))
         <?php $appends = [
-            'categoryFilter' => request()->get('categoryFilter'),
-            'itemFilter' => request()->get('itemFilter'),
+            'category_criteria' => request()->get('category_criteria'),
+            'item_criteria' => request()->get('item_criteria'),
         ]; ?>
         <x-pagination :appends="$appends" :items="$results" />
 

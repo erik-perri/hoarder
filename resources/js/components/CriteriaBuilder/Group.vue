@@ -1,5 +1,5 @@
 <template>
-  <div class="filter-group">
+  <div class="criteria-group">
     <div v-for="(item, index) in items" :key="item.id">
       <div v-if="index > 0" class="group-type">{{ groupType }}</div>
 
@@ -45,12 +45,12 @@
 import { defineComponent } from 'vue';
 import { v4 as uuid } from 'uuid';
 import {
-  FilterCondition,
-  FilterGroup,
-  FilterConditions,
-  isFilterCondition,
+  CriteriaCondition,
+  CriteriaGroup,
+  CriteriaConditions,
+  isCriteriaCondition,
   ConditionOptions,
-  isFilterGroup,
+  isCriteriaGroup,
 } from './types';
 import Condition from './Condition.vue';
 
@@ -72,7 +72,7 @@ export default defineComponent({
   data() {
     return {
       instanceId: highestGroupId++,
-      items: this.conditions as FilterConditions,
+      items: this.conditions as CriteriaConditions,
     };
   },
   methods: {
@@ -84,17 +84,17 @@ export default defineComponent({
         id: uuid(),
         group_type: type,
         group_conditions: [],
-      } as FilterGroup);
+      } as CriteriaGroup);
     },
     addCondition() {
       this.items.push({
         id: uuid(),
         match_field: '',
-      } as FilterCondition);
+      } as CriteriaCondition);
     },
-    groupChanged(modifiedId: string, changes: FilterGroup) {
+    groupChanged(modifiedId: string, changes: CriteriaGroup) {
       const index = this.items.findIndex((item) => item.id === modifiedId);
-      if (!isFilterGroup(this.items[index])) {
+      if (!isCriteriaGroup(this.items[index])) {
         throw new Error('groupChanged called on non-group item');
       }
 
@@ -102,13 +102,13 @@ export default defineComponent({
         ...this.items[index],
         group_type: changes.group_type,
         group_conditions: changes.group_conditions,
-      } as FilterGroup;
+      } as CriteriaGroup;
 
       this.emitChanges();
     },
     conditionChanged(modifiedId: string, changes: ConditionOptions) {
       const index = this.items.findIndex((item) => item.id === modifiedId);
-      if (!isFilterCondition(this.items[index])) {
+      if (!isCriteriaCondition(this.items[index])) {
         throw new Error('conditionChanged called on non-condition item');
       }
 
@@ -117,7 +117,7 @@ export default defineComponent({
         match_field: changes.field,
         match_comparison: changes.comparison,
         match_value: changes.value,
-      } as FilterCondition;
+      } as CriteriaCondition;
 
       this.emitChanges();
     },
@@ -140,7 +140,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-.filter-group {
+.criteria-group {
   border-left: 1px solid #ccc;
   padding: 15px;
 

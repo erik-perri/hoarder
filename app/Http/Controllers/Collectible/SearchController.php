@@ -25,18 +25,18 @@ class SearchController extends Controller
 
         ['item' => $itemFields, 'category' => $categoryFields] = $collectible->jsonSerializeFields();
 
-        $categoryFilter = $this->getFilterFromRequest($request, 'categoryFilter');
-        $itemFilter = $this->getFilterFromRequest($request, 'itemFilter');
+        $categoryCriteria = $this->getCriteriaFromRequest($request, 'category_criteria');
+        $itemCriteria = $this->getCriteriaFromRequest($request, 'item_criteria');
 
         $searcher = new ItemSearcher();
-        $items = $searcher->search($collectible, $categoryFilter, $itemFilter);
+        $items = $searcher->search($collectible, $categoryCriteria, $itemCriteria);
 
         return view('collectible.search', [
             'collectible' => $collectible,
             'categoryFields' => $categoryFields,
-            'categoryFilter' => $categoryFilter,
+            'categoryCriteria' => $categoryCriteria,
             'itemFields' => $itemFields,
-            'itemFilter' => $itemFilter,
+            'itemCriteria' => $itemCriteria,
             'results' => $items ? $items->paginate(30) : null,
         ]);
     }
@@ -47,14 +47,14 @@ class SearchController extends Controller
      * @return array
      * @throws \JsonException
      */
-    private function getFilterFromRequest(Request $request, string $requestKey): array
+    private function getCriteriaFromRequest(Request $request, string $requestKey): array
     {
-        $filterInput = trim($request->get($requestKey));
-        if (! $filterInput) {
+        $input = trim($request->get($requestKey));
+        if (! $input) {
             return [];
         }
 
-        return json_decode($filterInput, true, 32, JSON_THROW_ON_ERROR);
+        return json_decode($input, true, 32, JSON_THROW_ON_ERROR);
     }
 
     /**
@@ -64,8 +64,8 @@ class SearchController extends Controller
      */
     private function setupTestRequest(Request $request): void
     {
-        if (! $request->has('itemFilter')) {
-            $request['itemFilter'] = json_encode([
+        if (! $request->has('item_criteria')) {
+            $request['item_criteria'] = json_encode([
                 [
                     'group_type' => 'or',
                     'group_conditions' => [
@@ -88,7 +88,7 @@ class SearchController extends Controller
                 ],
             ], JSON_THROW_ON_ERROR);
 
-            $request['categoryFilter'] = json_encode([
+            $request['category_criteria'] = json_encode([
                 [
                     'match_field' => 'digital',
                     'match_comparison' => 'boolean_is',

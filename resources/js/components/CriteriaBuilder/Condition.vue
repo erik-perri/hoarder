@@ -1,5 +1,5 @@
 <template>
-  <div class="filter-condition">
+  <div class="criteria-condition">
     <div v-if="editing" class="condition-input">
       <label :for="`field-${this.id}`">Field</label>
       <select v-model="options.field" :id="`field-${this.id}`">
@@ -122,7 +122,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-.filter-condition {
+.criteria-condition {
   display: flex;
   flex-direction: row;
 }

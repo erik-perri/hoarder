@@ -36,8 +36,8 @@ return [
 
     'goal.messages.name_required' => 'Name is required.',
     'goal.messages.name_unique' => 'A goal with this name already exists.',
-    'goal.messages.category_criteria_json' => 'Invalid category filter.',
-    'goal.messages.item_criteria_json' => 'Invalid item filter.',
+    'goal.messages.category_criteria_json' => 'Invalid category criteria.',
+    'goal.messages.item_criteria_json' => 'Invalid item criteria.',
 
     'goal.messages.create_failed' => 'Failed to create goal.',
     'goal.messages.create_success' => 'Goal created.',

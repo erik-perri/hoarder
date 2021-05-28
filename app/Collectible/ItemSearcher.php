@@ -10,15 +10,15 @@ class ItemSearcher
 {
     /**
      * @param Collectible $collectible
-     * @param array $categoryFilter
-     * @param array $itemFilter
+     * @param array $categoryCriteria
+     * @param array $itemCriteria
      * @param Builder|null $builder
      * @return Builder|null
      */
     public function search(
         Collectible $collectible,
-        array $categoryFilter,
-        array $itemFilter,
+        array $categoryCriteria,
+        array $itemCriteria,
         Builder $builder = null
     ): ?Builder {
         if ($builder === null) {
@@ -27,7 +27,7 @@ class ItemSearcher
 
         [$itemFields, $categoryFields] = $this->getAvailableFields($collectible);
 
-        return $this->applyFilterToBuilder($builder, $categoryFilter, $categoryFields, $itemFilter, $itemFields);
+        return $this->applyCriteriaToBuilder($builder, $categoryCriteria, $categoryFields, $itemCriteria, $itemFields);
     }
 
     /**
@@ -47,38 +47,38 @@ class ItemSearcher
 
     /**
      * @param Builder $builder
-     * @param array $categoryFilter
+     * @param array $categoryCriteria
      * @param array $categoryFields
-     * @param array $itemFilter
+     * @param array $itemCriteria
      * @param array $itemFields
      * @return Builder|null
      */
-    private function applyFilterToBuilder(
+    private function applyCriteriaToBuilder(
         Builder $builder,
-        array $categoryFilter,
+        array $categoryCriteria,
         array $categoryFields,
-        array $itemFilter,
+        array $itemCriteria,
         array $itemFields
     ): ?Builder {
-        if (empty($itemFilter) && empty($categoryFilter)) {
+        if (empty($itemCriteria) && empty($categoryCriteria)) {
             return null;
         }
 
-        $criteria = new CriteriaBuilder($itemFields);
+        $itemBuilder = new CriteriaBuilder($itemFields);
 
-        if (! empty($categoryFilter)) {
+        if (! empty($categoryCriteria)) {
             $builder->whereIn('category_id', static function (Builder $builder) use ($categoryFilter, $categoryFields) {
-                $categoryCriteria = new CriteriaBuilder($categoryFields);
-                $categoryCriteria->apply(
+                $categoryBuilder = new CriteriaBuilder($categoryFields);
+                $categoryBuilder->apply(
                     $builder->select('id')->from('collectible_categories'),
                     false,
-                    $categoryFilter
+                    $categoryCriteria
                 );
             });
         }
 
-        if (! empty($itemFilter)) {
-            $criteria->apply($builder, false, $itemFilter);
+        if (! empty($itemCriteria)) {
+            $itemBuilder->apply($builder, false, $itemCriteria);
         }
 
         return $builder;

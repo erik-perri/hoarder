@@ -1,9 +1,9 @@
 import './bootstrap';
 import { createApp } from 'vue';
-import { FilterBuilder } from './components/FilterBuilder';
+import { CriteriaBuilder } from './components/CriteriaBuilder';
 
 const app = createApp({});
 
-app.component('filter-builder', FilterBuilder);
+app.component('criteria-builder', CriteriaBuilder);
 
 app.mount('#app');
