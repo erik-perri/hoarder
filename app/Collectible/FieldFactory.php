@@ -2,6 +2,7 @@
 
 namespace App\Collectible;
 
+use App\Collectible\Enum\FieldInputType;
 use App\Criteria\Comparison\Boolean;
 use App\Criteria\Comparison\ComparisonInterface;
 use App\Criteria\Comparison\Date;
@@ -78,17 +79,17 @@ class FieldFactory
     private function createComparisonHandler(Collectible\Field $field): ComparisonInterface
     {
         switch ($field->input_type) {
-            case 'boolean':
+            case FieldInputType::BOOLEAN:
                 return new Boolean();
-            case 'date':
+            case FieldInputType::DATE:
                 return new Date();
-            case 'number':
+            case FieldInputType::NUMBER:
                 return new Number();
-            case 'tags':
+            case FieldInputType::TAGS:
                 return new Tag();
-            case 'text':
-            case 'textarea':
-            case 'url':
+            case FieldInputType::TEXT:
+            case FieldInputType::TEXTAREA:
+            case FieldInputType::URL:
                 return new Text();
             default:
                 throw new \InvalidArgumentException('Invalid input type');

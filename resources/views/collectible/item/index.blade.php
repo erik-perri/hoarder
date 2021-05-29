@@ -27,9 +27,9 @@
                             @if (is_array($item->field_values[$field->code]))
                                 {{ implode(', ', $item->field_values[$field->code]) }}
                             @else
-                                @if ($field->input_type === 'boolean')
+                                @if ($field->input_type === \App\Collectible\Enum\FieldInputType::BOOLEAN)
                                     {{ $item->field_values[$field->code] ? 'Yes' : 'No' }}
-                                @elseif ($field->input_type === 'textarea')
+                                @elseif ($field->input_type === \App\Collectible\Enum\FieldInputType::TEXTAREA)
                                     {!! nl2br(e($item->field_values[$field->code])) !!}
                                 @else
                                     {{ $item->field_values[$field->code] }}
@@ -44,7 +44,7 @@
                                      alt="Item image" />
                             </a>
                         @endif
-                    @elseif ($field->input_type === 'boolean')
+                    @elseif ($field->input_type === \App\Collectible\Enum\FieldInputType::BOOLEAN)
                         unset
                     @endif
                 </td>

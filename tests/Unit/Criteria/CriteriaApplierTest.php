@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Criteria;
 
+use App\Collectible\Enum\FieldInputType;
 use App\Criteria\Comparison\Number;
 use App\Criteria\Comparison\Text;
 use App\Criteria\CriteriaApplier;
@@ -22,7 +23,7 @@ class CriteriaApplierTest extends TestCase
                 'artist',
                 'Artist',
                 'artist',
-                'text',
+                FieldInputType::TEXT,
                 new Text()
             ),
         ]);
@@ -47,7 +48,7 @@ class CriteriaApplierTest extends TestCase
                 'artist',
                 'Artist',
                 'artist',
-                'text',
+                FieldInputType::TEXT,
                 new Text()
             ),
         ]);
@@ -90,7 +91,7 @@ class CriteriaApplierTest extends TestCase
                 'artist',
                 'Artist',
                 'artist',
-                'text',
+                FieldInputType::TEXT,
                 new Text()
             ),
         ]);
@@ -116,7 +117,7 @@ class CriteriaApplierTest extends TestCase
                 'id',
                 'ID',
                 'id',
-                'number',
+                FieldInputType::NUMBER,
                 new Number(),
                 null
             ),
@@ -124,7 +125,7 @@ class CriteriaApplierTest extends TestCase
                 'artist',
                 'Artist',
                 'artist',
-                'text',
+                FieldInputType::TEXT,
                 new Text(),
                 new JsonColumnNameFormatter('field_values')
             ),

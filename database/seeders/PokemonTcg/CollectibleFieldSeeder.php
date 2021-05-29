@@ -2,6 +2,7 @@
 
 namespace Database\Seeders\PokemonTcg;
 
+use App\Collectible\Enum\FieldInputType;
 use App\Models\Collectible;
 use Database\Seeders\CollectibleSeeder;
 use Illuminate\Database\Seeder;
@@ -23,37 +24,37 @@ class CollectibleFieldSeeder extends Seeder
                 [
                     'code' => 'code',
                     'name' => 'Set Code',
-                    'input_type' => 'text',
+                    'input_type' => FieldInputType::TEXT,
                     'is_required' => true,
                 ],
                 [
                     'code' => 'ptcgo_code',
                     'name' => 'Online Set Code',
-                    'input_type' => 'text',
+                    'input_type' => FieldInputType::TEXT,
                     'is_required' => true,
                 ],
                 [
                     'code' => 'released_on',
                     'name' => 'Released On',
-                    'input_type' => 'date',
+                    'input_type' => FieldInputType::DATE,
                     'is_required' => false,
                 ],
                 [
                     'code' => 'series',
                     'name' => 'Series',
-                    'input_type' => 'text',
+                    'input_type' => FieldInputType::TEXT,
                     'is_required' => false,
                 ],
                 [
                     'code' => 'card_count',
                     'name' => 'Card Count',
-                    'input_type' => 'number',
+                    'input_type' => FieldInputType::NUMBER,
                     'is_required' => false,
                 ],
                 [
                     'code' => 'logo_url',
                     'name' => 'Logo URL',
-                    'input_type' => 'url',
+                    'input_type' => FieldInputType::URL,
                     'is_required' => false,
                 ],
             ],
@@ -61,49 +62,49 @@ class CollectibleFieldSeeder extends Seeder
                 [
                     'code' => 'types',
                     'name' => 'Types',
-                    'input_type' => 'tags',
+                    'input_type' => FieldInputType::TAGS,
                     'is_required' => false,
                 ],
                 [
                     'code' => 'supertype',
                     'name' => 'Supertype',
-                    'input_type' => 'text',
+                    'input_type' => FieldInputType::TEXT,
                     'is_required' => false,
                 ],
                 [
                     'code' => 'subtypes',
                     'name' => 'Subtypes',
-                    'input_type' => 'tags',
+                    'input_type' => FieldInputType::TAGS,
                     'is_required' => false,
                 ],
                 [
                     'code' => 'hp',
                     'name' => 'HP',
-                    'input_type' => 'number',
+                    'input_type' => FieldInputType::NUMBER,
                     'is_required' => false,
                 ],
                 [
                     'code' => 'collector_number',
                     'name' => 'Collector Number',
-                    'input_type' => 'text',
+                    'input_type' => FieldInputType::TEXT,
                     'is_required' => false,
                 ],
                 [
                     'code' => 'rarity',
                     'name' => 'Rarity',
-                    'input_type' => 'text',
+                    'input_type' => FieldInputType::TEXT,
                     'is_required' => false,
                 ],
                 [
                     'code' => 'artist',
                     'name' => 'Artist',
-                    'input_type' => 'text',
+                    'input_type' => FieldInputType::TEXT,
                     'is_required' => false,
                 ],
                 [
                     'code' => 'image_url',
                     'name' => 'Image URL',
-                    'input_type' => 'url',
+                    'input_type' => FieldInputType::URL,
                     'is_required' => false,
                 ],
             ],

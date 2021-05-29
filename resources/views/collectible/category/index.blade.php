@@ -23,9 +23,9 @@
                             @if (is_array($category->field_values[$field->code]))
                                 {{ implode(', ', $category->field_values[$field->code]) }}
                             @else
-                                @if ($field->input_type === 'boolean')
+                                @if ($field->input_type === \App\Collectible\Enum\FieldInputType::BOOLEAN)
                                     {{ $category->field_values[$field->code] ? 'Yes' : 'No' }}
-                                @elseif ($field->input_type === 'textarea')
+                                @elseif ($field->input_type === \App\Collectible\Enum\FieldInputType::TEXTAREA)
                                     {!! nl2br(e($item->field_values[$field->code])) !!}
                                 @else
                                     {{ $category->field_values[$field->code] }}
@@ -40,7 +40,7 @@
                                      alt="Category image" />
                             </a>
                         @endif
-                    @elseif ($field->input_type === 'boolean')
+                    @elseif ($field->input_type === \App\Collectible\Enum\FieldInputType::BOOLEAN)
                         unset
                     @endif
                 </td>
