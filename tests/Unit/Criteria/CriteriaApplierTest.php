@@ -33,7 +33,7 @@ class CriteriaApplierTest extends TestCase
 
         $applier->apply($mock, true, [
             [
-                'match_comparison' => 'text_equals',
+                'match_comparison' => Text::COMPARISON_EQUALS,
                 'match_field' => 'artist',
                 'match_value' => 'Artist Name',
             ],
@@ -69,12 +69,12 @@ class CriteriaApplierTest extends TestCase
                 'group_type' => 'or',
                 'group_conditions' => [
                     [
-                        'match_comparison' => 'text_equals',
+                        'match_comparison' => Text::COMPARISON_EQUALS,
                         'match_field' => 'artist',
                         'match_value' => 'Artist One',
                     ],
                     [
-                        'match_comparison' => 'text_equals',
+                        'match_comparison' => Text::COMPARISON_EQUALS,
                         'match_field' => 'artist',
                         'match_value' => 'Artist Two',
                     ],
@@ -102,7 +102,7 @@ class CriteriaApplierTest extends TestCase
 
         $applier->apply($mock, true, [
             [
-                'match_comparison' => 'text_equals',
+                'match_comparison' => Text::COMPARISON_EQUALS,
                 'match_field' => 'name',
                 'match_value' => 'Item Name',
             ],
@@ -138,12 +138,12 @@ class CriteriaApplierTest extends TestCase
 
         $applier->apply($mock, true, [
             [
-                'match_comparison' => 'number_equals',
+                'match_comparison' => Number::COMPARISON_EQUALS,
                 'match_field' => 'id',
                 'match_value' => 1,
             ],
             [
-                'match_comparison' => 'text_equals',
+                'match_comparison' => Text::COMPARISON_EQUALS,
                 'match_field' => 'artist',
                 'match_value' => 'Artist Name',
             ],

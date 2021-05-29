@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Collectible;
 
 use App\Collectible\FieldFactory;
 use App\Collectible\Search\ItemSearcher;
+use App\Criteria\Comparison\Boolean;
+use App\Criteria\Comparison\Text;
 use App\Http\Controllers\Controller;
 use App\Models\Collectible;
 use Illuminate\Contracts\View\View;
@@ -85,28 +87,28 @@ class SearchController extends Controller
                     'group_conditions' => [
                         [
                             'match_field' => 'artist',
-                            'match_comparison' => 'text_equals',
+                            'match_comparison' => Text::COMPARISON_EQUALS,
                             'match_value' => 'Rebecca Guay',
                         ],
                         [
                             'match_field' => 'artist',
-                            'match_comparison' => 'text_equals',
+                            'match_comparison' => Text::COMPARISON_EQUALS,
                             'match_value' => 'Kaja Foglio',
                         ],
                     ],
                 ],
                 [
                     'match_field' => 'on_reserved_list',
-                    'match_comparison' => 'boolean_is',
-                    'match_value' => 'true',
+                    'match_comparison' => Boolean::COMPARISON_IS,
+                    'match_value' => Boolean::VALUE_TRUE,
                 ],
             ], JSON_THROW_ON_ERROR);
 
             $request['category_criteria'] = json_encode([
                 [
                     'match_field' => 'digital',
-                    'match_comparison' => 'boolean_is',
-                    'match_value' => 'false',
+                    'match_comparison' => Boolean::COMPARISON_IS,
+                    'match_value' => Boolean::VALUE_FALSE,
                 ],
             ], JSON_THROW_ON_ERROR);
         }
