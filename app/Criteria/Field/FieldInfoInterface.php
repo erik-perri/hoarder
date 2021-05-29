@@ -11,6 +11,4 @@ interface FieldInfoInterface
     public function getColumn(): string;
 
     public function getComparisonHandler(): ComparisonInterface;
-
-    public function getColumnNameFormatter(): ?ColumnNameFormatterInterface;
 }

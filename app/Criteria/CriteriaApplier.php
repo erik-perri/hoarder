@@ -75,14 +75,10 @@ class CriteriaApplier
             throw new \InvalidArgumentException('Invalid condition, unknown field specified');
         }
 
-        $column = $info->getColumnNameFormatter()
-            ? $info->getColumnNameFormatter()->formatName($info->getColumn())
-            : $info->getColumn();
-
         $info->getComparisonHandler()->apply(
             $builder,
             $or,
-            $column,
+            $info->getColumn(),
             $comparison,
             $value
         );

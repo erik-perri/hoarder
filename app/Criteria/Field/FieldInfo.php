@@ -61,21 +61,27 @@ class FieldInfo implements FieldInfoInterface, \JsonSerializable
         return $this->inputType;
     }
 
+    /**
+     * @return string
+     */
     public function getColumn(): string
     {
-        return $this->column;
+        return $this->columnNameFormatter
+            ? $this->columnNameFormatter->formatName($this->column)
+            : $this->column;
     }
 
+    /**
+     * @return ComparisonInterface
+     */
     public function getComparisonHandler(): ComparisonInterface
     {
         return $this->comparisonHandler;
     }
 
-    public function getColumnNameFormatter(): ?ColumnNameFormatterInterface
-    {
-        return $this->columnNameFormatter;
-    }
-
+    /**
+     * @return string[]
+     */
     public function jsonSerialize(): array
     {
         return [
