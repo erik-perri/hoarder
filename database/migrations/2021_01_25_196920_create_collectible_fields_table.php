@@ -13,9 +13,19 @@ class CreateCollectibleFieldsTable extends Migration
      */
     public function up(): void
     {
-        Schema::create('collectible_fields', function (Blueprint $table) {
+        $driver = Schema::connection($this->getConnection())->getConnection()->getDriverName();
+
+        Schema::create('collectible_fields', function (Blueprint $table) use ($driver) {
             $table->id();
             $table->unsignedBigInteger('collectible_id');
+
+            // We need a default value when running with sqlite (used in testing)
+            if ($driver === 'sqlite') {
+                $table->uuid('uuid')->default('');
+            } else {
+                $table->uuid('uuid');
+            }
+
             $table->string('entity_type', 8);
             $table->string('code', 32);
             $table->string('name', 32);
