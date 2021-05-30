@@ -4,8 +4,6 @@ namespace App\Http\Controllers\Collectible;
 
 use App\Collectible\CriteriaFieldFactory;
 use App\Collectible\Search\ItemSearcher;
-use App\Criteria\Comparison\Boolean;
-use App\Criteria\Comparison\Text;
 use App\Http\Controllers\Controller;
 use App\Models\Collectible;
 use Illuminate\Contracts\View\View;
@@ -23,10 +21,6 @@ class SearchController extends Controller
      */
     public function search(Collectible $collectible, Request $request, CriteriaFieldFactory $fieldFactory): View
     {
-        if ($collectible->id === 1) {
-            $this->setupTestRequest($request);
-        }
-
         $categoryFields = $fieldFactory->getCategoryFieldInfo($collectible);
         $categoryCriteria = $this->getCriteriaFromRequest($request, 'category_criteria');
 
@@ -71,46 +65,5 @@ class SearchController extends Controller
         }
 
         return json_decode($input, true, 32, JSON_THROW_ON_ERROR);
-    }
-
-    /**
-     * TODO Remove this method, it is just to make working on the search page and filter builder easier.
-     * @param Request $request
-     * @throws \JsonException
-     */
-    private function setupTestRequest(Request $request): void
-    {
-        if (! $request->has('item_criteria')) {
-            $request['item_criteria'] = json_encode([
-                [
-                    'group_type' => 'or',
-                    'group_conditions' => [
-                        [
-                            'match_field' => 'artist',
-                            'match_comparison' => Text::COMPARISON_EQUALS,
-                            'match_value' => 'Rebecca Guay',
-                        ],
-                        [
-                            'match_field' => 'artist',
-                            'match_comparison' => Text::COMPARISON_EQUALS,
-                            'match_value' => 'Kaja Foglio',
-                        ],
-                    ],
-                ],
-                [
-                    'match_field' => 'on_reserved_list',
-                    'match_comparison' => Boolean::COMPARISON_IS,
-                    'match_value' => Boolean::VALUE_TRUE,
-                ],
-            ], JSON_THROW_ON_ERROR);
-
-            $request['category_criteria'] = json_encode([
-                [
-                    'match_field' => 'digital',
-                    'match_comparison' => Boolean::COMPARISON_IS,
-                    'match_value' => Boolean::VALUE_FALSE,
-                ],
-            ], JSON_THROW_ON_ERROR);
-        }
     }
 }
