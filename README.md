@@ -3,7 +3,8 @@
 There is not much here at the moment, I am just doing some testing to get more familiar with Laravel. The project is an
 attempt at building a collection manager for various collectibles.
 
-Warning: The database takes a long time to seed and makes a lot of external API requests.
+Warning: The database takes a long time to seed and makes a lot of external API requests. If using the docker fix, apply
+before seeding since the API cache location will move after the fix is applied.
 
 ## Development Setup
 
