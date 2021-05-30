@@ -4,6 +4,8 @@ namespace App\Criteria\Comparison;
 
 use Illuminate\Database\Query\Builder;
 
+// TODO This either needs to be reworked to it can handle non-JSON fields as well or it needs to be renamed to be more
+//      clear what it supports.
 class Tag implements ComparisonInterface
 {
     public const COMPARISON_CONTAINS_ANY = 'tag_contains_any';

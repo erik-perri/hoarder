@@ -12,6 +12,9 @@ abstract class FieldInputType
     public const NUMBER = 'number';
     public const BOOLEAN = 'boolean';
     public const URL = 'url';
+
+    // TODO Remove this and add two tags, one where the available tags are specified at the collectible level, and one
+    //      where the entries can be whatever the user wants (Freeform/Fixed?)
     public const TAGS = 'tags';
 
     /**
