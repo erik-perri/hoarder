@@ -4,7 +4,7 @@ export interface CollectibleField {
   input_type:
     | 'text'
     | 'date'
-    | 'integer'
+    | 'number'
     | 'boolean'
     | 'url'
     | 'textarea'
