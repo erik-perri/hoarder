@@ -14,13 +14,16 @@ use App\Criteria\Field\FieldInfoInterface;
 use App\Criteria\Field\JsonColumnNameFormatter;
 use App\Models\Collectible;
 
-class FieldFactory
+/**
+ * Converts Collectible fields into Criteria fields.
+ */
+class CriteriaFieldFactory
 {
     /**
      * @param Collectible $collectible
      * @return FieldInfoInterface[]
      */
-    public function createItemFields(Collectible $collectible): array
+    public function getItemFieldInfo(Collectible $collectible): array
     {
         return $this->createFields($collectible, 'item');
     }
@@ -29,7 +32,7 @@ class FieldFactory
      * @param Collectible $collectible
      * @return FieldInfoInterface[]
      */
-    public function createCategoryFields(Collectible $collectible): array
+    public function getCategoryFieldInfo(Collectible $collectible): array
     {
         return $this->createFields($collectible, 'category');
     }

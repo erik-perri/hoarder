@@ -2,7 +2,7 @@
 
 namespace App\Collectible\Search;
 
-use App\Collectible\FieldFactory;
+use App\Collectible\CriteriaFieldFactory;
 use App\Criteria\CriteriaApplier;
 use App\Models\Collectible;
 use Illuminate\Database\Query\Builder;
@@ -28,9 +28,9 @@ class ItemSearcher
             $builder = Collectible\Item::getQuery()->where('collectible_id', '=', $collectible->id);
         }
 
-        $factory = new FieldFactory();
-        $itemFields = $factory->createItemFields($collectible);
-        $categoryFields = $factory->createCategoryFields($collectible);
+        $factory = new CriteriaFieldFactory();
+        $itemFields = $factory->getItemFieldInfo($collectible);
+        $categoryFields = $factory->getCategoryFieldInfo($collectible);
 
         return $this->applyCriteriaToBuilder($builder, $categoryCriteria, $categoryFields, $itemCriteria, $itemFields);
     }

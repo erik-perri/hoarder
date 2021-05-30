@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Collection;
 
-use App\Collectible\FieldFactory;
+use App\Collectible\CriteriaFieldFactory;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Collection\GoalCreateRequest;
 use App\Http\Requests\Collection\GoalEditRequest;
@@ -33,19 +33,19 @@ class GoalController extends Controller
      * Show the form for creating a new resource.
      *
      * @param Collection $collection
-     * @param FieldFactory $fieldFactory
+     * @param CriteriaFieldFactory $fieldFactory
      * @return View
      */
-    public function create(Collection $collection, FieldFactory $fieldFactory): View
+    public function create(Collection $collection, CriteriaFieldFactory $fieldFactory): View
     {
         $goal = new Goal();
         $goal->collection()->associate($collection);
 
         return view('collection.goal.edit', [
             'goal' => $goal,
-            'categoryFields' => $fieldFactory->createCategoryFields($collection->collectible),
+            'categoryFields' => $fieldFactory->getCategoryFieldInfo($collection->collectible),
             'categoryCriteria' => [],
-            'itemFields' => $fieldFactory->createItemFields($collection->collectible),
+            'itemFields' => $fieldFactory->getItemFieldInfo($collection->collectible),
             'itemCriteria' => [],
             // TODO stockFields/Criteria
         ]);
@@ -99,16 +99,16 @@ class GoalController extends Controller
      *
      * @param Collection $collection
      * @param Goal $goal
-     * @param FieldFactory $fieldFactory
+     * @param CriteriaFieldFactory $fieldFactory
      * @return View
      */
-    public function edit(Collection $collection, Goal $goal, FieldFactory $fieldFactory): View
+    public function edit(Collection $collection, Goal $goal, CriteriaFieldFactory $fieldFactory): View
     {
         return view('collection.goal.edit', [
             'goal' => $goal,
-            'categoryFields' => $fieldFactory->createCategoryFields($collection->collectible),
+            'categoryFields' => $fieldFactory->getCategoryFieldInfo($collection->collectible),
             'categoryCriteria' => $goal->category_criteria,
-            'itemFields' => $fieldFactory->createItemFields($collection->collectible),
+            'itemFields' => $fieldFactory->getItemFieldInfo($collection->collectible),
             'itemCriteria' => $goal->item_criteria,
         ]);
     }

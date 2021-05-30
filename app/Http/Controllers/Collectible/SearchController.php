@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Collectible;
 
-use App\Collectible\FieldFactory;
+use App\Collectible\CriteriaFieldFactory;
 use App\Collectible\Search\ItemSearcher;
 use App\Criteria\Comparison\Boolean;
 use App\Criteria\Comparison\Text;
@@ -17,20 +17,20 @@ class SearchController extends Controller
     /**
      * @param Collectible $collectible
      * @param Request $request
-     * @param FieldFactory $fieldFactory
+     * @param CriteriaFieldFactory $fieldFactory
      * @return Response|View
      * @throws \JsonException
      */
-    public function search(Collectible $collectible, Request $request, FieldFactory $fieldFactory): View
+    public function search(Collectible $collectible, Request $request, CriteriaFieldFactory $fieldFactory): View
     {
         if ($collectible->id === 1) {
             $this->setupTestRequest($request);
         }
 
-        $categoryFields = $fieldFactory->createCategoryFields($collectible);
+        $categoryFields = $fieldFactory->getCategoryFieldInfo($collectible);
         $categoryCriteria = $this->getCriteriaFromRequest($request, 'category_criteria');
 
-        $itemFields = $fieldFactory->createItemFields($collectible);
+        $itemFields = $fieldFactory->getItemFieldInfo($collectible);
         $itemCriteria = $this->getCriteriaFromRequest($request, 'item_criteria');
 
         $searcher = new ItemSearcher();
