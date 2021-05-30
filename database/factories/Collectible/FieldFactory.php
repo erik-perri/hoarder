@@ -21,10 +21,12 @@ class FieldFactory extends Factory
      */
     public function definition(): array
     {
+        $name = ucwords($this->faker->words(3, true));
+
         return [
             'entity_type' => $this->faker->randomElement(['category', 'item']),
-            'code' => $this->faker->randomAscii,
-            'name' => $this->faker->words(3, true),
+            'code' => \Str::slug($name, '_'),
+            'name' => $name,
             'input_type' => $this->faker->randomElement(['text', 'date', 'number']),
             'input_options' => [],
             'is_required' => $this->faker->boolean,

@@ -79,7 +79,7 @@ class CollectionGoalSeeder extends Seeder
             'name' => 'Every card in Stronghold',
             'category_criteria' => [
                 [
-                    'match_field' => 'code',
+                    'match_field' => 'set_code',
                     'match_comparison' => Text::COMPARISON_EQUALS,
                     'match_value' => 'sth',
                 ],

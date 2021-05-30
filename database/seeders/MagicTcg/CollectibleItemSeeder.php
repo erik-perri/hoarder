@@ -25,7 +25,7 @@ class CollectibleItemSeeder extends Seeder
                                      ->orderBy('field_values->released_on')
                                      ->get() as $category) {
             /** @var Collectible\Category $category */
-            $cards = $this->getCards($category->field_values['code']);
+            $cards = $this->getCards($category->field_values['set_code']);
 
             foreach ($cards as $cardInfo) {
                 Collectible\Item::factory()->create([

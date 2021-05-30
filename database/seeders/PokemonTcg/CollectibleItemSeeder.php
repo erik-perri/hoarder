@@ -23,7 +23,7 @@ class CollectibleItemSeeder extends Seeder
 
         foreach (Collectible\Category::whereCollectibleId($collectible->id)->get() as $category) {
             /** @var Collectible\Category $category */
-            $cards = $this->getCards($category->field_values['code']);
+            $cards = $this->getCards($category->field_values['set_code']);
 
             foreach ($cards as $cardInfo) {
                 Collectible\Item::factory()->create([
