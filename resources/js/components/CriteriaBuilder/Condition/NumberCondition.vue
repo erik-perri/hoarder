@@ -44,11 +44,11 @@ export default defineComponent({
   data() {
     return {
       comparisonOptions: {
-        number_equals: '=',
-        number_greater_than: '&gt;',
-        number_greater_than_or_equal: '&gt;=',
-        number_less_than: '&lt;',
-        number_less_than_or_equal: '&lt;=',
+        number_equals: 'equals',
+        number_greater_than: 'greater than',
+        number_greater_than_or_equal: 'greater than or equal',
+        number_less_than: 'less than',
+        number_less_than_or_equal: 'less than or equal',
       } as Record<string, string>,
     };
   },
