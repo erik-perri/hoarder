@@ -27,7 +27,7 @@ class CollectibleCategorySeeder extends Seeder
                 'collectible_id' => $collectible->id,
                 'name' => $editionInfo['name'],
                 'field_values' => array_filter([
-                    'code' => $editionInfo['code'],
+                    'set_code' => $editionInfo['code'],
                     'released_on' => (new \DateTime($editionInfo['released_at'],
                         new \DateTimeZone('America/Los_Angeles')))->format('Y-m-d'),
                     'set_type' => $editionInfo['set_type'],

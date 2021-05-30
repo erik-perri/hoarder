@@ -15,7 +15,6 @@ use Illuminate\Support\Carbon;
  *
  * @property int $id
  * @property int $collectible_id
- * @property string $uuid
  * @property string $entity_type
  * @property string $code
  * @property string $name

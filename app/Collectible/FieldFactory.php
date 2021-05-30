@@ -45,7 +45,7 @@ class FieldFactory
             new FieldInfo(
                 'name',
                 'Name',
-                'ceddbc03-d875-4f1e-830f-22b6a01505d7',
+                'name',
                 'text',
                 new Text(),
                 null
