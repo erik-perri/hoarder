@@ -28,10 +28,10 @@ class DatabaseSeeder extends Seeder
             PokemonTcg\CollectibleCategorySeeder::class,
             PokemonTcg\CollectibleItemSeeder::class,
             MagicTcg\CollectibleFieldSeeder::class,
+            MagicTcg\CollectionGoalSeeder::class,
             MagicTcg\CollectibleCategorySeeder::class,
             MagicTcg\CollectibleItemSeeder::class,
             MagicTcg\CollectionStockSeeder::class,
-            MagicTcg\CollectionGoalSeeder::class,
         ]);
     }
 }

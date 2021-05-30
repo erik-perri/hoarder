@@ -3,6 +3,7 @@
 namespace Database\Seeders\MagicTcg;
 
 use App\Criteria\Comparison\Boolean;
+use App\Criteria\Comparison\Number;
 use App\Criteria\Comparison\Text;
 use App\Models\Collection;
 use Illuminate\Database\Seeder;
@@ -90,7 +91,7 @@ class CollectionGoalSeeder extends Seeder
 
         Collection\Goal::factory()->create([
             'collection_id' => $collection,
-            'name' => 'Sibling Artist Collaborations',
+            'name' => 'Sibling Artist Collaborations (Playset)',
             'category_criteria' => [],
             'item_criteria' => [
                 [
@@ -134,7 +135,28 @@ class CollectionGoalSeeder extends Seeder
                     ],
                 ],
             ],
-            'stock_criteria' => [],
+            'stock_criteria' => [
+                [
+                    'match_field' => 'count',
+                    'match_comparison' => Number::COMPARISON_GREATER_THAN_OR_EQUAL,
+                    'match_value' => 4,
+                ],
+                [
+                    'group_type' => 'or',
+                    'group_conditions' => [
+                        [
+                            'match_field' => 'condition',
+                            'match_comparison' => Text::COMPARISON_EQUALS,
+                            'match_value' => 'Near Mint',
+                        ],
+                        [
+                            'match_field' => 'condition',
+                            'match_comparison' => Text::COMPARISON_EQUALS,
+                            'match_value' => 'Lightly Played',
+                        ],
+                    ],
+                ],
+            ],
         ]);
     }
 }
