@@ -17,7 +17,7 @@
 
     <component
       v-if="!!fieldTypeComponent"
-      v-bind:is="fieldTypeComponent"
+      :is="fieldTypeComponent"
       :editing="editing"
       :comparison="options.comparison"
       :value="options.value"
@@ -30,18 +30,23 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, shallowRef } from 'vue';
-import { Ref } from '@vue/reactivity';
+import { defineComponent } from 'vue';
 import { CollectibleField } from '../../types';
 import { ConditionOptions } from './types';
-import TextCondition from './Condition/TextCondition.vue';
-import TagCondition from './Condition/TagCondition.vue';
-import NumberCondition from './Condition/NumberCondition.vue';
-import DateCondition from './Condition/DateCondition.vue';
 import BooleanCondition from './Condition/BooleanCondition.vue';
+import DateCondition from './Condition/DateCondition.vue';
+import NumberCondition from './Condition/NumberCondition.vue';
+import TagCondition from './Condition/TagCondition.vue';
+import TextCondition from './Condition/TextCondition.vue';
 
 export default defineComponent({
-  components: { BooleanCondition },
+  components: {
+    BooleanCondition,
+    DateCondition,
+    NumberCondition,
+    TagCondition,
+    TextCondition,
+  },
   props: {
     id: String,
     startEditing: Boolean,
@@ -60,14 +65,14 @@ export default defineComponent({
         value: this.value,
       } as ConditionOptions,
       fieldMapping: {
-        text: shallowRef(TextCondition),
-        textarea: shallowRef(TextCondition),
-        url: shallowRef(TextCondition),
-        date: shallowRef(DateCondition),
-        number: shallowRef(NumberCondition),
-        tags: shallowRef(TagCondition),
-        boolean: shallowRef(BooleanCondition),
-      } as { [key: string]: Ref },
+        text: 'TextCondition',
+        textarea: 'TextCondition',
+        url: 'TextCondition',
+        date: 'DateCondition',
+        number: 'NumberCondition',
+        tags: 'TagCondition',
+        boolean: 'BooleanCondition',
+      } as { [key: string]: string },
     };
   },
   watch: {
@@ -98,7 +103,7 @@ export default defineComponent({
     },
   },
   computed: {
-    fieldTypeComponent(): CollectibleField | undefined {
+    fieldTypeComponent(): string | undefined {
       const info = this.getFieldInfo();
       if (!info) {
         return undefined;
