@@ -59,6 +59,7 @@ class Field extends Model
      */
     protected $casts = [
         'input_options' => 'array',
+        'is_required' => 'boolean',
     ];
 
     /**

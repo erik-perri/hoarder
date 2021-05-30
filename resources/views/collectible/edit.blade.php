@@ -21,6 +21,16 @@
                             label="{{ __('collectible.label.name') }}"
                             required />
 
+        <h3>Category Fields</h3>
+        <field-editor input-name="category_fields"
+                      :items="{{ json_encode($categoryFields, JSON_THROW_ON_ERROR) }}">
+        </field-editor>
+
+        <h3>Item Fields</h3>
+        <field-editor input-name="item_fields"
+                      :items="{{ json_encode($itemFields, JSON_THROW_ON_ERROR) }}">
+        </field-editor>
+
         <x-forms.button type="submit">
             {{ __('collectible.button.save') }}
         </x-forms.button>
