@@ -23,8 +23,13 @@
                     <li>
                         {{ $goal->name }}: {{ $progress[$goal->id]['percent'] ?? 0 }}%
                                          ({{ $progress[$goal->id]['stocked'] ?? 0 }}
-                                          / {{ $progress[$goal->id]['total'] ?? 0 }})
+                                         / {{ $progress[$goal->id]['total'] ?? 0 }})
                         <a href="{{ route('collections.goals.edit', ['collection' => $collection, 'goal' => $goal]) }}">Edit</a>
+                        <a href="{{ route('collectibles.search', [
+                            'collectible' => $collection->collectible,
+                            'category_criteria' => json_encode($goal->category_criteria, JSON_THROW_ON_ERROR),
+                            'item_criteria' => json_encode($goal->item_criteria, JSON_THROW_ON_ERROR),
+                        ]) }}">Search</a>
                     </li>
                 @endforeach
             </ul>
