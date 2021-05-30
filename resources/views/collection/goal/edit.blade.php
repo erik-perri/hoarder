@@ -26,12 +26,20 @@
         <strong>Category criteria</strong>
         <criteria-builder input-name="category_criteria"
                           :conditions="{{ old('category_criteria', json_encode($categoryCriteria, JSON_THROW_ON_ERROR)) }}"
-                          :fields="{{ json_encode($categoryFields, JSON_THROW_ON_ERROR) }}"></criteria-builder>
+                          :fields="{{ json_encode($categoryFields, JSON_THROW_ON_ERROR) }}">
+        </criteria-builder>
 
         <strong>Item criteria</strong>
         <criteria-builder input-name="item_criteria"
                           :conditions="{{ old('item_criteria', json_encode($itemCriteria, JSON_THROW_ON_ERROR)) }}"
-                          :fields="{{ json_encode($itemFields, JSON_THROW_ON_ERROR) }}"></criteria-builder>
+                          :fields="{{ json_encode($itemFields, JSON_THROW_ON_ERROR) }}">
+        </criteria-builder>
+
+        <strong>Stock criteria</strong>
+        <criteria-builder input-name="stock_criteria"
+                          :conditions="{{ old('stock_criteria', json_encode($stockCriteria, JSON_THROW_ON_ERROR)) }}"
+                          :fields="{{ json_encode($stockFields, JSON_THROW_ON_ERROR) }}">
+        </criteria-builder>
 
         <x-forms.button type="submit">
             {{ __('collection.goal.button.save') }}

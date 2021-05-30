@@ -39,6 +39,48 @@ class CriteriaFieldFactory
 
     /**
      * @param Collectible $collectible
+     * @return FieldInfoInterface[]
+     */
+    public function getStockFieldInfo(Collectible $collectible): array
+    {
+        return [
+            new FieldInfo(
+                'count',
+                'Count',
+                'count',
+                FieldInputType::NUMBER,
+                new Number(),
+                null
+            ),
+            new FieldInfo(
+                'condition',
+                'Condition',
+                'condition',
+                FieldInputType::TEXT,
+                new Text(),
+                null
+            ),
+            new FieldInfo(
+                'language',
+                'Language',
+                'language',
+                FieldInputType::TEXT,
+                new Text(),
+                null
+            ),
+            new FieldInfo(
+                'tags',
+                'Tags',
+                'tags',
+                FieldInputType::TAGS,
+                new Text(),
+                null
+            ),
+        ];
+    }
+
+    /**
+     * @param Collectible $collectible
      * @param string $entityType
      * @return FieldInfoInterface[]
      */
@@ -49,7 +91,7 @@ class CriteriaFieldFactory
                 'name',
                 'Name',
                 'name',
-                'text',
+                FieldInputType::TEXT,
                 new Text(),
                 null
             ),

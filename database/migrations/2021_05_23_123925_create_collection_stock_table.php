@@ -18,8 +18,8 @@ class CreateCollectionStockTable extends Migration
             $table->unsignedBigInteger('collection_id');
             $table->unsignedBigInteger('item_id');
             $table->unsignedInteger('count');
-            $table->string('condition');
-            $table->string('language');
+            $table->string('condition'); // TODO Should this be enabled/disabled at the collectible level?
+            $table->string('language'); // TODO Should this be enabled/disabled at the collectible level?
             $table->jsonb('tags'); // TODO Switch to joined table? spatie/laravel-tags?
             $table->timestamps();
 

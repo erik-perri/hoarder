@@ -2,6 +2,8 @@
 
 namespace App\Collectible\Search;
 
+use App\Collectible\CriteriaFieldFactory;
+use App\Criteria\CriteriaApplier;
 use App\Models\Collection;
 use App\Models\Collection\Stock;
 use Illuminate\Database\Query\Builder;
@@ -38,7 +40,13 @@ class StockSearcher
             $searcher->search($collection->collectible, $categoryCriteria, $itemCriteria, $builder);
         });
 
-        // TODO Apply $stockCriteria
+        if (! empty($stockCriteria)) {
+            $factory = new CriteriaFieldFactory();
+            $stockFields = $factory->getStockFieldInfo($collection->collectible);
+
+            $applier = new CriteriaApplier($stockFields);
+            $applier->apply($builder, false, $stockCriteria);
+        }
 
         return $builder;
     }
