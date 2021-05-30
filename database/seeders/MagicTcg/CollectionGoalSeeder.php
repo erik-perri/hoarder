@@ -87,5 +87,54 @@ class CollectionGoalSeeder extends Seeder
             'item_criteria' => [],
             'stock_criteria' => [],
         ]);
+
+        Collection\Goal::factory()->create([
+            'collection_id' => $collection,
+            'name' => 'Sibling Artist Collaborations',
+            'category_criteria' => [],
+            'item_criteria' => [
+                [
+                    'group_type' => 'or',
+                    'group_conditions' => [
+                        [
+                            'group_type' => 'and',
+                            'group_conditions' => [
+                                [
+                                    'match_field' => 'artist',
+                                    'match_comparison' => Text::COMPARISON_CONTAINS,
+                                    'match_value' => 'Kaja',
+                                ],
+                                [
+                                    'match_field' => 'artist',
+                                    'match_comparison' => Text::COMPARISON_CONTAINS,
+                                    'match_value' => 'Phil',
+                                ],
+                                [
+                                    'match_field' => 'artist',
+                                    'match_comparison' => Text::COMPARISON_CONTAINS,
+                                    'match_value' => 'Foglio',
+                                ],
+                            ],
+                        ],
+                        [
+                            'group_type' => 'and',
+                            'group_conditions' => [
+                                [
+                                    'match_field' => 'artist',
+                                    'match_comparison' => Text::COMPARISON_CONTAINS,
+                                    'match_value' => 'Ron Spencer',
+                                ],
+                                [
+                                    'match_field' => 'artist',
+                                    'match_comparison' => Text::COMPARISON_CONTAINS,
+                                    'match_value' => 'Terese Nielsen',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'stock_criteria' => [],
+        ]);
     }
 }

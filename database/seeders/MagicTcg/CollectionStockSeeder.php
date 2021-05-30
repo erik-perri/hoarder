@@ -36,6 +36,8 @@ class CollectionStockSeeder extends Seeder
             ['Burgeoning', 'Stronghold', []],
             ['Volrath\'s Shapeshifter', 'Stronghold', []],
             ['Horn of Greed', 'Stronghold', []],
+            ['Boon Reflection', 'Shadowmoor', []],
+            ['Wound Reflection', 'Shadowmoor', []],
         ];
 
         foreach ($stockItems as [$name, $category, $factoryData]) {
