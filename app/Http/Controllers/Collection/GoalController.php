@@ -45,7 +45,7 @@ class GoalController extends Controller
             'goal' => $goal,
             'categoryFields' => $fieldFactory->createCategoryFields($collection->collectible),
             'categoryCriteria' => [],
-            'itemFields' => $fieldFactory->createCategoryFields($collection->collectible),
+            'itemFields' => $fieldFactory->createItemFields($collection->collectible),
             'itemCriteria' => [],
             // TODO stockFields/Criteria
         ]);
