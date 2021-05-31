@@ -16,7 +16,11 @@
         </tr>
         <tr>
             <td>Category</td>
-            <td><a href="{{ route('categories.show', ['category' => $category]) }}">{{ $category->name }}</a></td>
+            <td>
+                <a href="{{ route('collectibles.categories.show', ['collectible' => $collectible, 'category' => $category]) }}">
+                    {{ $category->name }}
+                </a>
+            </td>
         </tr>
         @foreach($collectible->fields->where('entity_type', 'item') as $field)
             <tr>

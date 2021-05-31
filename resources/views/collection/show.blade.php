@@ -58,7 +58,7 @@
                     </a>
                 </td>
                 <td>
-                    <a href="{{ route('categories.show', ['category' => $stock->item->category]) }}">
+                    <a href="{{ route('collectibles.categories.show', ['collectible' => $collectible, 'category' => $stock->item->category]) }}">
                         {{ $stock->item->category->name }}
                     </a>
                 </td>

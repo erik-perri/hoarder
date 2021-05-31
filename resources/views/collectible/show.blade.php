@@ -10,15 +10,19 @@
 
     <div>
         <a href="{{ route('collectibles.search', ['collectible' => $collectible]) }}">Search</a>
-    @auth
-        <a href="{{ route('collectibles.edit', ['collectible' => $collectible]) }}">Edit</a>
-    @endif
+        @auth
+            <a href="{{ route('collectibles.edit', ['collectible' => $collectible]) }}">Edit</a>
+        @endif
     </div>
 
     <ul>
-    @foreach($categories as $category)
-        <li><a href="{{ route('categories.show', ['category' => $category]) }}">{{ $category->name }}</a></li>
-    @endforeach
+        @foreach($categories as $category)
+            <li>
+                <a href="{{ route('collectibles.categories.show', ['collectible' => $collectible, 'category' => $category]) }}">
+                    {{ $category->name }}
+                </a>
+            </li>
+        @endforeach
     </ul>
 
     <x-pagination :items="$categories" />
