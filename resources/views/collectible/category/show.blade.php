@@ -53,7 +53,7 @@
     <ul>
         @foreach($items as $item)
             <li>
-                <a href="{{ route('items.show', ['item' => $item]) }}">
+                <a href="{{ route('collectibles.categories.items.show', ['collectible' => $item->collectible, 'category' => $item->category, 'item' => $item]) }}">
                     {{ $item->name }}
                 </a>
             </li>

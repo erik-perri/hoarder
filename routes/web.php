@@ -28,6 +28,6 @@ Route::get('/collectible/{collectible}/search', [SearchController::class, 'searc
 
 Route::resource('collectibles', CollectibleController::class);
 Route::resource('collectibles.categories', CategoryController::class);
-Route::resource('items', ItemController::class);
+Route::resource('collectibles.categories.items', ItemController::class);
 Route::resource('collections', CollectionController::class);
 Route::resource('collections.goals', GoalController::class);

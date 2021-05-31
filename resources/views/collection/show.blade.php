@@ -53,12 +53,12 @@
             <tr>
                 <td>{{ $stock->count }}</td>
                 <td>
-                    <a href="{{ route('items.show', ['item' => $stock->item]) }}">
+                    <a href="{{ route('collectibles.categories.items.show', ['collectible' => $stock->item->collectible, 'category' => $stock->item->category, 'item' => $stock->item]) }}">
                         {{ $stock->item->name }}
                     </a>
                 </td>
                 <td>
-                    <a href="{{ route('collectibles.categories.show', ['collectible' => $collectible, 'category' => $stock->item->category]) }}">
+                    <a href="{{ route('collectibles.categories.show', ['collectible' => $stock->item->collectible, 'category' => $stock->item->category]) }}">
                         {{ $stock->item->category->name }}
                     </a>
                 </td>
