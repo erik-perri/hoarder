@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Carbon;
 
@@ -25,6 +26,8 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $updated_at
  * @property-read Category|null $child
  * @property-read Collectible $collectible
+ * @property-read Collection|Field[] $fields
+ * @property-read int|null $fields_count
  * @property-read Collection|Item[] $items
  * @property-read int|null $items_count
  * @property-read Category|null $parent
@@ -53,6 +56,15 @@ class Category extends Model
     protected $table = 'collectible_categories';
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'name',
+    ];
+
+    /**
      * The attributes that should be cast to native types.
      *
      * @var array
@@ -79,5 +91,16 @@ class Category extends Model
     public function collectible(): BelongsTo
     {
         return $this->belongsTo(Collectible::class);
+    }
+
+    public function fields(): HasManyThrough
+    {
+        return $this->hasManyThrough(
+            Field::class,
+            Collectible::class,
+            'id',
+            'collectible_id',
+            'collectible_id'
+        )->where('entity_type', '=', 'category');
     }
 }

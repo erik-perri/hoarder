@@ -11,7 +11,8 @@
     <div>
         <a href="{{ route('collectibles.search', ['collectible' => $collectible]) }}">Search</a>
         @auth
-            <a href="{{ route('collectibles.edit', ['collectible' => $collectible]) }}">Edit</a>
+            &nbsp;<a href="{{ route('collectibles.edit', ['collectible' => $collectible]) }}">Edit Collectible</a>
+            &nbsp;<a href="{{ route('collectibles.categories.create', ['collectible' => $collectible]) }}">Create Category</a>
         @endif
     </div>
 

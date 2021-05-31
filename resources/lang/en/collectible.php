@@ -18,4 +18,20 @@ return [
     'messages.save_failed' => 'Failed to save collectible.',
     'messages.save_success' => 'Collectible saved.',
 
+    'category.title.edit' => 'Edit Category',
+    'category.title.create' => 'Create Category',
+
+    'category.label.name' => 'Category name',
+
+    'category.button.save' => 'Save',
+    'category.button.cancel' => 'Cancel',
+
+    'category.messages.create_failed' => 'Failed to create category.',
+    'category.messages.create_success' => 'Category created.',
+    'category.messages.save_failed' => 'Failed to save category.',
+    'category.messages.save_success' => 'Category saved.',
+
+    'category.messages.name_required' => 'Name is required.',
+    'category.messages.name_unique' => 'This category already exists.',
+
 ];

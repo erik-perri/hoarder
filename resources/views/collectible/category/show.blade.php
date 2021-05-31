@@ -7,6 +7,14 @@
 <x-frontend-layout>
     <h1>{{ $category->name }}</h1>
 
+    <x-redirect-status />
+
+    <div>
+        @auth
+            <a href="{{ route('collectibles.categories.edit', ['collectible' => $collectible, 'category' => $category]) }}">Edit Category</a>
+        @endif
+    </div>
+
     <table>
         <tbody>
         <tr>
