@@ -27,7 +27,7 @@ class ItemController extends Controller
      */
     public function show(Collectible\Item $item): View
     {
-        return view('collectible.item.index', [
+        return view('collectible.item.show', [
             'collectible' => $item->collectible,
             'category' => $item->category,
             'item' => $item,

@@ -32,7 +32,7 @@ class CategoryController extends Controller
             'category_id' => $category->id,
         ])->orderByRaw('CAST(field_values->>\'$.collector_number\' AS UNSIGNED)')->paginate(30);
 
-        return view('collectible.category.index', [
+        return view('collectible.category.show', [
             'collectible' => $category->collectible,
             'category' => $category,
             'items' => $items,
