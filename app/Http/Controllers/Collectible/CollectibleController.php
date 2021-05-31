@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Repository\Collectible\FieldRepository;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class CollectibleController extends Controller
@@ -47,10 +48,14 @@ class CollectibleController extends Controller
      *
      * @param CollectibleCreateRequest $request
      * @param User $user
+     * @param FieldRepository $fieldRepository
      * @return RedirectResponse
      */
-    public function store(CollectibleCreateRequest $request, User $user): RedirectResponse
-    {
+    public function store(
+        CollectibleCreateRequest $request,
+        User $user,
+        FieldRepository $fieldRepository
+    ): RedirectResponse {
         $collectible = new Collectible();
         $collectible->fill($request->validated());
         $collectible->createdBy()->associate($user);
@@ -60,6 +65,9 @@ class CollectibleController extends Controller
                              ->withErrors(__('collectible.messages.create_failed'))
                              ->withInput();
         }
+
+        // This has to be after the save here so the created fields can access the collectible ID.
+        $this->handleFieldChanges($request, $fieldRepository, $collectible);
 
         return redirect()->route('collectibles.show', ['collectible' => $collectible])
                          ->with('status', __('collectible.messages.create_success'));
@@ -115,6 +123,45 @@ class CollectibleController extends Controller
     ): RedirectResponse {
         $collectible->fill($request->validated());
 
+        $this->handleFieldChanges($request, $fieldRepository, $collectible);
+
+        if (! $collectible->save()) {
+            return redirect()->route('collectibles.create')
+                             ->withErrors(__('collectible.messages.save_failed'))
+                             ->withInput();
+        }
+
+        return redirect()->route('collectibles.show', ['collectible' => $collectible])
+                         ->with('status', __('collectible.messages.save_success'));
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param Collectible $collectible
+     * @return RedirectResponse
+     */
+    public function destroy(Collectible $collectible): RedirectResponse
+    {
+        if (! $collectible->delete()) {
+            return redirect()->route('collectibles.edit', ['collectible' => $collectible])
+                             ->withErrors(__('collectible.messages.delete_failed'));
+        }
+
+        return redirect()->route('collectibles.index')
+                         ->with('status', __('collectible.messages.delete_success'));
+    }
+
+    /**
+     * @param Request $request
+     * @param FieldRepository $fieldRepository
+     * @param Collectible $collectible
+     */
+    private function handleFieldChanges(
+        Request $request,
+        FieldRepository $fieldRepository,
+        Collectible $collectible
+    ): void {
         foreach (['category_fields', 'item_fields'] as $fieldRequestKey) {
             if (! $request->has($fieldRequestKey)) {
                 continue;
@@ -153,31 +200,5 @@ class CollectibleController extends Controller
                 $field->save();
             }
         }
-
-        if (! $collectible->save()) {
-            return redirect()->route('collectibles.create')
-                             ->withErrors(__('collectible.messages.save_failed'))
-                             ->withInput();
-        }
-
-        return redirect()->route('collectibles.show', ['collectible' => $collectible])
-                         ->with('status', __('collectible.messages.save_success'));
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param Collectible $collectible
-     * @return RedirectResponse
-     */
-    public function destroy(Collectible $collectible): RedirectResponse
-    {
-        if (! $collectible->delete()) {
-            return redirect()->route('collectibles.edit', ['collectible' => $collectible])
-                             ->withErrors(__('collectible.messages.delete_failed'));
-        }
-
-        return redirect()->route('collectibles.index')
-                         ->with('status', __('collectible.messages.delete_success'));
     }
 }
