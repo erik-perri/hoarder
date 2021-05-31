@@ -27,7 +27,10 @@ class CollectibleEditRequest extends FormRequest
     public function rules(): array
     {
         $ruleGroups[] = [
-            'name' => 'required',
+            'name' => [
+                'required',
+                'unique:App\Models\Collectible,name,'.($this->route('collectible')->id ?? 0),
+            ],
         ];
 
         foreach (['category_fields', 'item_fields'] as $fieldKey) {
@@ -63,6 +66,7 @@ class CollectibleEditRequest extends FormRequest
     {
         return [
             'name.required' => __('collectible.messages.name_required'),
+            'name.unique' => __('collectible.messages.name_unique'),
         ];
     }
 }
