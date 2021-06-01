@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Collectible;
 
+use App\Collectible\FieldValueProcessor;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Collectible\ItemCreateRequest;
 use App\Http\Requests\Collectible\ItemEditRequest;
@@ -20,7 +21,10 @@ class ItemController extends Controller
      */
     public function index(Collectible $collectible, Collectible\Category $category): RedirectResponse
     {
-        return redirect()->route('collectibles.categories.show', ['collectible' => $collectible, 'category' => $category]);
+        return redirect()->route('collectibles.categories.show', [
+            'collectible' => $collectible,
+            'category' => $category,
+        ]);
     }
 
     /**
@@ -47,15 +51,20 @@ class ItemController extends Controller
      * @param Collectible $collectible
      * @param Collectible\Category $category
      * @param ItemCreateRequest $request
+     * @param FieldValueProcessor $valueProcessor
      * @return RedirectResponse
      */
-    public function store(Collectible $collectible, Collectible\Category $category, ItemCreateRequest $request): RedirectResponse
-    {
+    public function store(
+        Collectible $collectible,
+        Collectible\Category $category,
+        ItemCreateRequest $request,
+        FieldValueProcessor $valueProcessor
+    ): RedirectResponse {
         $item = new Collectible\Item();
         $item->collectible()->associate($collectible);
         $item->category()->associate($category);
         $item->fill($request->validated());
-        $item->field_values = array_filter($request->get('field_values') ?: [], static fn ($v) => $v !== null);
+        $item->field_values = $valueProcessor->getFieldValues($item->fields, $request->get('field_values') ?: []);
 
         if (! $item->save()) {
             return redirect()
@@ -115,16 +124,18 @@ class ItemController extends Controller
      * @param Collectible\Category $category
      * @param Collectible\Item $item
      * @param ItemEditRequest $request
+     * @param FieldValueProcessor $valueProcessor
      * @return RedirectResponse
      */
     public function update(
         Collectible $collectible,
         Collectible\Category $category,
         Collectible\Item $item,
-        ItemEditRequest $request
+        ItemEditRequest $request,
+        FieldValueProcessor $valueProcessor
     ): RedirectResponse {
         $item->fill($request->validated());
-        $item->field_values = array_filter($request->get('field_values') ?: [], static fn ($v) => $v !== null);
+        $item->field_values = $valueProcessor->getFieldValues($item->fields, $request->get('field_values') ?: []);
 
         if (! $item->save()) {
             return redirect()

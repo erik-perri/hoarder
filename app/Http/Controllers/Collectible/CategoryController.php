@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Collectible;
 
+use App\Collectible\FieldValueProcessor;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Collectible\CategoryCreateRequest;
 use App\Http\Requests\Collectible\CategoryEditRequest;
@@ -43,14 +44,21 @@ class CategoryController extends Controller
      *
      * @param Collectible $collectible
      * @param CategoryCreateRequest $request
+     * @param FieldValueProcessor $valueProcessor
      * @return RedirectResponse
      */
-    public function store(Collectible $collectible, CategoryCreateRequest $request): RedirectResponse
-    {
+    public function store(
+        Collectible $collectible,
+        CategoryCreateRequest $request,
+        FieldValueProcessor $valueProcessor
+    ): RedirectResponse {
         $category = new Collectible\Category();
         $category->collectible()->associate($collectible);
         $category->fill($request->validated());
-        $category->field_values = array_filter($request->get('field_values'), static fn ($v) => $v !== null);
+        $category->field_values = $valueProcessor->getFieldValues(
+            $category->fields,
+            $request->get('field_values') ?: []
+        );
 
         if (! $category->save()) {
             return redirect()->route('collectibles.categories.create', ['collectible' => $collectible])
@@ -104,15 +112,20 @@ class CategoryController extends Controller
      * @param Collectible $collectible
      * @param Collectible\Category $category
      * @param CategoryEditRequest $request
+     * @param FieldValueProcessor $valueProcessor
      * @return RedirectResponse
      */
     public function update(
         Collectible $collectible,
         Collectible\Category $category,
-        CategoryEditRequest $request
+        CategoryEditRequest $request,
+        FieldValueProcessor $valueProcessor
     ): RedirectResponse {
         $category->fill($request->validated());
-        $category->field_values = array_filter($request->get('field_values'), static fn ($v) => $v !== null);
+        $category->field_values = $valueProcessor->getFieldValues(
+            $category->fields,
+            $request->get('field_values') ?: []
+        );
 
         if (! $category->save()) {
             return redirect()
