@@ -4,8 +4,10 @@ namespace App\Http\Requests\Collectible;
 
 use App\Collectible\FieldValidatorBuilder;
 use App\Models\Collectible;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class CategoryEditRequest extends FormRequest
 {
@@ -42,7 +44,14 @@ class CategoryEditRequest extends FormRequest
         $ruleGroups[] = [
             'name' => [
                 'required',
-                'unique:App\Models\Collectible\Category,name,'.($this->route('category')->id ?? 0),
+                Rule::unique(Collectible\Category::class, 'name')->where(function (Builder $query) {
+                    $category = $this->route('category');
+                    if ($category) {
+                        $query->where('id', '!=', $category->id);
+                    }
+
+                    return $query->where('collectible_id', $this->route('collectible')->id);
+                }),
             ],
         ];
 
