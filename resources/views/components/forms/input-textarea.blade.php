@@ -18,8 +18,7 @@ if (! $id) {
     @if ($label)
         <label for="{{ $id }}">{{ $label }}</label>
     @endif
-    <input {{ $attributes->merge(['type' => 'text']) }}
-           id="{{ $id }}"
-           name="{{ $name }}"
-           value="{!! $value !!}" />
+    <textarea {{ $attributes }}
+              id="{{ $id }}"
+              name="{{ $name }}">{!! $value !!}</textarea>
 </div>

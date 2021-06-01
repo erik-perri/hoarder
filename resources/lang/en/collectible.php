@@ -34,4 +34,20 @@ return [
     'category.messages.name_required' => 'Name is required.',
     'category.messages.name_unique' => 'This category already exists.',
 
+    'item.title.edit' => 'Edit Item',
+    'item.title.create' => 'Create Item',
+
+    'item.label.name' => 'Item name',
+
+    'item.button.save' => 'Save',
+    'item.button.cancel' => 'Cancel',
+
+    'item.messages.create_failed' => 'Failed to create item.',
+    'item.messages.create_success' => 'Item created.',
+    'item.messages.save_failed' => 'Failed to save item.',
+    'item.messages.save_success' => 'Item saved.',
+
+    'item.messages.name_required' => 'Name is required.',
+    'item.messages.name_unique' => 'This item already exists.',
+
 ];

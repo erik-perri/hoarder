@@ -12,6 +12,7 @@
     <div>
         @auth
             <a href="{{ route('collectibles.categories.edit', ['collectible' => $collectible, 'category' => $category]) }}">Edit Category</a>
+            &nbsp;<a href="{{ route('collectibles.categories.items.create', ['collectible' => $collectible, 'category' => $category]) }}">Create Item</a>
         @endif
     </div>
 

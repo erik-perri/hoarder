@@ -11,6 +11,11 @@
     @foreach($fields as $field)
         @switch($field->input_type)
             @case(\App\Collectible\Enum\FieldInputType::TAGS)
+            <x-forms.input-text name="{{ $name }}[{{ $field->code }}]"
+                                value="{{ old($name.'['.$field->code.']', implode(', ', $values[$field->code] ?? [])) }}"
+                                label="{{ $field->name }}" />
+            @break
+
             @case(\App\Collectible\Enum\FieldInputType::TEXT)
             @case(\App\Collectible\Enum\FieldInputType::URL)
             <x-forms.input-text name="{{ $name }}[{{ $field->code }}]"

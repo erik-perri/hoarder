@@ -5,9 +5,11 @@ namespace App\Models\Collectible;
 use App\Models\Collectible;
 use Database\Factories\Collectible\ItemFactory;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Carbon;
 
@@ -25,6 +27,8 @@ use Illuminate\Support\Carbon;
  * @property-read Category $category
  * @property-read Item|null $child
  * @property-read Collectible $collectible
+ * @property-read Collection|Field[] $fields
+ * @property-read int|null $fields_count
  * @property-read Item|null $parent
  * @method static ItemFactory factory(...$parameters)
  * @method static Builder|Item newModelQuery()
@@ -50,6 +54,15 @@ class Item extends Model
      * @var string
      */
     protected $table = 'collectible_items';
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'name',
+    ];
 
     /**
      * The attributes that should be cast to native types.
@@ -78,5 +91,16 @@ class Item extends Model
     public function collectible(): BelongsTo
     {
         return $this->belongsTo(Collectible::class);
+    }
+
+    public function fields(): HasManyThrough
+    {
+        return $this->hasManyThrough(
+            Field::class,
+            Collectible::class,
+            'id',
+            'collectible_id',
+            'collectible_id'
+        )->where('entity_type', '=', 'item');
     }
 }
