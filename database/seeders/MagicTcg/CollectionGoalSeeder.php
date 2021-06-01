@@ -6,6 +6,7 @@ use App\Criteria\Comparison\Boolean;
 use App\Criteria\Comparison\Number;
 use App\Criteria\Comparison\Text;
 use App\Models\Collection;
+use Database\Seeders\CollectibleSeeder;
 use Illuminate\Database\Seeder;
 
 class CollectionGoalSeeder extends Seeder
@@ -18,7 +19,7 @@ class CollectionGoalSeeder extends Seeder
      */
     public function run(): void
     {
-        $collection = Collection::firstOrFail();
+        $collection = Collection::where('name', 'LIKE', CollectibleSeeder::MAGIC_NAME.'%')->firstOrFail();
 
         Collection\Goal::factory()->create([
             'collection_id' => $collection,

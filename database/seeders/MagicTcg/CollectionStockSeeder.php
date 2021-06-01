@@ -4,6 +4,7 @@ namespace Database\Seeders\MagicTcg;
 
 use App\Models\Collectible;
 use App\Models\Collection;
+use Database\Seeders\CollectibleSeeder;
 use Illuminate\Database\Seeder;
 
 class CollectionStockSeeder extends Seeder
@@ -16,7 +17,8 @@ class CollectionStockSeeder extends Seeder
      */
     public function run(): void
     {
-        $collection = Collection::firstOrFail();
+        $collection = Collection::where('name', 'LIKE', CollectibleSeeder::MAGIC_NAME.'%')->firstOrFail();
+
         $stockItems = [
             ['Al-abara\'s Carpet', 'Legends', []],
             ['Eureka', 'Legends', ['language' => 'it']],
