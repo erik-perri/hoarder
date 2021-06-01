@@ -48,6 +48,5 @@ return [
     'item.messages.save_success' => 'Item saved.',
 
     'item.messages.name_required' => 'Name is required.',
-    'item.messages.name_unique' => 'This item already exists.',
 
 ];

@@ -7,7 +7,6 @@ use App\Models\Collectible;
 use App\Models\Collectible\Item;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\Rule;
 
 class ItemEditRequest extends FormRequest
 {
@@ -44,15 +43,7 @@ class ItemEditRequest extends FormRequest
         $ruleGroups[] = [
             'name' => [
                 'required',
-                Rule::unique(Item::class, 'name')->where(function (\Illuminate\Database\Query\Builder $query) {
-                    $item = $this->route('item');
-                    if ($item) {
-                        $query->where('id', '!=', $item->id);
-                    }
-
-                    return $query->where('collectible_id', $this->route('collectible')->id)
-                                 ->where('category_id', $this->route('category')->id);
-                }),
+                // TODO Should item name uniqueness be a collectible specific option?
             ],
         ];
 
@@ -77,7 +68,6 @@ class ItemEditRequest extends FormRequest
         // TODO Figure out how to handle field_values messages
         return [
             'name.required' => __('collectible.item.messages.name_required'),
-            'name.unique' => __('collectible.item.messages.name_unique'),
         ];
     }
 }
