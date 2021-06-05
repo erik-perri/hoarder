@@ -8,6 +8,7 @@
       :id="id"
       :name="name"
       :value="value"
+      :disabled="disabled"
       v-bind:value="value"
       v-on:input="$emit('input', $event.target.value)"
     />
@@ -33,6 +34,7 @@ export default Vue.extend({
       type: String,
       required: true,
     },
+    disabled: Boolean,
     label: String,
     errors: Array,
   },

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\ForgotPasswordRequest;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Password;
 
 class ForgotPasswordController extends Controller
@@ -24,9 +25,9 @@ class ForgotPasswordController extends Controller
      * Handle an incoming password reset link request.
      *
      * @param ForgotPasswordRequest $request
-     * @return RedirectResponse
+     * @return RedirectResponse|Response
      */
-    public function store(ForgotPasswordRequest $request): RedirectResponse
+    public function store(ForgotPasswordRequest $request)
     {
         // We will send the password reset link to this user. Once we have attempted
         // to send the link, we will examine the response then see the message we
@@ -34,6 +35,20 @@ class ForgotPasswordController extends Controller
         $status = Password::sendResetLink(
             $request->only('email')
         );
+
+        if ($request->expectsJson()) {
+            if ($status === Password::RESET_LINK_SENT) {
+                return response([
+                    'status' => 'success',
+                    'message' => __($status),
+                ]);
+            }
+
+            return response([
+                'status' => 'fail',
+                'errors' => ['email' => [__($status)]],
+            ], 422);
+        }
 
         return $status === Password::RESET_LINK_SENT
             ? back()->with('status', __($status))

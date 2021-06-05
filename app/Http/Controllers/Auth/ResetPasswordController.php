@@ -8,6 +8,7 @@ use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
@@ -29,9 +30,9 @@ class ResetPasswordController extends Controller
      * Handle an incoming new password request.
      *
      * @param ResetPasswordRequest $request
-     * @return RedirectResponse
+     * @return RedirectResponse|Response
      */
-    public function store(ResetPasswordRequest $request): RedirectResponse
+    public function store(ResetPasswordRequest $request)
     {
         // Here we will attempt to reset the user's password. If it is successful we
         // will update the password on an actual user model and persist it to the
@@ -47,6 +48,23 @@ class ResetPasswordController extends Controller
                 event(new PasswordReset($user));
             }
         );
+
+        if ($request->expectsJson()) {
+            if ($status === Password::PASSWORD_RESET) {
+                return response([
+                    'status' => 'success',
+                    'message' => __($status),
+                    'data' => [
+                        'redirect' => route('login', [], false),
+                    ],
+                ]);
+            }
+
+            return response([
+                'status' => 'fail',
+                'errors' => ['email' => [__($status)]],
+            ], 422);
+        }
 
         // If the password was successfully reset, we will redirect the user back to
         // the application's home authenticated view. If there is an error we can

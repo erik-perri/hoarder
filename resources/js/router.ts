@@ -2,9 +2,11 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import {
   ErrorPage404,
+  ForgotPasswordPage,
   HomePage,
   LoginPage,
   RegisterPage,
+  ResetPasswordPage,
   VerifyEmailPage,
 } from './pages';
 import { BaseLayout } from './layouts';
@@ -33,6 +35,14 @@ export default new VueRouter({
         {
           path: 'verify-email',
           component: VerifyEmailPage,
+        },
+        {
+          path: 'forgot-password',
+          component: ForgotPasswordPage,
+        },
+        {
+          path: 'reset-password/:token',
+          component: ResetPasswordPage,
         },
         {
           path: '*',

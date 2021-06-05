@@ -80,3 +80,28 @@ export async function registerUser(
       return error.response?.data as UserApiFailure;
     });
 }
+
+export interface ResetPasswordSuccess {
+  redirect: string;
+}
+
+export async function resetPassword(
+  email: string,
+  password: string,
+  password_confirmation: string,
+  token: string
+): Promise<ResetPasswordSuccess | UserApiFailure> {
+  return await axios
+    .post('/reset-password', {
+      email,
+      password,
+      password_confirmation,
+      token,
+    })
+    .then((response: AxiosResponse<ApiResponse<RegisterSuccess>>) => {
+      return response.data.data as ResetPasswordSuccess;
+    })
+    .catch((error: AxiosError<FormErrors>) => {
+      return error.response?.data as UserApiFailure;
+    });
+}
