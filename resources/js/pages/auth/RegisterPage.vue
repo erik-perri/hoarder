@@ -1,11 +1,19 @@
 <template>
   <div>
-    <h2>Login</h2>
+    <h2>Register</h2>
 
-    <form method="post" id="login-form">
+    <form method="post" id="register-form">
       <div v-if="message">
         {{ message }}
       </div>
+
+      <TextInput
+        id="name"
+        name="name"
+        label="Display name"
+        v-model="name"
+        :errors="errors.name"
+      />
 
       <EmailInput
         id="email"
@@ -23,19 +31,19 @@
         :errors="errors.password"
       />
 
-      <CheckboxInput
-        id="remember"
-        name="remember"
-        label="Remember me"
-        v-model="remember"
-        :errors="errors.remember"
+      <PasswordInput
+        id="password_confirmation"
+        name="password_confirmation"
+        label="Confirm password"
+        v-model="password_confirmation"
+        :errors="errors.password_confirmation"
       />
 
       <div>
-        <router-link to="/forgot-password">Forgot your password?</router-link>
+        <router-link to="/login">Already registered?</router-link>
 
         <button type="submit" :disabled="loading" @click.prevent="submit">
-          Login
+          Register
         </button>
       </div>
     </form>
@@ -44,11 +52,21 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { loginUser } from '../api/user';
-import { CheckboxInput, EmailInput, PasswordInput } from '../components/Forms';
+import {
+  CheckboxInput,
+  EmailInput,
+  PasswordInput,
+  TextInput,
+} from '../../components/Forms';
+import { registerUser } from '../../api/user';
 
 export default Vue.extend({
-  components: { CheckboxInput, PasswordInput, EmailInput },
+  components: {
+    CheckboxInput,
+    EmailInput,
+    PasswordInput,
+    TextInput,
+  },
   created() {
     if (this.$store.getters['auth/isLoggedIn']) {
       this.redirectToHome();
@@ -60,9 +78,10 @@ export default Vue.extend({
       message: undefined as string | undefined,
       errors: {},
 
+      name: '',
       email: '',
       password: '',
-      remember: false,
+      password_confirmation: '',
     };
   },
   methods: {
@@ -74,17 +93,16 @@ export default Vue.extend({
       this.errors = {};
       this.loading = true;
 
-      // TODO Should this be calling the store action instead?
-      //      That is what we initially implemented but found the form error handling even more awkward than it is here.
-      const response = await loginUser(
+      const response = await registerUser(
+        this.name,
         this.email,
         this.password,
-        this.remember
+        this.password_confirmation
       );
 
       if (response.status === 'success') {
-        this.$store.commit('auth/login', response.data);
-        this.redirectToHome();
+        this.$store.commit('auth/login', response.data?.user);
+        await this.$router.push(response.data?.redirect || '/');
       } else {
         this.message = response.message;
         this.errors = response.errors || {};

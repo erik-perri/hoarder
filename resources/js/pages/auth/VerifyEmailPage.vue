@@ -17,7 +17,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { sendEmailVerification } from '../api/user';
+import { sendEmailVerification } from '../../api/user';
 
 export default Vue.extend({
   data() {

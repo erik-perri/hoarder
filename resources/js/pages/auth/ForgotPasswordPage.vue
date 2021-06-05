@@ -32,8 +32,8 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { EmailInput } from '../components/Forms';
-import { forgotPassword } from '../api/user';
+import { EmailInput } from '../../components/Forms';
+import { forgotPassword } from '../../api/user';
 
 export default Vue.extend({
   components: { EmailInput },
