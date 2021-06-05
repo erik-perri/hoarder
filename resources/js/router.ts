@@ -1,6 +1,12 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import { ErrorPage404, HomePage, LoginPage, RegisterPage } from './pages';
+import {
+  ErrorPage404,
+  HomePage,
+  LoginPage,
+  RegisterPage,
+  VerifyEmailPage,
+} from './pages';
 import { BaseLayout } from './layouts';
 
 Vue.use(VueRouter);
@@ -23,6 +29,10 @@ export default new VueRouter({
         {
           path: 'register',
           component: RegisterPage,
+        },
+        {
+          path: 'verify-email',
+          component: VerifyEmailPage,
         },
         {
           path: '*',

@@ -9,6 +9,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class VerifyEmailController extends Controller
 {
@@ -29,15 +30,29 @@ class VerifyEmailController extends Controller
      * Send a new email verification notification.
      *
      * @param Request $request
-     * @return RedirectResponse
+     * @return RedirectResponse|Response
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request)
     {
         if ($request->user()->hasVerifiedEmail()) {
+            if ($request->expectsJson()) {
+                return response([
+                    'status' => 'success',
+                    'message' => 'Your email is already verified.',
+                ]);
+            }
+
             return redirect()->intended(RouteServiceProvider::HOME);
         }
 
         $request->user()->sendEmailVerificationNotification();
+
+        if ($request->expectsJson()) {
+            return response([
+                'status' => 'success',
+                'message' => __('auth.verification_link_sent'),
+            ]);
+        }
 
         return back()->with('status', __('auth.verification_link_sent'));
     }
