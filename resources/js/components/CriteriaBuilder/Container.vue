@@ -2,7 +2,7 @@
   <div class="criteria-builder">
     <Group
       :conditions="group.group_conditions"
-      :fields="this.fields"
+      :fields="fields"
       :can-delete="false"
       group-type="and"
       @group-changed="groupChanged"

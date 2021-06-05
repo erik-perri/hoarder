@@ -8,7 +8,7 @@
         :id="item.id"
         :group-type="item.group_type"
         :conditions="JSON.parse(JSON.stringify(item.group_conditions))"
-        :fields="this.fields"
+        :fields="fields"
         @group-changed="groupChanged"
         @delete-group="deleteItem(index)"
       />
@@ -16,7 +16,7 @@
       <Condition
         v-else
         :id="item.id"
-        :available-fields="this.fields"
+        :available-fields="fields"
         :start-editing="item.match_field === ''"
         :field="item.match_field"
         :comparison="item.match_comparison"
