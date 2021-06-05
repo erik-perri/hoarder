@@ -59,7 +59,7 @@ import {
   PasswordInput,
   TextInput,
 } from '../components/Forms';
-import { isRegisterSuccess, registerUser } from '../api/user';
+import { isAuthFailure, registerUser } from '../api/user';
 
 export default Vue.extend({
   components: {
@@ -98,11 +98,11 @@ export default Vue.extend({
         this.passwordConfirmation
       );
 
-      if (isRegisterSuccess(response)) {
+      if (isAuthFailure(response)) {
+        this.errors = response.errors;
+      } else {
         this.$store.commit('auth/login', response.user);
         await this.$router.push(response.redirect);
-      } else {
-        this.errors = response.errors;
       }
 
       this.loading = false;

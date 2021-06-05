@@ -6,27 +6,23 @@ export interface User {
   email: string;
 }
 
-export interface LoginSuccess {
-  user: User;
-}
-
-export interface LoginFailure {
+export interface UserApiFailure {
   errors: FormErrors;
 }
 
-export function isLoginSuccess(response: any): response is LoginSuccess {
-  return !!(response as LoginSuccess).user;
+export function isAuthFailure(response: any): response is UserApiFailure {
+  return !!(response as UserApiFailure).errors;
 }
 
-export function isLoginFailure(response: any): response is LoginFailure {
-  return !!(response as LoginFailure).errors;
+export interface LoginSuccess {
+  user: User;
 }
 
 export async function loginUser(
   email: string,
   password: string,
   rememberMe: boolean
-): Promise<LoginSuccess | LoginFailure> {
+): Promise<LoginSuccess | UserApiFailure> {
   return await axios
     .post('/login', {
       email,
@@ -42,7 +38,7 @@ export async function loginUser(
         throw error;
       }
 
-      return { errors } as LoginFailure;
+      return { errors } as UserApiFailure;
     });
 }
 
@@ -72,24 +68,12 @@ export interface RegisterSuccess {
   redirect: string;
 }
 
-export interface RegisterFailure {
-  errors: FormErrors;
-}
-
-export function isRegisterSuccess(response: any): response is RegisterSuccess {
-  return !!(response as RegisterSuccess).user;
-}
-
-export function isRegisterFailure(response: any): response is RegisterFailure {
-  return !!(response as RegisterFailure).errors;
-}
-
 export async function registerUser(
   displayName: string,
   email: string,
   password: string,
   passwordConfirmation: string
-): Promise<RegisterSuccess | RegisterFailure> {
+): Promise<RegisterSuccess | UserApiFailure> {
   return await axios
     .post('/register', {
       name: displayName,
@@ -106,6 +90,6 @@ export async function registerUser(
         throw error;
       }
 
-      return { errors } as RegisterFailure;
+      return { errors } as UserApiFailure;
     });
 }

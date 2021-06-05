@@ -45,7 +45,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { FormErrors } from '../api/types';
-import { isLoginSuccess, loginUser } from '../api/user';
+import { isAuthFailure, loginUser } from '../api/user';
 import { CheckboxInput, EmailInput, PasswordInput } from '../components/Forms';
 
 export default Vue.extend({
@@ -80,11 +80,11 @@ export default Vue.extend({
         this.remember
       );
 
-      if (isLoginSuccess(response)) {
+      if (isAuthFailure(response)) {
+        this.errors = response.errors;
+      } else {
         this.$store.commit('auth/login', response.user);
         this.redirectToHome();
-      } else {
-        this.errors = response.errors;
       }
 
       this.loading = false;

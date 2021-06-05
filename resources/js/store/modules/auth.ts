@@ -2,7 +2,7 @@ import { ActionContext } from 'vuex';
 import { AuthState, State as RootState } from '../state';
 import {
   getLoggedInUser,
-  isLoginSuccess,
+  isAuthFailure,
   loginUser,
   logoutUser,
   User,
@@ -47,10 +47,10 @@ export default {
         payload.rememberMe
       );
 
-      if (isLoginSuccess(loginResponse)) {
-        context.commit('login', loginResponse.user);
-      } else {
+      if (isAuthFailure(loginResponse)) {
         context.commit('logout');
+      } else {
+        context.commit('login', loginResponse.user);
       }
     },
     async tryLogout(context: AuthContext) {
