@@ -38,7 +38,7 @@ export default Vue.extend({
         })
         .catch((error: AxiosError) => {
           if (error.response?.status === 429) {
-            this.message = 'Please wait before trying again.';
+            this.message = 'Please wait before retrying.';
           } else {
             this.message = error.message;
           }
