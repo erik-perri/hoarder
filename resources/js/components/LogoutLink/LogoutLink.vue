@@ -1,5 +1,5 @@
 <template>
-  <a href="#" @click.prevent="logout">
+  <a class="logout" href="#" @click.prevent="logout">
     <slot></slot>
   </a>
 </template>

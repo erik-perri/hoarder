@@ -19,7 +19,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import LogoutLink from '../components/LogoutLink/LogoutLink.vue';
+import { LogoutLink } from '../components/LogoutLink';
 
 export default Vue.extend({
   components: { LogoutLink },
