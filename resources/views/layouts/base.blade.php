@@ -11,7 +11,7 @@
 <body>
 
 <div id="app">
-    @yield('content')
+    <router-view></router-view>
 </div>
 
 @section('scripts')
