@@ -34,7 +34,7 @@
       <div>
         <router-link to="/forgot-password">Forgot your password?</router-link>
 
-        <button type="submit" :disabled="loading" @click.prevent="login">
+        <button type="submit" :disabled="loading" @click.prevent="submit">
           Login
         </button>
       </div>
@@ -69,7 +69,7 @@ export default Vue.extend({
     redirectToHome() {
       this.$router.push('/');
     },
-    async login() {
+    async submit() {
       this.loading = true;
 
       // TODO Should this be calling the store action instead?

@@ -42,7 +42,7 @@
       <div>
         <router-link to="/login">Already registered?</router-link>
 
-        <button type="submit" :disabled="loading" @click.prevent="register">
+        <button type="submit" :disabled="loading" @click.prevent="submit">
           Register
         </button>
       </div>
@@ -88,7 +88,7 @@ export default Vue.extend({
     redirectToHome() {
       this.$router.push('/');
     },
-    async register() {
+    async submit() {
       this.loading = true;
 
       const response = await registerUser(

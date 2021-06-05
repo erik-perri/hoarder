@@ -8,7 +8,7 @@
       receive the email, we will gladly send you another.
     </p>
     <form>
-      <button type="submit" :disabled="loading" @click.prevent="resend">
+      <button type="submit" :disabled="loading" @click.prevent="submit">
         Resend Verification Email
       </button>
     </form>
@@ -28,7 +28,7 @@ export default Vue.extend({
     };
   },
   methods: {
-    async resend() {
+    async submit() {
       this.loading = true;
 
       await axios
