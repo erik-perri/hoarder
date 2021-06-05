@@ -42,7 +42,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import Vue from 'vue';
 import { v4 as uuid } from 'uuid';
 import {
   CriteriaCondition,
@@ -56,7 +56,7 @@ import Condition from './Condition.vue';
 
 let highestGroupId = 0;
 
-export default defineComponent({
+export default Vue.extend({
   components: { Condition },
   props: {
     id: String,
@@ -68,7 +68,6 @@ export default defineComponent({
       default: true,
     },
   },
-  emits: ['groupChanged', 'deleteGroup'],
   data() {
     return {
       instanceId: highestGroupId++,

@@ -36,10 +36,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import Vue from 'vue';
 import BaseCondition from './BaseCondition.vue';
 
-export default defineComponent({
+export default Vue.extend({
   extends: BaseCondition,
   data() {
     return {

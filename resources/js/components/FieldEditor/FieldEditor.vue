@@ -28,12 +28,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import Vue from 'vue';
 import { v4 as uuid } from 'uuid';
 import FieldInput from './FieldInput.vue';
 import { FieldEditorItem, FieldEditorItems } from './types';
 
-export default defineComponent({
+export default Vue.extend({
   components: { FieldInput },
   data() {
     return {

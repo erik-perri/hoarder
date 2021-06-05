@@ -30,7 +30,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import Vue from 'vue';
 import { CollectibleField } from '../../types';
 import { ConditionOptions } from './types';
 import BooleanCondition from './Condition/BooleanCondition.vue';
@@ -39,7 +39,7 @@ import NumberCondition from './Condition/NumberCondition.vue';
 import TagCondition from './Condition/TagCondition.vue';
 import TextCondition from './Condition/TextCondition.vue';
 
-export default defineComponent({
+export default Vue.extend({
   components: {
     BooleanCondition,
     DateCondition,
@@ -55,7 +55,6 @@ export default defineComponent({
     comparison: String,
     value: String,
   },
-  emits: ['conditionChanged', 'deleteItem'],
   data() {
     return {
       editing: this.startEditing || false,

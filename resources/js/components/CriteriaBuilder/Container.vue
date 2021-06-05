@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import Vue from 'vue';
 import { v4 as uuid } from 'uuid';
 import Group from './Group.vue';
 import {
@@ -22,7 +22,7 @@ import {
   isCriteriaGroup,
 } from './types';
 
-export default defineComponent({
+export default Vue.extend({
   components: { Group },
   props: {
     inputName: {

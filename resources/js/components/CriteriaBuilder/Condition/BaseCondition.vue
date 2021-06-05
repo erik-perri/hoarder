@@ -1,9 +1,8 @@
 <script lang="ts">
-import { defineComponent } from 'vue';
+import Vue from 'vue';
 import { v4 as uuid } from 'uuid';
 
-export default defineComponent({
-  abstract: true,
+export default Vue.extend({
   props: {
     editing: Boolean,
     comparison: {
@@ -15,7 +14,6 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: ['save'],
   data() {
     return {
       id: uuid(),
