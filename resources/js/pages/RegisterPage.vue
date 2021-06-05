@@ -12,7 +12,7 @@
         name="name"
         label="Display name"
         v-model="name"
-        :errors="getFormErrors('name')"
+        :errors="errors.errors.name"
       />
 
       <EmailInput
@@ -20,7 +20,7 @@
         name="email"
         label="Email"
         v-model="email"
-        :errors="getFormErrors('email')"
+        :errors="errors.errors.email"
       />
 
       <PasswordInput
@@ -28,7 +28,7 @@
         name="password"
         label="Password"
         v-model="password"
-        :errors="getFormErrors('password')"
+        :errors="errors.errors.password"
       />
 
       <PasswordInput
@@ -36,7 +36,7 @@
         name="passwordConfirmation"
         label="Confirm password"
         v-model="passwordConfirmation"
-        :errors="getFormErrors('passwordConfirmation')"
+        :errors="errors.errors.password_confirmation"
       />
 
       <div>
@@ -76,7 +76,7 @@ export default Vue.extend({
   data() {
     return {
       loading: false,
-      errors: {} as FormErrors,
+      errors: { errors: {} } as FormErrors,
 
       name: '',
       email: '',
@@ -87,12 +87,6 @@ export default Vue.extend({
   methods: {
     redirectToHome() {
       this.$router.push('/');
-    },
-    getFormErrors(field: string): string[] | null {
-      if (!this.errors || !this.errors.errors) {
-        return null;
-      }
-      return this.errors.errors[field];
     },
     async register() {
       this.loading = true;
