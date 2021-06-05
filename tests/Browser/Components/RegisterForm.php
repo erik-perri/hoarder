@@ -14,7 +14,7 @@ class RegisterForm extends BaseComponent
      */
     public function selector(): string
     {
-        return 'form[action="'.route('register').'"]';
+        return '#register-form';
     }
 
     /**
@@ -51,7 +51,7 @@ class RegisterForm extends BaseComponent
      * @param string $password
      * @param string|null $passwordConfirmation
      */
-    public function submitForm(
+    public function fillForm(
         Browser $browser,
         string $name,
         string $email,
@@ -62,7 +62,5 @@ class RegisterForm extends BaseComponent
                 ->type('@email', $email)
                 ->type('@password', $password)
                 ->type('@password-confirmation', $passwordConfirmation ?? $password);
-
-        $browser->click('@submit');
     }
 }

@@ -8,6 +8,9 @@ use Laravel\Dusk\Browser;
 use Tests\Browser\Pages\HomePage;
 use Tests\DuskTestCase;
 
+/**
+ * @group Home
+ */
 class HomeTest extends DuskTestCase
 {
     use DatabaseMigrations;
@@ -27,6 +30,7 @@ class HomeTest extends DuskTestCase
 
             $browser->loginAs($user)
                     ->visit(new HomePage)
+                    ->waitFor('@logout-link', 2)
                     ->assertMissing('@login-link')
                     ->assertMissing('@register-link')
                     ->assertPresent('@logout-link')

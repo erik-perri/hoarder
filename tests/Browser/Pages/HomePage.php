@@ -35,9 +35,9 @@ class HomePage extends Page
     public function elements(): array
     {
         return [
-            '@login-link' => 'a[href="'.route('login').'"]',
-            '@register-link' => 'a[href="'.route('register').'"]',
-            '@logout-link' => 'a[href="'.route('logout').'"]',
+            '@login-link' => 'a[href="'.route('login', [], false).'"]',
+            '@register-link' => 'a[href="'.route('register', [], false).'"]',
+            '@logout-link' => 'a.logout',
         ];
     }
 }

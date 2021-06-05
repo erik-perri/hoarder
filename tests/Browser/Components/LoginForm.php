@@ -14,7 +14,7 @@ class LoginForm extends BaseComponent
      */
     public function selector(): string
     {
-        return 'form[action="'.route('login').'"]';
+        return '#login-form';
     }
 
     /**
@@ -49,7 +49,7 @@ class LoginForm extends BaseComponent
      * @param string $password
      * @param bool $remember
      */
-    public function submitForm(Browser $browser, string $email, string $password, bool $remember = false): void
+    public function fillForm(Browser $browser, string $email, string $password, bool $remember = false): void
     {
         $browser->type('@email', $email)
                 ->type('@password', $password);
@@ -57,7 +57,5 @@ class LoginForm extends BaseComponent
         if ($remember) {
             $browser->click('@remember-me');
         }
-
-        $browser->click('@submit');
     }
 }

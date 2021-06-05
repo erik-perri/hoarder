@@ -34,6 +34,8 @@ class LoginPage extends Page
      */
     public function elements(): array
     {
-        return [];
+        return [
+            '@login-form' => 'form#login-form',
+        ];
     }
 }

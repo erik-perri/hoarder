@@ -11,6 +11,9 @@ use Tests\Browser\Pages\VerifyEmailPage;
 use Tests\DuskTestCase;
 use Tests\UsesMailhog;
 
+/**
+ * @group Auth
+ */
 class RegisterTest extends DuskTestCase
 {
     use DatabaseMigrations;
@@ -26,10 +29,14 @@ class RegisterTest extends DuskTestCase
             $user = User::factory()->make();
 
             $browser->visit(new RegisterPage)
+                    ->waitFor('#register-form', 2)
                     ->assertSee(__('auth.title.register'))
+                    // TODO Same fixes needed as LoginTest
                     ->with(new RegisterForm, function ($browser) use ($user) {
-                        return $browser->submitForm($user->name, $user->email, 'password');
+                        return $browser->fillForm($user->name, $user->email, 'password');
                     })
+                    ->click('#register-form button[type="submit"]')
+                    ->waitForText(__('auth.verify_email_message'), 2)
                     ->on(new VerifyEmailPage)
                     ->assertSee(__('auth.verify_email_message'));
 
@@ -37,7 +44,7 @@ class RegisterTest extends DuskTestCase
         });
     }
 
-    /**
+    /*
      * @throws \Throwable
      */
     public function testRegisterFailsWithMismatchedPassword(): void
@@ -49,8 +56,10 @@ class RegisterTest extends DuskTestCase
             $browser->visit(new RegisterPage)
                     ->assertSee(__('auth.title.register'))
                     ->with(new RegisterForm, function ($browser) use ($user) {
-                        return $browser->submitForm($user->name, $user->email, 'password', 'other');
+                        return $browser->fillForm($user->name, $user->email, 'password', 'other');
                     })
+                    ->click('#register-form button[type="submit"]')
+                    ->waitForText(__('auth.password_match'), 2)
                     ->on(new RegisterPage)
                     ->assertSee(__('auth.password_match'));
         });
