@@ -38,11 +38,16 @@ export default Vue.extend({
       required: true,
     },
   },
+  created() {
+    this.group = this.addIdsToGroup({
+      group_conditions: this.conditions as CriteriaConditions,
+    } as CriteriaGroup);
+  },
   data() {
     return {
-      group: this.addIdsToGroup({
-        group_conditions: this.conditions as CriteriaConditions,
-      }),
+      group: {
+        group_conditions: [] as CriteriaConditions,
+      } as CriteriaGroup,
       criteria: this.conditions,
     };
   },
