@@ -80,9 +80,6 @@ export default Vue.extend({
     };
   },
   methods: {
-    redirectToHome() {
-      this.$router.push('/');
-    },
     async submit() {
       this.message = undefined;
       this.errors = {};
@@ -97,7 +94,7 @@ export default Vue.extend({
 
       if (response.status === 'success') {
         this.$store.commit('auth/login', response.data?.user);
-        await this.$router.push(response.data?.redirect || '/');
+        await this.$router.push(response.data?.redirect || { name: 'home' });
       } else {
         this.message = response.message;
         this.errors = response.errors || {};

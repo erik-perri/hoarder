@@ -77,7 +77,7 @@ export default Vue.extend({
 
       if (response.status === 'success') {
         // TODO Figure out and add flash message
-        await this.$router.push(response.data?.redirect || '/');
+        await this.$router.push(response.data?.redirect || { name: 'home' });
       } else {
         this.message = response.message;
         this.errors = response.errors || {};
