@@ -1,11 +1,100 @@
 <template>
   <div>
     <h2>Login</h2>
+
+    <form>
+      <div v-if="errors.message">
+        {{ errors.message }}
+      </div>
+
+      <EmailInput
+        id="email"
+        name="email"
+        label="Email"
+        v-model="email"
+        :errors="getFormErrors('email')"
+      />
+
+      <PasswordInput
+        id="password"
+        name="password"
+        label="Password"
+        v-model="password"
+        :errors="getFormErrors('password')"
+      />
+
+      <CheckboxInput
+        id="remember"
+        name="remember"
+        label="Remember me"
+        v-model="remember"
+        :errors="getFormErrors('remember')"
+      />
+
+      <div>
+        <router-link to="/forgot-password">Forgot your password?</router-link>
+
+        <button type="submit" :disabled="loading" @click.prevent="login">
+          Login
+        </button>
+      </div>
+    </form>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
+import { FormErrors } from '../api/types';
+import { isLoginSuccess, loginUser } from '../api/user';
+import { CheckboxInput, EmailInput, PasswordInput } from '../components/Forms';
 
-export default Vue.extend({});
+export default Vue.extend({
+  components: { CheckboxInput, PasswordInput, EmailInput },
+  created() {
+    if (this.$store.getters['auth/isLoggedIn']) {
+      this.redirectToHome();
+    }
+  },
+  data() {
+    return {
+      loading: false,
+      errors: {} as FormErrors,
+
+      email: '',
+      password: '',
+      remember: false,
+    };
+  },
+  methods: {
+    redirectToHome() {
+      this.$router.push('/');
+    },
+    getFormErrors(field: string): string[] | null {
+      if (!this.errors || !this.errors.errors) {
+        return null;
+      }
+      return this.errors.errors[field];
+    },
+    async login() {
+      this.loading = true;
+
+      // TODO Should this be calling the store action instead?
+      //      That is what we initially implemented but found the form error handling even more awkward than it is here.
+      const response = await loginUser(
+        this.email,
+        this.password,
+        this.remember
+      );
+
+      if (isLoginSuccess(response)) {
+        this.$store.commit('auth/login', response.user);
+        this.redirectToHome();
+      } else {
+        this.errors = response.errors;
+      }
+
+      this.loading = false;
+    },
+  },
+});
 </script>
