@@ -66,3 +66,46 @@ export async function getLoggedInUser(): Promise<User | null> {
       return null;
     });
 }
+
+export interface RegisterSuccess {
+  user: User;
+  redirect: string;
+}
+
+export interface RegisterFailure {
+  errors: FormErrors;
+}
+
+export function isRegisterSuccess(response: any): response is RegisterSuccess {
+  return !!(response as RegisterSuccess).user;
+}
+
+export function isRegisterFailure(response: any): response is RegisterFailure {
+  return !!(response as RegisterFailure).errors;
+}
+
+export async function registerUser(
+  displayName: string,
+  email: string,
+  password: string,
+  passwordConfirmation: string
+): Promise<RegisterSuccess | RegisterFailure> {
+  return await axios
+    .post('/register', {
+      name: displayName,
+      email,
+      password,
+      password_confirmation: passwordConfirmation,
+    })
+    .then((response: AxiosResponse<ApiResponse<RegisterSuccess>>) => {
+      return response.data.data as RegisterSuccess;
+    })
+    .catch((error: AxiosError<FormErrors>) => {
+      const errors = error.response?.data;
+      if (!errors) {
+        throw error;
+      }
+
+      return { errors } as RegisterFailure;
+    });
+}

@@ -1,0 +1,118 @@
+<template>
+  <div>
+    <h2>Register</h2>
+
+    <form>
+      <div v-if="errors.message">
+        {{ errors.message }}
+      </div>
+
+      <TextInput
+        id="name"
+        name="name"
+        label="Display name"
+        v-model="name"
+        :errors="getFormErrors('name')"
+      />
+
+      <EmailInput
+        id="email"
+        name="email"
+        label="Email"
+        v-model="email"
+        :errors="getFormErrors('email')"
+      />
+
+      <PasswordInput
+        id="password"
+        name="password"
+        label="Password"
+        v-model="password"
+        :errors="getFormErrors('password')"
+      />
+
+      <PasswordInput
+        id="passwordConfirmation"
+        name="passwordConfirmation"
+        label="Confirm password"
+        v-model="passwordConfirmation"
+        :errors="getFormErrors('passwordConfirmation')"
+      />
+
+      <div>
+        <router-link to="/login">Already registered?</router-link>
+
+        <button type="submit" :disabled="loading" @click.prevent="register">
+          Register
+        </button>
+      </div>
+    </form>
+  </div>
+</template>
+
+<script lang="ts">
+import Vue from 'vue';
+import { FormErrors } from '../api/types';
+import {
+  CheckboxInput,
+  EmailInput,
+  PasswordInput,
+  TextInput,
+} from '../components/Forms';
+import { isRegisterSuccess, registerUser } from '../api/user';
+
+export default Vue.extend({
+  components: {
+    CheckboxInput,
+    EmailInput,
+    PasswordInput,
+    TextInput,
+  },
+  created() {
+    if (this.$store.getters['auth/isLoggedIn']) {
+      this.redirectToHome();
+    }
+  },
+  data() {
+    return {
+      loading: false,
+      errors: {} as FormErrors,
+
+      name: '',
+      email: '',
+      password: '',
+      passwordConfirmation: '',
+    };
+  },
+  methods: {
+    redirectToHome() {
+      this.$router.push('/');
+    },
+    getFormErrors(field: string): string[] | null {
+      if (!this.errors || !this.errors.errors) {
+        return null;
+      }
+      return this.errors.errors[field];
+    },
+    async register() {
+      this.loading = true;
+
+      const response = await registerUser(
+        this.name,
+        this.email,
+        this.password,
+        this.passwordConfirmation
+      );
+
+      if (isRegisterSuccess(response)) {
+        this.$store.commit('auth/login', response.user);
+        await this.$router.push(response.redirect);
+      } else {
+        this.errors = response.errors;
+      }
+
+      this.loading = false;
+    },
+  },
+});
+</script>

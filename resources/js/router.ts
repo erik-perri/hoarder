@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import { ErrorPage404, HomePage, LoginPage } from './pages';
+import { ErrorPage404, HomePage, LoginPage, RegisterPage } from './pages';
 import { BaseLayout } from './layouts';
 
 Vue.use(VueRouter);
@@ -19,6 +19,10 @@ export default new VueRouter({
         {
           path: 'login',
           component: LoginPage,
+        },
+        {
+          path: 'register',
+          component: RegisterPage,
         },
         {
           path: '*',

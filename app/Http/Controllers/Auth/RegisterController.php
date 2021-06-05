@@ -10,6 +10,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -29,9 +30,9 @@ class RegisterController extends Controller
      * Handle an incoming registration request.
      *
      * @param RegisterRequest $request
-     * @return RedirectResponse
+     * @return RedirectResponse|Response
      */
-    public function store(RegisterRequest $request): RedirectResponse
+    public function store(RegisterRequest $request)
     {
         $user = User::create([
             'name' => $request->name,
@@ -44,8 +45,18 @@ class RegisterController extends Controller
         Auth::login($user);
 
         $redirectTo = $user instanceof MustVerifyEmail
-            ? route('verification.notice')
+            ? route('verification.notice', [], ! $request->expectsJson())
             : RouteServiceProvider::HOME; // @phpstan-ignore-line
+
+        if ($request->expectsJson()) {
+            return response([
+                'status' => 'success',
+                'data' => [
+                    'user' => $user,
+                    'redirect' => $redirectTo,
+                ],
+            ]);
+        }
 
         return redirect($redirectTo);
     }
