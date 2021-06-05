@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\CheckStatusController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -34,3 +35,5 @@ Route::middleware('auth')->group(function () {
          ->name('verification.verify')
          ->middleware(['signed', 'throttle:6,1']);
 });
+
+Route::get('/auth-status', [CheckStatusController::class, 'status'])->name('auth-status');
