@@ -76,7 +76,7 @@ export default Vue.extend({
   },
   methods: {
     deleteGroup() {
-      this.$emit('deleteGroup', this.id);
+      this.$emit('delete-group', this.id);
     },
     addGroup(type: 'or' | 'and') {
       this.items.push({

@@ -83,7 +83,7 @@ export default Vue.extend({
   },
   methods: {
     deleteItem() {
-      this.$emit('deleteItem', this.id);
+      this.$emit('delete-item', this.id);
     },
     emitChanges(changes: Partial<ConditionOptions>) {
       this.options = {
