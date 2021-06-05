@@ -64,14 +64,14 @@ export async function registerUser(
   displayName: string,
   email: string,
   password: string,
-  passwordConfirmation: string
+  password_confirmation: string
 ): Promise<RegisterSuccess | UserApiFailure> {
   return await axios
     .post('/register', {
       name: displayName,
       email,
       password,
-      password_confirmation: passwordConfirmation,
+      password_confirmation,
     })
     .then((response: AxiosResponse<ApiResponse<RegisterSuccess>>) => {
       return response.data.data as RegisterSuccess;

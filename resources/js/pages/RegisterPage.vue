@@ -32,10 +32,10 @@
       />
 
       <PasswordInput
-        id="passwordConfirmation"
-        name="passwordConfirmation"
+        id="password_confirmation"
+        name="password_confirmation"
         label="Confirm password"
-        v-model="passwordConfirmation"
+        v-model="password_confirmation"
         :errors="errors.errors.password_confirmation"
       />
 
@@ -81,7 +81,7 @@ export default Vue.extend({
       name: '',
       email: '',
       password: '',
-      passwordConfirmation: '',
+      password_confirmation: '',
     };
   },
   methods: {
@@ -95,7 +95,7 @@ export default Vue.extend({
         this.name,
         this.email,
         this.password,
-        this.passwordConfirmation
+        this.password_confirmation
       );
 
       if (isAuthFailure(response)) {
