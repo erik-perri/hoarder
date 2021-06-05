@@ -1,5 +1,4 @@
 const mix = require('laravel-mix');
-const webpack = require('webpack');
 
 const {
   WEBPACK_DEV_SERVER_HOST = 'localhost',
@@ -28,12 +27,6 @@ mix
     },
   })
   .webpackConfig({
-    plugins: [
-      new webpack.DefinePlugin({
-        __VUE_OPTIONS_API__: true,
-        __VUE_PROD_DEVTOOLS__: false,
-      }),
-    ],
     devServer: {
       host: WEBPACK_DEV_SERVER_HOST,
       port: WEBPACK_DEV_SERVER_PORT,
