@@ -67,11 +67,6 @@ export default Vue.extend({
     PasswordInput,
     TextInput,
   },
-  created() {
-    if (this.$store.getters['auth/isLoggedIn']) {
-      this.redirectToHome();
-    }
-  },
   data() {
     return {
       loading: false,

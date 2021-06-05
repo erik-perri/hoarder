@@ -21,28 +21,35 @@ export default new VueRouter({
       component: BaseLayout,
       children: [
         {
+          name: 'home',
           path: '',
           component: HomePage,
         },
         {
+          name: 'login',
           path: 'login',
           component: LoginPage,
+          meta: { requiresAuth: false },
         },
         {
           path: 'register',
           component: RegisterPage,
+          meta: { requiresAuth: false },
         },
         {
           path: 'verify-email',
           component: VerifyEmailPage,
+          meta: { requiresAuth: true },
         },
         {
           path: 'forgot-password',
           component: ForgotPasswordPage,
+          meta: { requiresAuth: false },
         },
         {
           path: 'reset-password/:token',
           component: ResetPasswordPage,
+          meta: { requiresAuth: false },
         },
         {
           path: '*',

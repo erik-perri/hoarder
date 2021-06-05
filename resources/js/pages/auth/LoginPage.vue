@@ -53,11 +53,6 @@ import {
 
 export default Vue.extend({
   components: { CheckboxInput, PasswordInput, EmailInput },
-  created() {
-    if (this.$store.getters['auth/isLoggedIn']) {
-      this.redirectToHome();
-    }
-  },
   data() {
     return {
       loading: false,
