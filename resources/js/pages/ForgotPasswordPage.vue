@@ -12,16 +12,13 @@
       <div v-if="message">
         {{ message }}
       </div>
-      <div v-if="errors.message">
-        {{ errors.message }}
-      </div>
 
       <EmailInput
         id="email"
         name="email"
         label="Email"
         v-model="email"
-        :errors="errors.errors.email"
+        :errors="errors.email"
       />
 
       <div>
@@ -36,45 +33,32 @@
 <script lang="ts">
 import Vue from 'vue';
 import { EmailInput } from '../components/Forms';
-import { ApiResponse, FormErrors } from '../api/types';
-import axios, { AxiosError, AxiosResponse } from 'axios';
+import { forgotPassword } from '../api/user';
 
 export default Vue.extend({
   components: { EmailInput },
   data() {
     return {
       loading: false,
-      message: '',
-      errors: { errors: {} } as FormErrors,
+      message: undefined as string | undefined,
+      errors: {},
 
       email: '',
     };
   },
   methods: {
     async submit() {
+      this.message = undefined;
+      this.errors = {};
       this.loading = true;
 
-      await axios
-        .post('/forgot-password', {
-          email: this.email,
-        })
-        .then((response: AxiosResponse<ApiResponse>) => {
-          if (response.data.message) {
-            this.message = response.data.message;
-          }
-        })
-        .catch((error: AxiosError<FormErrors>) => {
-          if (error.response?.status === 429) {
-            this.errors = {
-              message: 'Please wait before retrying.',
-              errors: {},
-            };
-          } else if (error.response?.data) {
-            this.errors = error.response?.data;
-          } else {
-            this.message = 'Unknown error.';
-          }
-        });
+      const response = await forgotPassword(this.email);
+      if (response.status === 'success') {
+        this.message = response.message;
+      } else {
+        this.message = response.message;
+        this.errors = response.errors || {};
+      }
 
       this.loading = false;
     },

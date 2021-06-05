@@ -3,11 +3,11 @@
     <h2>Reset Password</h2>
 
     <form method="post" id="reset-password">
-      <div v-if="errors.message">
-        {{ errors.message }}
+      <div v-if="message">
+        {{ message }}
       </div>
-      <div v-if="errors.errors.token">
-        {{ errors.errors.token.join(' ') }}
+      <div v-if="errors.token">
+        {{ errors.token.join(' ') }}
       </div>
 
       <EmailInput
@@ -16,7 +16,7 @@
         label="Email"
         v-model="email"
         :disabled="true"
-        :errors="errors.errors.email"
+        :errors="errors.email"
       />
 
       <PasswordInput
@@ -24,7 +24,7 @@
         name="password"
         label="Password"
         v-model="password"
-        :errors="errors.errors.password"
+        :errors="errors.password"
       />
 
       <PasswordInput
@@ -32,7 +32,7 @@
         name="password_confirmation"
         label="Confirm password"
         v-model="password_confirmation"
-        :errors="errors.errors.password_confirmation"
+        :errors="errors.password_confirmation"
       />
 
       <div>
@@ -47,16 +47,15 @@
 <script lang="ts">
 import Vue from 'vue';
 import { EmailInput, PasswordInput } from '../components/Forms';
-import { FormErrors } from '../api/types';
-import { isAuthFailure, resetPassword } from '../api/user';
+import { resetPassword } from '../api/user';
 
 export default Vue.extend({
   components: { PasswordInput, EmailInput },
   data() {
     return {
       loading: false,
-      message: '',
-      errors: { errors: {} } as FormErrors,
+      message: undefined as string | undefined,
+      errors: {},
 
       email: this.$route.query.email as string,
       password: '',
@@ -65,6 +64,8 @@ export default Vue.extend({
   },
   methods: {
     async submit() {
+      this.message = undefined;
+      this.errors = {};
       this.loading = true;
 
       const response = await resetPassword(
@@ -74,11 +75,12 @@ export default Vue.extend({
         this.$route.params.token
       );
 
-      if (isAuthFailure(response)) {
-        this.errors = response;
-      } else {
+      if (response.status === 'success') {
         // TODO Figure out and add flash message
-        await this.$router.push(response.redirect);
+        await this.$router.push(response.data?.redirect || '/');
+      } else {
+        this.message = response.message;
+        this.errors = response.errors || {};
       }
 
       this.loading = false;

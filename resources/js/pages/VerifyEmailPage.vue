@@ -17,8 +17,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { ApiResponse } from '../api/types';
-import axios, { AxiosError, AxiosResponse } from 'axios';
+import { sendEmailVerification } from '../api/user';
 
 export default Vue.extend({
   data() {
@@ -29,20 +28,11 @@ export default Vue.extend({
   },
   methods: {
     async submit() {
+      this.message = undefined;
       this.loading = true;
 
-      await axios
-        .post('/verify-email')
-        .then((response: AxiosResponse<ApiResponse>) => {
-          this.message = response.data.message;
-        })
-        .catch((error: AxiosError) => {
-          if (error.response?.status === 429) {
-            this.message = 'Please wait before retrying.';
-          } else {
-            this.message = error.message;
-          }
-        });
+      const response = await sendEmailVerification();
+      this.message = response.message;
 
       this.loading = false;
     },

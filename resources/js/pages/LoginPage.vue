@@ -3,8 +3,8 @@
     <h2>Login</h2>
 
     <form method="post" id="login-form">
-      <div v-if="errors.message">
-        {{ errors.message }}
+      <div v-if="message">
+        {{ message }}
       </div>
 
       <EmailInput
@@ -12,7 +12,7 @@
         name="email"
         label="Email"
         v-model="email"
-        :errors="errors.errors.email"
+        :errors="errors.email"
       />
 
       <PasswordInput
@@ -20,7 +20,7 @@
         name="password"
         label="Password"
         v-model="password"
-        :errors="errors.errors.password"
+        :errors="errors.password"
       />
 
       <CheckboxInput
@@ -28,7 +28,7 @@
         name="remember"
         label="Remember me"
         v-model="remember"
-        :errors="errors.errors.remember"
+        :errors="errors.remember"
       />
 
       <div>
@@ -44,8 +44,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { FormErrors } from '../api/types';
-import { isAuthFailure, loginUser } from '../api/user';
+import { loginUser } from '../api/user';
 import { CheckboxInput, EmailInput, PasswordInput } from '../components/Forms';
 
 export default Vue.extend({
@@ -58,7 +57,8 @@ export default Vue.extend({
   data() {
     return {
       loading: false,
-      errors: { errors: {} } as FormErrors,
+      message: undefined as string | undefined,
+      errors: {},
 
       email: '',
       password: '',
@@ -70,6 +70,8 @@ export default Vue.extend({
       this.$router.push('/');
     },
     async submit() {
+      this.message = undefined;
+      this.errors = {};
       this.loading = true;
 
       // TODO Should this be calling the store action instead?
@@ -80,11 +82,12 @@ export default Vue.extend({
         this.remember
       );
 
-      if (isAuthFailure(response)) {
-        this.errors = response;
-      } else {
-        this.$store.commit('auth/login', response.user);
+      if (response.status === 'success') {
+        this.$store.commit('auth/login', response.data);
         this.redirectToHome();
+      } else {
+        this.message = response.message;
+        this.errors = response.errors || {};
       }
 
       this.loading = false;

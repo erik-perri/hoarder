@@ -1,61 +1,58 @@
-import axios, { AxiosError, AxiosResponse } from 'axios';
-import { ApiResponse, FormErrors } from './types';
+import { AxiosResponse } from 'axios';
+import api from './api';
+import { ApiResponse } from './types';
 
 export interface User {
   name: string;
   email: string;
 }
 
-export type UserApiFailure = FormErrors;
-
-export function isAuthFailure(response: any): response is UserApiFailure {
-  return !!(response as UserApiFailure).errors;
-}
-
-export interface LoginSuccess {
-  user: User;
-}
-
 export async function loginUser(
   email: string,
   password: string,
   rememberMe: boolean
-): Promise<LoginSuccess | UserApiFailure> {
-  return await axios
+): Promise<ApiResponse<User>> {
+  return await api
     .post('/login', {
       email,
       password,
       rememberMe,
     })
-    .then((response: AxiosResponse<ApiResponse<User>>) => {
-      return { user: response.data.data } as LoginSuccess;
-    })
-    .catch((error: AxiosError<FormErrors>) => {
-      return error.response?.data as UserApiFailure;
-    });
+    .then((response: AxiosResponse<ApiResponse<User>>) => response.data)
+    .catch((error: ApiResponse<User>) => error);
 }
 
-export async function logoutUser(): Promise<ApiResponse> {
-  return await axios
+export async function logoutUser(): Promise<boolean> {
+  return await api
     .post('/logout')
-    .then((response: AxiosResponse<ApiResponse>) => response.data);
+    .then(
+      (response: AxiosResponse<ApiResponse>) =>
+        response.data.status === 'success'
+    )
+    .catch(() => false);
 }
 
 export async function getLoggedInUser(): Promise<User | null> {
-  return await axios
+  return await api
     .get('/auth-status')
     .then((response: AxiosResponse<ApiResponse<User>>) => {
-      return response.data.data || null;
-    })
-    .catch((error: AxiosError) => {
-      if (error.response?.status !== 401) {
-        throw error;
+      if (response.data.status === 'success') {
+        return response.data.data || null;
       }
       return null;
-    });
+    })
+    .catch(() => null);
 }
 
-export interface RegisterSuccess {
+export interface RegisterResponse {
+  success: boolean;
+  user?: User;
+  redirect?: string;
+  message?: string;
+  errors?: Record<string, string[]>;
+}
+
+export interface RegisterApiResponse {
   user: User;
   redirect: string;
 }
@@ -65,23 +62,22 @@ export async function registerUser(
   email: string,
   password: string,
   password_confirmation: string
-): Promise<RegisterSuccess | UserApiFailure> {
-  return await axios
+): Promise<ApiResponse<RegisterApiResponse>> {
+  return await api
     .post('/register', {
       name: displayName,
       email,
       password,
       password_confirmation,
     })
-    .then((response: AxiosResponse<ApiResponse<RegisterSuccess>>) => {
-      return response.data.data as RegisterSuccess;
-    })
-    .catch((error: AxiosError<FormErrors>) => {
-      return error.response?.data as UserApiFailure;
-    });
+    .then(
+      (response: AxiosResponse<ApiResponse<RegisterApiResponse>>) =>
+        response.data
+    )
+    .catch((error: ApiResponse<RegisterApiResponse>) => error);
 }
 
-export interface ResetPasswordSuccess {
+export interface ResetPasswordResponse {
   redirect: string;
 }
 
@@ -90,18 +86,36 @@ export async function resetPassword(
   password: string,
   password_confirmation: string,
   token: string
-): Promise<ResetPasswordSuccess | UserApiFailure> {
-  return await axios
+): Promise<ApiResponse<ResetPasswordResponse>> {
+  return await api
     .post('/reset-password', {
       email,
       password,
       password_confirmation,
       token,
     })
-    .then((response: AxiosResponse<ApiResponse<RegisterSuccess>>) => {
-      return response.data.data as ResetPasswordSuccess;
+    .then((response: AxiosResponse<ApiResponse<ResetPasswordResponse>>) => {
+      return response.data;
     })
-    .catch((error: AxiosError<FormErrors>) => {
-      return error.response?.data as UserApiFailure;
-    });
+    .catch((error: ApiResponse<ResetPasswordResponse>) => error);
+}
+
+export async function forgotPassword(email: string): Promise<ApiResponse> {
+  return await api
+    .post('/forgot-password', {
+      email,
+    })
+    .then((response: AxiosResponse<ApiResponse>) => {
+      return response.data;
+    })
+    .catch((error: ApiResponse) => error);
+}
+
+export async function sendEmailVerification(): Promise<ApiResponse> {
+  return await api
+    .post('/verify-email')
+    .then((response: AxiosResponse<ApiResponse>) => {
+      return response.data;
+    })
+    .catch((error: ApiResponse) => error);
 }
