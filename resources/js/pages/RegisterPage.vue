@@ -2,7 +2,7 @@
   <div>
     <h2>Register</h2>
 
-    <form>
+    <form method="post" id="register-form">
       <div v-if="errors.message">
         {{ errors.message }}
       </div>

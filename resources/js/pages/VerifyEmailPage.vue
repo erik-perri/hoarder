@@ -7,7 +7,7 @@
       address by clicking on the link we just emailed to you? If you didn't
       receive the email, we will gladly send you another.
     </p>
-    <form>
+    <form method="post" id="verify-email">
       <button type="submit" :disabled="loading" @click.prevent="submit">
         Resend Verification Email
       </button>
