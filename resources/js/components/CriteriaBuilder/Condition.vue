@@ -92,7 +92,7 @@ export default Vue.extend({
       };
 
       // We don't want to pass the Proxy object so we create a new object
-      this.$emit('conditionChanged', this.id, { ...this.options });
+      this.$emit('condition-changed', this.id, { ...this.options });
       this.editing = false;
     },
     getFieldInfo(): CollectibleField | undefined {

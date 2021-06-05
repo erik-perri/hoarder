@@ -121,7 +121,7 @@ export default Vue.extend({
       this.emitChanges();
     },
     emitChanges() {
-      this.$emit('groupChanged', this.id, {
+      this.$emit('group-changed', this.id, {
         group_type: this.groupType,
         group_conditions: JSON.parse(JSON.stringify(this.items)),
       });
