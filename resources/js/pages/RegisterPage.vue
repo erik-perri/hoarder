@@ -99,7 +99,7 @@ export default Vue.extend({
       );
 
       if (isAuthFailure(response)) {
-        this.errors = response.errors;
+        this.errors = response;
       } else {
         this.$store.commit('auth/login', response.user);
         await this.$router.push(response.redirect);

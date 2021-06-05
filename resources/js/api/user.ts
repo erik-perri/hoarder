@@ -6,9 +6,7 @@ export interface User {
   email: string;
 }
 
-export interface UserApiFailure {
-  errors: FormErrors;
-}
+export type UserApiFailure = FormErrors;
 
 export function isAuthFailure(response: any): response is UserApiFailure {
   return !!(response as UserApiFailure).errors;
@@ -33,12 +31,7 @@ export async function loginUser(
       return { user: response.data.data } as LoginSuccess;
     })
     .catch((error: AxiosError<FormErrors>) => {
-      const errors = error.response?.data;
-      if (!errors) {
-        throw error;
-      }
-
-      return { errors } as UserApiFailure;
+      return error.response?.data as UserApiFailure;
     });
 }
 
@@ -58,7 +51,6 @@ export async function getLoggedInUser(): Promise<User | null> {
       if (error.response?.status !== 401) {
         throw error;
       }
-
       return null;
     });
 }
@@ -85,11 +77,6 @@ export async function registerUser(
       return response.data.data as RegisterSuccess;
     })
     .catch((error: AxiosError<FormErrors>) => {
-      const errors = error.response?.data;
-      if (!errors) {
-        throw error;
-      }
-
-      return { errors } as UserApiFailure;
+      return error.response?.data as UserApiFailure;
     });
 }
