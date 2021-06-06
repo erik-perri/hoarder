@@ -50,7 +50,7 @@ import {
   EmailInput,
   PasswordInput,
 } from '../../components/Forms';
-import { getLoginRedirect } from '../../util/login';
+import { getLastLoginState, getLoginRedirect } from '../../util/login';
 
 export default Vue.extend({
   components: { CheckboxInput, PasswordInput, EmailInput },
@@ -60,7 +60,7 @@ export default Vue.extend({
       message: undefined as string | undefined,
       errors: {},
 
-      email: '',
+      email: getLastLoginState().email || '',
       password: '',
       remember: false,
     };
