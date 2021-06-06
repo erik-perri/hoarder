@@ -59,6 +59,7 @@ import {
   TextInput,
 } from '../../components/Forms';
 import { registerUser } from '../../api/user';
+import { getLoginRedirect } from '../../util/login';
 
 export default Vue.extend({
   components: {
@@ -94,7 +95,7 @@ export default Vue.extend({
 
       if (response.status === 'success') {
         this.$store.commit('auth/login', response.data?.user);
-        await this.$router.push(response.data?.redirect || { name: 'home' });
+        await this.$router.push(response.data?.redirect || getLoginRedirect());
       } else {
         this.message = response.message;
         this.errors = response.errors || {};

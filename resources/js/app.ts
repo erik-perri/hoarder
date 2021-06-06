@@ -4,6 +4,7 @@ import router from './router';
 import store from './store';
 import { CriteriaBuilder } from './components/CriteriaBuilder';
 import { FieldEditor } from './components/FieldEditor';
+import { getLoginRedirect, storeLoginRedirect } from './util/login';
 
 router.beforeEach((to, from, next) => {
   const isLoggedIn = store.getters['auth/isLoggedIn'];
@@ -12,6 +13,8 @@ router.beforeEach((to, from, next) => {
     (record) => record.meta.requiresAuth === true
   );
   if (requiresAuth && !isLoggedIn) {
+    storeLoginRedirect(to.path);
+
     // TODO Flash message explaining why they are not where they wanted to go?
     next({ name: 'login' });
     return;
@@ -21,7 +24,7 @@ router.beforeEach((to, from, next) => {
     (record) => record.meta.requiresAuth === false
   );
   if (requiresGuest && isLoggedIn) {
-    next({ name: 'home' });
+    next(getLoginRedirect());
     return;
   }
 

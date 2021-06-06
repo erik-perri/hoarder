@@ -50,6 +50,7 @@ import {
   EmailInput,
   PasswordInput,
 } from '../../components/Forms';
+import { getLoginRedirect } from '../../util/login';
 
 export default Vue.extend({
   components: { CheckboxInput, PasswordInput, EmailInput },
@@ -80,7 +81,7 @@ export default Vue.extend({
 
       if (response.status === 'success') {
         this.$store.commit('auth/login', response.data);
-        await this.$router.push({ name: 'home' });
+        await this.$router.push(getLoginRedirect());
       } else {
         this.message = response.message;
         this.errors = response.errors || {};
