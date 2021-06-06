@@ -35,7 +35,7 @@ class CollectiblesPage extends Page
     public function elements(): array
     {
         return [
-            '@create-link' => 'a[href="'.route('collectibles.create').'"]',
+            '@create-link' => 'a[href="'.route('collectibles.create', [], false).'"]',
             '@edit-link' => 'a[href$="/edit"]',
         ];
     }

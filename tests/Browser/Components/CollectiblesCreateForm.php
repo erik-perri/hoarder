@@ -14,7 +14,7 @@ class CollectiblesCreateForm extends BaseComponent
      */
     public function selector(): string
     {
-        return 'form[action="'.route('collectibles.store').'"]';
+        return '#collectible-form';
     }
 
     /**

@@ -29,6 +29,7 @@ class CollectiblesTest extends DuskTestCase
 
             $browser->loginAs($user)
                     ->visit(new CollectiblesPage)
+                    ->waitFor('@create-link', 2)
                     ->assertPresent('@create-link')
                     ->logout();
         });
@@ -44,14 +45,15 @@ class CollectiblesTest extends DuskTestCase
 
             $browser->loginAs($user)
                     ->visit(new CollectiblesPage)
+                    ->waitFor('@create-link', 2)
                     ->click('@create-link')
                     ->waitForText(__('collectible.title.create'))
                     ->with(new CollectiblesCreateForm, static function ($browser) {
                         $browser->fillName('Test Collectible');
                         // TODO Set fields
-                        $browser->submitForm();
                     })
-                    ->waitForText(__('collectible.messages.create_success'))
+                    ->click('#collectible-form button[type="submit"]')
+                    ->waitForText(__('collectible.messages.create_success'), 2)
                     ->assertVisible('@edit-link')
                     ->click('@edit-link')
                     ->waitForText(__('collectible.title.edit'));
