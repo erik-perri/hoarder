@@ -51,16 +51,12 @@
       />
       <a
         href="#"
-        @click.prevent="this.removedValue = !this.removedValue"
+        @click.prevent="removedValue = !removedValue"
         v-if="!removedValue"
       >
         Remove
       </a>
-      <a
-        href="#"
-        @click.prevent="this.removedValue = !this.removedValue"
-        v-else
-      >
+      <a href="#" @click.prevent="removedValue = !removedValue" v-else>
         Undo
       </a>
     </div>

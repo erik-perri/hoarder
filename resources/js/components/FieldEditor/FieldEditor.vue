@@ -4,7 +4,7 @@
       <li>
         <FieldInput
           code="name"
-          :input-name="this.inputName"
+          :input-name="inputName"
           name="Name"
           input-type="text"
           :is-required="true"
@@ -14,7 +14,7 @@
       <li v-for="field in this.fields" :key="field.code">
         <FieldInput
           :code="field.code"
-          :input-name="this.inputName"
+          :input-name="inputName"
           :name="field.name"
           :input-type="field.input_type"
           :is-required="!!field.is_required"
