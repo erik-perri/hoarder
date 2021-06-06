@@ -1,6 +1,8 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import {
+  CollectibleEditPage,
+  CollectibleIndexPage,
   ErrorPage404,
   ForgotPasswordPage,
   HomePage,
@@ -9,7 +11,7 @@ import {
   ResetPasswordPage,
   VerifyEmailPage,
 } from './pages';
-import { BaseLayout } from './layouts';
+import { BaseLayout, CollectibleLayout } from './layouts';
 
 Vue.use(VueRouter);
 
@@ -50,6 +52,23 @@ export default new VueRouter({
           path: 'reset-password/:token',
           component: ResetPasswordPage,
           meta: { requiresAuth: false },
+        },
+        {
+          path: 'collectibles',
+          component: CollectibleLayout,
+          children: [
+            {
+              name: 'collectibles.index',
+              path: '',
+              component: CollectibleIndexPage,
+            },
+            {
+              name: 'collectibles.create',
+              path: 'create',
+              component: CollectibleEditPage,
+              meta: { requiresAuth: true },
+            },
+          ],
         },
         {
           path: '*',

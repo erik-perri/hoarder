@@ -44,3 +44,13 @@ export interface ApiResponse<DataType = never> {
   message?: string;
   errors?: Record<string, string[]>;
 }
+
+export interface ApiListMetaInfo {
+  items: number;
+  pages: number;
+}
+
+export interface ApiList<ItemType> {
+  meta: ApiListMetaInfo;
+  items: Array<ItemType>;
+}

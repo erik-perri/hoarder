@@ -6,3 +6,6 @@ export { default as LoginPage } from './auth/LoginPage.vue';
 export { default as RegisterPage } from './auth/RegisterPage.vue';
 export { default as ResetPasswordPage } from './auth/ResetPasswordPage.vue';
 export { default as VerifyEmailPage } from './auth/VerifyEmailPage.vue';
+
+export { default as CollectibleEditPage } from './collectible/CollectibleEditPage.vue';
+export { default as CollectibleIndexPage } from './collectible/CollectibleIndexPage.vue';

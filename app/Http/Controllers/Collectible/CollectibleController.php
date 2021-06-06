@@ -18,11 +18,25 @@ class CollectibleController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
      * @return Response|View
      */
-    public function index(): View
+    public function index(Request $request)
     {
         $collectibles = Collectible::latest()->paginate(30);
+
+        if ($request->expectsJson()) {
+            return response([
+                'status' => 'success',
+                'data' => [
+                    'meta' => [
+                        'items' => $collectibles->total(),
+                        'pages' => $collectibles->lastPage(),
+                    ],
+                    'items' => $collectibles->items(),
+                ],
+            ]);
+        }
 
         return view('collectible.index', ['collectibles' => $collectibles]);
     }
