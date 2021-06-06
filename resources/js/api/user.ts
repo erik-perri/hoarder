@@ -44,14 +44,6 @@ export async function getLoggedInUser(): Promise<User | null> {
     .catch(() => null);
 }
 
-export interface RegisterResponse {
-  success: boolean;
-  user?: User;
-  redirect?: string;
-  message?: string;
-  errors?: Record<string, string[]>;
-}
-
 export interface RegisterApiResponse {
   user: User;
   redirect: string;

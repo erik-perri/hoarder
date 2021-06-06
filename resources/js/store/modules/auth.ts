@@ -15,7 +15,6 @@ export default {
 
   state: {
     currentUser: undefined,
-    error: undefined,
   },
 
   getters: {
