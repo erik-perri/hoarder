@@ -1,6 +1,11 @@
 import { ActionContext } from 'vuex';
 import { AuthState, State as RootState } from '../state';
 import { getLoggedInUser, loginUser, logoutUser, User } from '../../api/user';
+import {
+  clearLastLoginState,
+  getLastLoginState,
+  setLastLoginState,
+} from '../../util/login';
 
 export type AuthContext = ActionContext<AuthState, RootState>;
 
@@ -10,11 +15,25 @@ export interface LoginPayload {
   rememberMe: boolean;
 }
 
+function getLastUser(): User | undefined {
+  // We load the last user from the local storage. When we load the page we send a background
+  // request to confirm the authentication, this is just so we don't end up redirecting a user
+  // due to the logged in state not being known yet.
+  const state = getLastLoginState();
+  if (state.maybeLoggedIn) {
+    return {
+      name: state.name || '',
+      email: state.email || '',
+    };
+  }
+  return undefined;
+}
+
 export default {
   namespaced: true,
 
   state: {
-    currentUser: undefined,
+    currentUser: getLastUser(),
   },
 
   getters: {
@@ -26,9 +45,11 @@ export default {
   mutations: {
     login(state: AuthState, user: User) {
       state.currentUser = user;
+      setLastLoginState(user.name, user.email);
     },
     logout(state: AuthState) {
       state.currentUser = undefined;
+      clearLastLoginState();
     },
   },
 
@@ -56,6 +77,8 @@ export default {
       const currentUser = await getLoggedInUser();
       if (currentUser) {
         context.commit('login', currentUser);
+      } else {
+        context.commit('logout');
       }
     },
   },

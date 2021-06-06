@@ -34,11 +34,6 @@ router.beforeEach((to, from, next) => {
 new Vue({
   el: '#app',
   created() {
-    // TODO Should we have Laravel pass the auth state in a way we can access without needing
-    //      another request (preventing the initially visible login link on a refresh of a logged in
-    //      user)?  Another alternative might be to store something like the a logged in boolean
-    //      in local storage and use for the initial value while we perform this check, only
-    //      reverting if needed.
     void this.$store.dispatch('auth/checkAuth');
   },
   router,
