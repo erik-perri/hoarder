@@ -36,6 +36,7 @@
         "typescript": "4.3.2",
         "vue-jest": "3.0.7",
         "vue-loader": "15.9.7",
+        "vue-template-compiler": "^2.6.13",
         "webpack": "5.38.1"
     },
     "lint-staged": {
