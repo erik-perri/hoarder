@@ -12,7 +12,7 @@ import {
   ResetPasswordPage,
   VerifyEmailPage,
 } from './pages';
-import { BaseLayout, CollectibleLayout } from './layouts';
+import { BaseLayout, CollectibleInjectorLayout } from './layouts';
 
 Vue.use(VueRouter);
 
@@ -56,26 +56,26 @@ export default new VueRouter({
         },
         {
           path: 'collectibles',
-          component: CollectibleLayout,
+          name: 'collectibles.index',
+          component: CollectibleIndexPage,
+        },
+        {
+          path: 'collectibles/create',
+          name: 'collectibles.create',
+          component: CollectibleEditPage,
+          meta: { requiresAuth: true },
+        },
+        {
+          path: 'collectibles/:collectible',
+          component: CollectibleInjectorLayout,
           children: [
             {
               path: '',
-              name: 'collectibles.index',
-              component: CollectibleIndexPage,
-            },
-            {
-              path: 'create',
-              name: 'collectibles.create',
-              component: CollectibleEditPage,
-              meta: { requiresAuth: true },
-            },
-            {
-              path: ':collectible',
               name: 'collectibles.show',
               component: CollectibleShowPage,
             },
             {
-              path: ':collectible/edit',
+              path: 'edit',
               name: 'collectibles.edit',
               component: CollectibleEditPage,
               meta: { requiresAuth: true },

@@ -31,6 +31,8 @@ import {
 } from '../../api/collectibles';
 import { FieldEditorItem } from '../../components/FieldEditor';
 
+// TODO Switch this to use the injected collectible, we'll likely want to move categoryFields and itemFields to be a
+//      part of Collectible.
 export default Vue.extend({
   data() {
     return {
