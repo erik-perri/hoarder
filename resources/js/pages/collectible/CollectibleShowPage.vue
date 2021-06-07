@@ -13,7 +13,14 @@
     <div v-if="data">
       <ul>
         <li v-for="category in data.items" :key="category.id">
-          {{ category.name }}
+          <router-link
+            :to="{
+              name: 'categories.show',
+              params: { collectible: collectible.id, category: category.id },
+            }"
+          >
+            {{ category.name }}
+          </router-link>
         </li>
       </ul>
 

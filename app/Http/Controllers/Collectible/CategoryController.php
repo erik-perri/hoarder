@@ -18,6 +18,7 @@ class CategoryController extends Controller
      * Display a listing of the resource.
      *
      * @param Collectible $collectible
+     * @param Request $request
      * @return RedirectResponse|Response
      */
     public function index(Collectible $collectible, Request $request)
@@ -93,10 +94,20 @@ class CategoryController extends Controller
      *
      * @param Collectible $collectible
      * @param Collectible\Category $category
-     * @return View
+     * @param Request $request
+     * @return View|Response
      */
-    public function show(Collectible $collectible, Collectible\Category $category): View
+    public function show(Collectible $collectible, Collectible\Category $category, Request $request)
     {
+        if ($request->expectsJson()) {
+            return response([
+                'status' => 'success',
+                'data' => [
+                    'category' => $category->toArray(),
+                ],
+            ]);
+        }
+
         $items = Collectible\Item::where([
             'collectible_id' => $collectible->id,
             'category_id' => $category->id,

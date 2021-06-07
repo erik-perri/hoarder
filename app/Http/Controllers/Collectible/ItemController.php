@@ -8,6 +8,8 @@ use App\Http\Requests\Collectible\ItemCreateRequest;
 use App\Http\Requests\Collectible\ItemEditRequest;
 use App\Models\Collectible;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\View\View;
 
 class ItemController extends Controller
@@ -17,10 +19,29 @@ class ItemController extends Controller
      *
      * @param Collectible $collectible
      * @param Collectible\Category $category
-     * @return RedirectResponse
+     * @param Request $request
+     * @return RedirectResponse|Response
      */
-    public function index(Collectible $collectible, Collectible\Category $category): RedirectResponse
+    public function index(Collectible $collectible, Collectible\Category $category, Request $request)
     {
+        if ($request->expectsJson()) {
+            $items = Collectible\Item::where([
+                'collectible_id' => $collectible->id,
+                'category_id' => $category->id,
+            ])->orderByRaw('CAST(field_values->>\'$.collector_number\' AS UNSIGNED)')->paginate(30);
+
+            return response([
+                'status' => 'success',
+                'data' => [
+                    'meta' => [
+                        'items' => $items->total(),
+                        'pages' => $items->lastPage(),
+                    ],
+                    'items' => $items->items(),
+                ],
+            ]);
+        }
+
         return redirect()->route('collectibles.categories.show', [
             'collectible' => $collectible,
             'category' => $category,

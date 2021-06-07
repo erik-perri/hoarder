@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import {
+  CategoryShowPage,
   CollectibleEditPage,
   CollectibleIndexPage,
   CollectibleShowPage,
@@ -12,7 +13,11 @@ import {
   ResetPasswordPage,
   VerifyEmailPage,
 } from './pages';
-import { BaseLayout, CollectibleInjectorLayout } from './layouts';
+import {
+  BaseLayout,
+  CategoryInjectorLayout,
+  CollectibleInjectorLayout,
+} from './layouts';
 
 Vue.use(VueRouter);
 
@@ -79,6 +84,17 @@ export default new VueRouter({
               name: 'collectibles.edit',
               component: CollectibleEditPage,
               meta: { requiresAuth: true },
+            },
+            {
+              path: 'categories/:category',
+              component: CategoryInjectorLayout,
+              children: [
+                {
+                  path: '',
+                  name: 'categories.show',
+                  component: CategoryShowPage,
+                },
+              ],
             },
           ],
         },
