@@ -68,6 +68,12 @@ export default new VueRouter({
               component: CollectibleEditPage,
               meta: { requiresAuth: true },
             },
+            {
+              name: 'collectibles.edit',
+              path: ':id/edit',
+              component: CollectibleEditPage,
+              meta: { requiresAuth: true },
+            },
           ],
         },
         {

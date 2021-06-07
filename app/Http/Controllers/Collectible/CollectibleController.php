@@ -63,18 +63,25 @@ class CollectibleController extends Controller
      * @param CollectibleCreateRequest $request
      * @param User $user
      * @param FieldRepository $fieldRepository
-     * @return RedirectResponse
+     * @return RedirectResponse|Response
      */
     public function store(
         CollectibleCreateRequest $request,
         User $user,
         FieldRepository $fieldRepository
-    ): RedirectResponse {
+    ) {
         $collectible = new Collectible();
         $collectible->fill($request->validated());
         $collectible->createdBy()->associate($user);
 
         if (! $collectible->save()) {
+            if ($request->expectsJson()) {
+                return response([
+                    'status' => 'fail',
+                    'message' => __('collectible.messages.create_failed'),
+                ]);
+            }
+
             return redirect()->route('collectibles.create')
                              ->withErrors(__('collectible.messages.create_failed'))
                              ->withInput();
@@ -82,6 +89,16 @@ class CollectibleController extends Controller
 
         // This has to be after the save here so the created fields can access the collectible ID.
         $this->handleFieldChanges($request, $fieldRepository, $collectible);
+
+        if ($request->expectsJson()) {
+            return response([
+                'status' => 'success',
+                'message' => __('collectible.messages.create_success'),
+                'data' => [
+                    'collectible' => $collectible,
+                ],
+            ]);
+        }
 
         return redirect()->route('collectibles.show', ['collectible' => $collectible])
                          ->with('status', __('collectible.messages.create_success'));
@@ -91,10 +108,27 @@ class CollectibleController extends Controller
      * Display the specified resource.
      *
      * @param Collectible $collectible
-     * @return View
+     * @param Request $request
+     * @return View|Response
      */
-    public function show(Collectible $collectible): View
+    public function show(Collectible $collectible, Request $request)
     {
+        if ($request->expectsJson()) {
+            $fields = $collectible->fields
+                ->map(fn (Collectible\Field $field) => $field->jsonSerialize())
+                ->groupBy('entity_type')
+                ->toArray();
+
+            return response([
+                'status' => 'success',
+                'data' => [
+                    'collectible' => $collectible->toArray(),
+                    'categoryFields' => $fields['category'] ?? [],
+                    'itemFields' => $fields['item'] ?? [],
+                ],
+            ]);
+        }
+
         $categories = Collectible\Category::whereCollectibleId($collectible->id)->paginate(30);
 
         return view('collectible.show', [
@@ -128,21 +162,38 @@ class CollectibleController extends Controller
      * @param CollectibleEditRequest $request
      * @param Collectible $collectible
      * @param FieldRepository $fieldRepository
-     * @return RedirectResponse
+     * @return RedirectResponse|Response
      */
     public function update(
         CollectibleEditRequest $request,
         Collectible $collectible,
         FieldRepository $fieldRepository
-    ): RedirectResponse {
+    ) {
         $collectible->fill($request->validated());
 
         $this->handleFieldChanges($request, $fieldRepository, $collectible);
 
         if (! $collectible->save()) {
+            if ($request->expectsJson()) {
+                return response([
+                    'status' => 'fail',
+                    'message' => __('collectible.messages.save_failed'),
+                ]);
+            }
+
             return redirect()->route('collectibles.create')
                              ->withErrors(__('collectible.messages.save_failed'))
                              ->withInput();
+        }
+
+        if ($request->expectsJson()) {
+            return response([
+                'status' => 'success',
+                'message' => __('collectible.messages.save_success'),
+                'data' => [
+                    'collectible' => $collectible,
+                ],
+            ]);
         }
 
         return redirect()->route('collectibles.show', ['collectible' => $collectible])
@@ -181,8 +232,10 @@ class CollectibleController extends Controller
                 continue;
             }
 
-            foreach ($request->get($fieldRequestKey) as $fieldCode => $fieldInfo) {
-                if ($fieldInfo['is_removed'] > 0) {
+            foreach ($request->get($fieldRequestKey) as $fieldInfo) {
+                $fieldCode = $fieldInfo['code'];
+
+                if (($fieldInfo['is_removed'] ?? 0) > 0) {
                     $fieldRepository->removeField($collectible, $fieldCode);
                     continue;
                 }
@@ -194,7 +247,7 @@ class CollectibleController extends Controller
 
                     $field = new Collectible\Field();
                     $field->collectible()->associate($collectible);
-                    $field->code = \Str::slug($fieldInfo['display_name'], '_');
+                    $field->code = \Str::slug($fieldInfo['name'], '_');
                     $field->entity_type = $entityType;
                     $field->input_options = [];
 
@@ -203,11 +256,11 @@ class CollectibleController extends Controller
                     while ($collectible->fields->where('code', '=', $field->code)
                                                ->where('entity_type', '=', $entityType)
                                                ->count()) {
-                        $field->code = \Str::slug($fieldInfo['display_name'], '_').'_'.$attempts++;
+                        $field->code = \Str::slug($fieldInfo['name'], '_').'_'.$attempts++;
                     }
                 }
 
-                $field->name = $fieldInfo['display_name'];
+                $field->name = $fieldInfo['name'];
                 // TODO Handle input_type changes by clearing the value?
                 $field->input_type = $fieldInfo['input_type'];
                 $field->is_required = $fieldInfo['is_required'] ?? false;

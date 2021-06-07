@@ -5,8 +5,6 @@ import { ApiList, ApiResponse } from './types';
 export interface Collectible {
   id: number;
   name: string;
-  categoryFields: Array<CollectibleFieldModel>;
-  itemFields: Array<CollectibleFieldModel>;
 }
 
 export type CollectibleFieldInputType =
@@ -39,6 +37,47 @@ export async function getCollectibles(
   return await api
     .get(`/collectibles?page=${page}`)
     .then((response: AxiosResponse<ApiResponse<ApiList<Collectible>>>) => {
+      return response.data;
+    })
+    .catch((error: ApiResponse) => error);
+}
+
+export interface GetCollectibleResponse {
+  collectible: Collectible;
+  categoryFields: Array<CollectibleFieldModel>;
+  itemFields: Array<CollectibleFieldModel>;
+}
+
+export async function getCollectible(
+  id: number
+): Promise<ApiResponse<GetCollectibleResponse>> {
+  return await api
+    .get(`/collectibles/${id}`)
+    .then((response: AxiosResponse<ApiResponse<GetCollectibleResponse>>) => {
+      return response.data;
+    })
+    .catch((error: ApiResponse) => error);
+}
+
+export interface StoreCollectibleResponse {
+  collectible: Collectible;
+}
+
+export async function storeOrUpdateCollectible(
+  collectible: Collectible,
+  categoryFields: Array<CollectibleFieldModel>,
+  itemFields: Array<CollectibleFieldModel>
+): Promise<ApiResponse<StoreCollectibleResponse>> {
+  const data = {
+    ...collectible,
+    category_fields: categoryFields,
+    item_fields: itemFields,
+  };
+  return await (collectible.id
+    ? api.put(`/collectibles/${collectible.id}`, data)
+    : api.post('/collectibles', data)
+  )
+    .then((response: AxiosResponse<ApiResponse<StoreCollectibleResponse>>) => {
       return response.data;
     })
     .catch((error: ApiResponse) => error);

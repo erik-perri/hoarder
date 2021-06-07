@@ -54,6 +54,17 @@ class Collectible extends Model
         'name',
     ];
 
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'fields',
+        'created_at',
+        'updated_at',
+    ];
+
     public function createdBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by_id');

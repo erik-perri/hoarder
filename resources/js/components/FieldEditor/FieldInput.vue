@@ -1,98 +1,71 @@
 <template>
-  <div v-bind:class="{ 'field-input': true, removed: removedValue }">
-    <div class="field-input-group">
-      <label :for="`display_name-${code}`">Name</label>
-      <input
-        :id="`display_name-${code}`"
-        :name="`${inputName}[${code}][display_name]`"
-        type="text"
-        :value="name"
-        :disabled="isDisabled || removedValue"
-        required
-      />
-    </div>
+  <div class="field-input">
+    <div v-if="isEditing">
+      <div class="field-input-group">
+        <label :for="`fieldName-${fieldIdentifier}`">Name</label>
+        <input
+          ref="fieldName"
+          type="text"
+          :id="`fieldName-${fieldIdentifier}`"
+          v-model="fieldNameValue"
+          required
+        />
+      </div>
 
-    <div class="field-input-group">
-      <label :for="`input_type-${code}`">Input Type</label>
-      <select
-        v-model="inputTypeValue"
-        :id="`input_type-${code}`"
-        :name="`${inputName}[${code}][input_type]`"
-        :disabled="isDisabled || removedValue"
-        required
-      >
-        <option
-          v-for="(label, value) in fieldTypes"
-          :value="value"
-          :key="value"
+      <div class="field-input-group">
+        <label :for="`inputType-${fieldIdentifier}`">Input Type</label>
+        <select
+          ref="inputType"
+          v-model="inputTypeValue"
+          :id="`inputType-${fieldIdentifier}`"
+          required
         >
-          {{ label }}
-        </option>
-      </select>
-    </div>
+          <option
+            v-for="(label, value) in fieldTypes"
+            :value="value"
+            :key="value"
+          >
+            {{ label }}
+          </option>
+        </select>
+      </div>
 
-    <div class="field-input-group">
-      <label :for="`required-${code}`">Required</label>
-      <input
-        :id="`required-${code}`"
-        :name="`${inputName}[${code}][is_required]`"
-        type="checkbox"
-        value="1"
-        :checked="requiredValue"
-        :disabled="isDisabled || removedValue"
-      />
+      <div class="field-input-group">
+        <label :for="`required-${fieldIdentifier}`">Required</label>
+        <input
+          :id="`required-${fieldIdentifier}`"
+          type="checkbox"
+          value="1"
+          v-model="isRequiredValue"
+        />
+      </div>
+    </div>
+    <div v-else class="field-input-info">
+      {{ fieldNameValue }}
+      ({{ `${inputTypeValue}${isRequiredValue ? '; Required' : ''}` }})
     </div>
 
     <div v-if="!isDisabled">
-      <input
-        type="hidden"
-        :value="removedValue ? 1 : 0"
-        :name="`${inputName}[${code}][is_removed]`"
-      />
-      <a
-        href="#"
-        @click.prevent="removedValue = !removedValue"
-        v-if="!removedValue"
-      >
-        Remove
-      </a>
-      <a href="#" @click.prevent="removedValue = !removedValue" v-else>
-        Undo
-      </a>
+      <a href="#" @click.prevent="isEditing = true" v-if="!isEditing">Edit</a>
+
+      <a href="#" @click.prevent="save" v-if="isEditing">Save</a>
+
+      <a href="#" @click.prevent="remove" v-if="isEditing">Remove</a>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
+import { FieldInputUpdate } from './types';
 
 export default Vue.extend({
-  data() {
-    return {
-      fieldTypes: {
-        text: 'Text',
-        textarea: 'Text area',
-        url: 'URL',
-        date: 'Date',
-        number: 'Number',
-        tags: 'Tags',
-        boolean: 'Boolean', // TODO Yes/No?
-      },
-      inputTypeValue: this.inputType,
-      requiredValue: this.isRequired,
-      removedValue: false,
-    };
-  },
   props: {
-    inputName: {
+    fieldIdentifier: {
       type: String,
       required: true,
     },
-    code: {
-      type: String,
-      required: true,
-    },
-    name: {
+    fieldName: {
       type: String,
       required: true,
     },
@@ -102,6 +75,56 @@ export default Vue.extend({
     },
     isRequired: Boolean,
     isDisabled: Boolean,
+    isNew: Boolean,
+  },
+  data() {
+    return {
+      isEditing: this.isNew,
+      fieldTypes: {
+        text: 'Text',
+        textarea: 'Text area',
+        url: 'URL',
+        date: 'Date',
+        number: 'Number',
+        tags: 'Tags',
+        boolean: 'Boolean', // TODO Yes/No?
+      },
+      fieldNameValue: this.fieldName,
+      inputTypeValue: this.inputType,
+      isRequiredValue: this.isRequired,
+    };
+  },
+  methods: {
+    save() {
+      if (!this.fieldNameValue) {
+        (this.$refs.fieldName as HTMLElement)?.focus();
+        return;
+      }
+
+      if (!this.inputTypeValue) {
+        (this.$refs.inputType as HTMLElement).focus();
+        return;
+      }
+
+      this.isEditing = false;
+
+      this.emitUpdate();
+    },
+    remove() {
+      this.isEditing = false;
+
+      this.emitRemove();
+    },
+    emitRemove() {
+      this.$emit('removeField', this.fieldIdentifier);
+    },
+    emitUpdate() {
+      this.$emit('updateField', this.fieldIdentifier, {
+        fieldName: this.fieldNameValue,
+        inputType: this.inputTypeValue,
+        isRequired: this.isRequiredValue,
+      } as FieldInputUpdate);
+    },
   },
 });
 </script>
@@ -110,11 +133,5 @@ export default Vue.extend({
 .field-input {
   display: flex;
   flex-direction: row;
-
-  &.removed {
-    .field-input-group {
-      opacity: 0.4;
-    }
-  }
 }
 </style>

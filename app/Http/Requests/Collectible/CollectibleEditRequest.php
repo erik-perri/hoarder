@@ -36,7 +36,7 @@ class CollectibleEditRequest extends FormRequest
         foreach (['category_fields', 'item_fields'] as $fieldKey) {
             $ruleGroups[] = [
                 $fieldKey => 'array',
-                $fieldKey.'.*.display_name' => [
+                $fieldKey.'.*.name' => [
                     'required_unless:'.$fieldKey.'.*.is_removed,1',
                     'string',
                 ],
@@ -45,8 +45,7 @@ class CollectibleEditRequest extends FormRequest
                     Rule::in(FieldInputType::getAvailableTypes()),
                 ],
                 $fieldKey.'.*.is_required' => [
-                    'sometimes',
-                    'accepted',
+                    'boolean',
                 ],
                 $fieldKey.'.*.is_removed' => [
                     'boolean',
