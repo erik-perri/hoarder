@@ -22,7 +22,7 @@
         :total-pages="data.meta.pages"
         :route-parameters="{
           name: 'collectibles.show',
-          params: { id: this.collectible.id },
+          params: { collectible: this.collectible.id },
         }"
       />
     </div>

@@ -70,12 +70,12 @@ export default new VueRouter({
               meta: { requiresAuth: true },
             },
             {
-              path: ':id',
+              path: ':collectible',
               name: 'collectibles.show',
               component: CollectibleShowPage,
             },
             {
-              path: ':id/edit',
+              path: ':collectible/edit',
               name: 'collectibles.edit',
               component: CollectibleEditPage,
               meta: { requiresAuth: true },

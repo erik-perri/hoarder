@@ -1,6 +1,10 @@
 <template>
   <div>
-    <h2>{{ $route.params.id ? 'Edit Collectible' : 'Create Collectible' }}</h2>
+    <h2>
+      {{
+        $route.params.collectible ? 'Edit Collectible' : 'Create Collectible'
+      }}
+    </h2>
 
     <CollectibleForm
       v-if="collectible"
@@ -46,7 +50,7 @@ export default Vue.extend({
   },
   methods: {
     async refreshCollectible() {
-      if (!this.$route.params.id) {
+      if (!this.$route.params.collectible) {
         this.collectible = {
           name: '',
         } as Collectible;
@@ -55,7 +59,7 @@ export default Vue.extend({
         return;
       }
 
-      const id = parseInt(this.$route.params.id, 10);
+      const id = parseInt(this.$route.params.collectible, 10);
       if (id) {
         this.isLoading = true;
         this.errors = {};
@@ -86,7 +90,7 @@ export default Vue.extend({
       if (response.status === 'success') {
         await this.$router.push({
           name: 'collectibles.show',
-          params: { id: response.data.collectible.id.toString(10) },
+          params: { collectible: response.data.collectible.id.toString(10) },
         });
       } else {
         // TODO The entire way errors are handled for the collectible fields need to be redone.

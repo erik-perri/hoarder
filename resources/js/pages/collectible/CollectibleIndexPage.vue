@@ -14,7 +14,10 @@
       <ul>
         <li v-for="item in data.items" :key="item.id">
           <router-link
-            :to="{ name: 'collectibles.show', params: { id: item.id } }"
+            :to="{
+              name: 'collectibles.show',
+              params: { collectible: item.id },
+            }"
           >
             {{ item.name }}
           </router-link>
