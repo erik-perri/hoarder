@@ -53,7 +53,6 @@ import {
 import { getLastLoginState, getLoginRedirect } from '../../util/login';
 
 export default Vue.extend({
-  components: { CheckboxInput, PasswordInput, EmailInput },
   data() {
     return {
       loading: false,
@@ -90,5 +89,6 @@ export default Vue.extend({
       this.loading = false;
     },
   },
+  components: { CheckboxInput, PasswordInput, EmailInput },
 });
 </script>

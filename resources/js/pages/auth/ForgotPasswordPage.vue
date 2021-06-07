@@ -36,7 +36,6 @@ import { EmailInput } from '../../components/Forms';
 import { forgotPassword } from '../../api/user';
 
 export default Vue.extend({
-  components: { EmailInput },
   data() {
     return {
       loading: false,
@@ -63,5 +62,6 @@ export default Vue.extend({
       this.loading = false;
     },
   },
+  components: { EmailInput },
 });
 </script>

@@ -41,7 +41,6 @@ import { Pagination } from '../../components/Pagination';
 import { ApiList } from '../../api/types';
 
 export default Vue.extend({
-  components: { Pagination },
   computed: {
     isLoggedIn: function (): boolean {
       return this.$store.getters['auth/isLoggedIn'];
@@ -95,5 +94,6 @@ export default Vue.extend({
       return isNaN(page) ? defaultPage : page;
     },
   },
+  components: { Pagination },
 });
 </script>

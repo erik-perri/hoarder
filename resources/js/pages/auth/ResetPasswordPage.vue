@@ -50,7 +50,6 @@ import { EmailInput, PasswordInput } from '../../components/Forms';
 import { resetPassword } from '../../api/user';
 
 export default Vue.extend({
-  components: { PasswordInput, EmailInput },
   data() {
     return {
       loading: false,
@@ -86,5 +85,6 @@ export default Vue.extend({
       this.loading = false;
     },
   },
+  components: { PasswordInput, EmailInput },
 });
 </script>

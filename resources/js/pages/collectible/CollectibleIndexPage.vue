@@ -41,7 +41,6 @@ import { ApiList } from '../../api/types';
 import { Pagination } from '../../components/Pagination';
 
 export default Vue.extend({
-  components: { Pagination },
   computed: {
     isLoggedIn: function (): boolean {
       return this.$store.getters['auth/isLoggedIn'];
@@ -92,5 +91,6 @@ export default Vue.extend({
       return parseInt(this.$route.query.page, 10);
     },
   },
+  components: { Pagination },
 });
 </script>

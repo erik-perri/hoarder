@@ -32,7 +32,6 @@ import {
 import { FieldEditorItem } from '../../components/FieldEditor';
 
 export default Vue.extend({
-  components: { CollectibleForm },
   data() {
     return {
       isLoading: false,
@@ -128,5 +127,6 @@ export default Vue.extend({
       };
     },
   },
+  components: { CollectibleForm },
 });
 </script>
