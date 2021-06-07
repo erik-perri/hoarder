@@ -40,7 +40,7 @@ export function isRequestValidationError(
 //      everywhere.
 export interface ApiResponse<DataType = never> {
   status: 'success' | 'fail' | 'error';
-  data?: DataType;
+  data: DataType;
   message?: string;
   errors?: Record<string, string[]>;
 }
