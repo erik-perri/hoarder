@@ -53,7 +53,7 @@ class CollectiblesTest extends DuskTestCase
                         // TODO Set fields
                     })
                     ->click('#collectible-form button[type="submit"]')
-                    ->waitForText(__('collectible.messages.create_success'), 2)
+                    ->waitForTextIn('h2', 'Test Collectible', 2)
                     ->assertVisible('@edit-link')
                     ->click('@edit-link')
                     ->waitForText(__('collectible.title.edit'));
