@@ -37,6 +37,7 @@ class LoginTest extends DuskTestCase
                     ->waitForText('Home', 2)
                     ->on(new HomePage)
                     ->assertPresent('@logout-link')
+                    ->click('@logout-link')
                     ->logout();
         });
     }

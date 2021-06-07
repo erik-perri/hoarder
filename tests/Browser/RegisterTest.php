@@ -38,7 +38,9 @@ class RegisterTest extends DuskTestCase
                     ->click('#register-form button[type="submit"]')
                     ->waitForText(__('auth.verify_email_message'), 2)
                     ->on(new VerifyEmailPage)
-                    ->assertSee(__('auth.verify_email_message'));
+                    ->assertSee(__('auth.verify_email_message'))
+                    ->click('@logout-link')
+                    ->logout();
 
             $this->assertMailhogHasEmail($user->email, __('auth.verify_email.subject'));
         });

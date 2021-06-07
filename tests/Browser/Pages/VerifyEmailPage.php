@@ -34,6 +34,8 @@ class VerifyEmailPage extends Page
      */
     public function elements(): array
     {
-        return [];
+        return [
+            '@logout-link' => 'a.logout',
+        ];
     }
 }
