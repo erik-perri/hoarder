@@ -48,8 +48,7 @@ export default Vue.extend({
     },
   },
   async created() {
-    await this.refreshCollectible();
-    await this.refreshList();
+    await Promise.all([this.refreshCollectible(), this.refreshList()]);
   },
   data() {
     return {
@@ -62,12 +61,7 @@ export default Vue.extend({
   },
   methods: {
     async refreshCollectible() {
-      const id = parseInt(this.$route.params.id, 10);
-      if (!id) {
-        throw new Error('Invalid collectible');
-      }
-
-      const response = await getCollectible(id);
+      const response = await getCollectible(this.getCollectibleIdFromRoute());
       if (response.status === 'success') {
         this.collectible = response.data.collectible;
       }
@@ -78,23 +72,27 @@ export default Vue.extend({
     async fetchList(page: number) {
       this.data = null;
 
-      const response = await getCategories(this.collectible.id, page);
+      const response = await getCategories(
+        this.getCollectibleIdFromRoute(),
+        page
+      );
       if (response.status === 'success' && response.data) {
         this.data = response.data;
       }
     },
-    getPageFromRoute(defaultValue: number): number {
+    getCollectibleIdFromRoute(): number {
+      if (!this.$route.params.id) {
+        throw new Error('No collectible ID provided in route');
+      }
+      return parseInt(this.$route.params.id, 10);
+    },
+    getPageFromRoute(defaultPage: number): number {
       if (!this.$route.query.page) {
-        return defaultValue;
+        return defaultPage;
       }
 
-      if (Array.isArray(this.$route.query.page)) {
-        return this.$route.query.page[0]
-          ? parseInt(this.$route.query.page[0], 10)
-          : defaultValue;
-      }
-
-      return parseInt(this.$route.query.page, 10);
+      const page = parseInt(this.$route.query.page as string, 10);
+      return isNaN(page) ? defaultPage : page;
     },
   },
 });
