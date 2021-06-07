@@ -8,6 +8,8 @@ use App\Http\Requests\Collectible\CategoryCreateRequest;
 use App\Http\Requests\Collectible\CategoryEditRequest;
 use App\Models\Collectible;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\View\View;
 
 class CategoryController extends Controller
@@ -16,10 +18,25 @@ class CategoryController extends Controller
      * Display a listing of the resource.
      *
      * @param Collectible $collectible
-     * @return RedirectResponse
+     * @return RedirectResponse|Response
      */
-    public function index(Collectible $collectible): RedirectResponse
+    public function index(Collectible $collectible, Request $request)
     {
+        if ($request->expectsJson()) {
+            $categories = Collectible\Category::whereCollectibleId($collectible->id)->paginate(30);
+
+            return response([
+                'status' => 'success',
+                'data' => [
+                    'meta' => [
+                        'items' => $categories->total(),
+                        'pages' => $categories->lastPage(),
+                    ],
+                    'items' => $categories->items(),
+                ],
+            ]);
+        }
+
         return redirect()->route('collectibles.show', ['collectible' => $collectible]);
     }
 

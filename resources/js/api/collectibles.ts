@@ -82,3 +82,23 @@ export async function storeOrUpdateCollectible(
     })
     .catch((error: ApiResponse) => error);
 }
+
+export interface CollectibleCategory {
+  id: number;
+  name: string;
+  field_values: Record<string, unknown>;
+}
+
+export async function getCategories(
+  collectibleId: number,
+  page: number = 1
+): Promise<ApiResponse<ApiList<CollectibleCategory>>> {
+  return await api
+    .get(`/collectibles/${collectibleId}/categories?page=${page}`)
+    .then(
+      (response: AxiosResponse<ApiResponse<ApiList<CollectibleCategory>>>) => {
+        return response.data;
+      }
+    )
+    .catch((error: ApiResponse) => error);
+}

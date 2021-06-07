@@ -9,3 +9,4 @@ export { default as VerifyEmailPage } from './auth/VerifyEmailPage.vue';
 
 export { default as CollectibleEditPage } from './collectible/CollectibleEditPage.vue';
 export { default as CollectibleIndexPage } from './collectible/CollectibleIndexPage.vue';
+export { default as CollectibleShowPage } from './collectible/CollectibleShowPage.vue';

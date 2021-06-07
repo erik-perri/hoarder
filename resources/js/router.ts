@@ -3,6 +3,7 @@ import VueRouter from 'vue-router';
 import {
   CollectibleEditPage,
   CollectibleIndexPage,
+  CollectibleShowPage,
   ErrorPage404,
   ForgotPasswordPage,
   HomePage,
@@ -67,6 +68,11 @@ export default new VueRouter({
               path: 'create',
               component: CollectibleEditPage,
               meta: { requiresAuth: true },
+            },
+            {
+              name: 'collectibles.show',
+              path: ':id',
+              component: CollectibleShowPage,
             },
             {
               name: 'collectibles.edit',
