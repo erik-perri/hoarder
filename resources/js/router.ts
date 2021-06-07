@@ -24,13 +24,13 @@ export default new VueRouter({
       component: BaseLayout,
       children: [
         {
-          name: 'home',
           path: '',
+          name: 'home',
           component: HomePage,
         },
         {
-          name: 'login',
           path: 'login',
+          name: 'login',
           component: LoginPage,
           meta: { requiresAuth: false },
         },
@@ -59,24 +59,24 @@ export default new VueRouter({
           component: CollectibleLayout,
           children: [
             {
-              name: 'collectibles.index',
               path: '',
+              name: 'collectibles.index',
               component: CollectibleIndexPage,
             },
             {
-              name: 'collectibles.create',
               path: 'create',
+              name: 'collectibles.create',
               component: CollectibleEditPage,
               meta: { requiresAuth: true },
             },
             {
-              name: 'collectibles.show',
               path: ':id',
+              name: 'collectibles.show',
               component: CollectibleShowPage,
             },
             {
-              name: 'collectibles.edit',
               path: ':id/edit',
+              name: 'collectibles.edit',
               component: CollectibleEditPage,
               meta: { requiresAuth: true },
             },
