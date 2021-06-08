@@ -50,10 +50,28 @@ export default Vue.extend({
   },
   data() {
     const categoryFields = JSON.parse(
-      JSON.stringify(this.collectible?.category_fields || [])
+      JSON.stringify(
+        this.collectible?.category_fields || [
+          {
+            name: 'Name',
+            code: 'name',
+            is_required: true,
+            input_type: 'text',
+          },
+        ]
+      )
     );
     const itemFields = JSON.parse(
-      JSON.stringify(this.collectible?.item_fields || [])
+      JSON.stringify(
+        this.collectible?.item_fields || [
+          {
+            name: 'Name',
+            code: 'name',
+            is_required: true,
+            input_type: 'text',
+          },
+        ]
+      )
     );
     return {
       collectibleNameValue: this.collectible.name || '',
