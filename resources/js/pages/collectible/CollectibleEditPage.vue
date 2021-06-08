@@ -6,8 +6,6 @@
 
     <CollectibleForm
       :collectible="collectible || { name: '' }"
-      :categoryFields="collectibleFields"
-      :itemFields="itemFields"
       :handle-submit="submit"
     />
   </div>
@@ -33,12 +31,6 @@ export default Vue.extend({
   },
   data() {
     return {
-      collectibleFields: JSON.parse(
-        JSON.stringify(this.collectible?.category_fields || [])
-      ),
-      itemFields: JSON.parse(
-        JSON.stringify(this.collectible?.item_fields || [])
-      ),
       isLoading: false,
       errors: {},
     };

@@ -43,24 +43,22 @@ export default Vue.extend({
       type: Object,
       required: true,
     },
-    categoryFields: {
-      type: Array,
-      required: true,
-    },
-    itemFields: {
-      type: Array,
-      required: true,
-    },
     handleSubmit: {
       type: Function,
       required: true,
     },
   },
   data() {
+    const categoryFields = JSON.parse(
+      JSON.stringify(this.collectible?.category_fields || [])
+    );
+    const itemFields = JSON.parse(
+      JSON.stringify(this.collectible?.item_fields || [])
+    );
     return {
       collectibleNameValue: this.collectible.name || '',
-      categoryFieldsValue: this.categoryFields as Array<CollectibleFieldModel>,
-      itemFieldsValue: this.itemFields as Array<CollectibleFieldModel>,
+      categoryFieldsValue: categoryFields as Array<CollectibleFieldModel>,
+      itemFieldsValue: itemFields as Array<CollectibleFieldModel>,
       errors: {},
     };
   },
