@@ -17,7 +17,7 @@ api.interceptors.response.use(
   (response) => {
     return response;
   },
-  (error: AxiosError): ApiResponse => {
+  (error: AxiosError) => {
     if (!error.response) {
       // Errors that didn't even make it to a response (timeout, refused, etc)
       throw {
