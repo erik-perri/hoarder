@@ -10,8 +10,10 @@
       </router-link>
     </div>
 
+    <div v-if="isLoading">Loading...</div>
+    <div v-else-if="error">An error has occurred: {{ error }}</div>
     <div v-if="data">
-      <ul>
+      <ul v-if="data.items.length">
         <li v-for="category in data.items" :key="category.id">
           <router-link
             :to="{
@@ -23,6 +25,7 @@
           </router-link>
         </li>
       </ul>
+      <div v-else>No categories found.</div>
 
       <Pagination
         :current-page="getPageFromRoute(1)"
@@ -59,6 +62,8 @@ export default Vue.extend({
   },
   data() {
     return {
+      isLoading: false,
+      error: null as string | null,
       data: null as ApiList<CollectibleCategory> | null,
     };
   },
@@ -70,12 +75,18 @@ export default Vue.extend({
       await this.fetchList(this.getPageFromRoute(1));
     },
     async fetchList(page: number) {
+      this.isLoading = true;
+      this.error = null;
       this.data = null;
 
       const response = await getCategories(this.collectible.id, page);
       if (response.status === 'success' && response.data) {
         this.data = response.data;
+      } else {
+        this.error = response.message || 'Unknown error.';
       }
+
+      this.isLoading = false;
     },
     getPageFromRoute(defaultPage: number): number {
       if (!this.$route.query.page) {

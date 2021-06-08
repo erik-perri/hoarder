@@ -7,11 +7,12 @@
     <div v-if="isLoading">Loading...</div>
     <div v-else-if="error">An error has occurred: {{ error }}</div>
     <div v-else-if="data">
-      <ul>
+      <ul v-if="data.items.length">
         <li v-for="item in data.items" :key="item.id">
           {{ item.name }}
         </li>
       </ul>
+      <div v-else>No items found.</div>
 
       <Pagination
         :current-page="getPageFromRoute(1)"

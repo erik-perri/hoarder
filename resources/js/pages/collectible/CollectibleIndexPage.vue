@@ -77,18 +77,13 @@ export default Vue.extend({
 
       this.isLoading = false;
     },
-    getPageFromRoute(defaultValue: number): number {
+    getPageFromRoute(defaultPage: number): number {
       if (!this.$route.query.page) {
-        return defaultValue;
+        return defaultPage;
       }
 
-      if (Array.isArray(this.$route.query.page)) {
-        return this.$route.query.page[0]
-          ? parseInt(this.$route.query.page[0], 10)
-          : defaultValue;
-      }
-
-      return parseInt(this.$route.query.page, 10);
+      const page = parseInt(this.$route.query.page as string, 10);
+      return isNaN(page) ? defaultPage : page;
     },
   },
   components: { Pagination },
