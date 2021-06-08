@@ -3,7 +3,11 @@
     <tbody>
       <slot />
 
-      <tr v-for="field in fields" :key="field.code">
+      <tr
+        v-for="field in fields"
+        :key="field.code"
+        v-if="field.code !== 'name'"
+      >
         <th>{{ field.name }}</th>
         <td>
           <span v-if="values[field.code] !== undefined">
