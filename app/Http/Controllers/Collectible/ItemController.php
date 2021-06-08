@@ -112,10 +112,23 @@ class ItemController extends Controller
      * @param Collectible $collectible
      * @param Collectible\Category $category
      * @param Collectible\Item $item
-     * @return View
+     * @return View|Response
      */
-    public function show(Collectible $collectible, Collectible\Category $category, Collectible\Item $item): View
-    {
+    public function show(
+        Collectible $collectible,
+        Collectible\Category $category,
+        Collectible\Item $item,
+        Request $request
+    ) {
+        if ($request->expectsJson()) {
+            return response([
+                'status' => 'success',
+                'data' => [
+                    'item' => $item,
+                ],
+            ]);
+        }
+
         return view('collectible.item.show', [
             'collectible' => $collectible,
             'category' => $category,

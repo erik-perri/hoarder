@@ -8,6 +8,7 @@ import {
   ErrorPage404,
   ForgotPasswordPage,
   HomePage,
+  ItemShowPage,
   LoginPage,
   RegisterPage,
   ResetPasswordPage,
@@ -17,6 +18,7 @@ import {
   BaseLayout,
   CollectibleInjectorLayout,
   CollectibleCategoryInjectorLayout,
+  CollectibleItemInjectorLayout,
 } from './layouts';
 
 Vue.use(VueRouter);
@@ -93,6 +95,17 @@ export default new VueRouter({
                   path: '',
                   name: 'categories.show',
                   component: CategoryShowPage,
+                },
+                {
+                  path: 'items/:item',
+                  component: CollectibleItemInjectorLayout,
+                  children: [
+                    {
+                      path: '',
+                      name: 'items.show',
+                      component: ItemShowPage,
+                    },
+                  ],
                 },
               ],
             },

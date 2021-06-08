@@ -26,7 +26,18 @@
     <div v-else-if="data">
       <ul v-if="data.items.length">
         <li v-for="item in data.items" :key="item.id">
-          {{ item.name }}
+          <router-link
+            :to="{
+              name: 'items.show',
+              params: {
+                collectible: collectible.id,
+                category: category.id,
+                item: item.id,
+              },
+            }"
+          >
+            {{ item.name }}
+          </router-link>
         </li>
       </ul>
       <div v-else>No items found.</div>

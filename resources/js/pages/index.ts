@@ -12,3 +12,5 @@ export { default as CollectibleIndexPage } from './collectible/CollectibleIndexP
 export { default as CollectibleShowPage } from './collectible/CollectibleShowPage.vue';
 
 export { default as CategoryShowPage } from './category/CategoryShowPage.vue';
+
+export { default as ItemShowPage } from './item/ItemShowPage.vue';

@@ -139,3 +139,22 @@ export async function getItems(
     )
     .catch((error: ApiResponse) => error);
 }
+
+export interface GetItemResponse {
+  item: CollectibleItem;
+}
+
+export async function getItem(
+  collectibleId: number,
+  categoryId: number,
+  itemId: number
+): Promise<ApiResponse<GetItemResponse>> {
+  return await api
+    .get(
+      `/collectibles/${collectibleId}/categories/${categoryId}/items/${itemId}`
+    )
+    .then((response: AxiosResponse<ApiResponse<GetItemResponse>>) => {
+      return response.data;
+    })
+    .catch((error: ApiResponse) => error);
+}
