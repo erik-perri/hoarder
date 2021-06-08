@@ -13,7 +13,7 @@ export const ListComponent = Vue.extend({
     await this.refreshList();
   },
   watch: {
-    $route: 'refreshList',
+    '$route.query.page': 'refreshList',
   },
   methods: {
     async refreshList() {
