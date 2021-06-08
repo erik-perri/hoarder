@@ -2,7 +2,24 @@
   <div>
     <h2>{{ category.name }}</h2>
 
-    <pre>{{ category.field_values }}</pre>
+    <CollectibleFieldValueTable
+      :fields="collectible.category_fields"
+      :values="category.field_values"
+    >
+      <tr>
+        <th>Collectible</th>
+        <td>
+          <router-link
+            :to="{
+              name: 'collectibles.show',
+              params: { collectible: collectible.id },
+            }"
+          >
+            {{ collectible.name }}
+          </router-link>
+        </td>
+      </tr>
+    </CollectibleFieldValueTable>
 
     <div v-if="isLoading">Loading...</div>
     <div v-else-if="error">An error has occurred: {{ error }}</div>
@@ -36,6 +53,7 @@ import {
   getItems,
 } from '../../api/collectibles';
 import { Pagination } from '../../components/Pagination';
+import { CollectibleFieldValueTable } from '../../components/CollectibleFieldValueTable';
 import { ApiList } from '../../api/types';
 
 interface Data {
@@ -68,6 +86,6 @@ export default ListComponent.extend<Data, {}, {}, Props>({
       return await getItems(this.collectible.id, this.category.id, page);
     },
   },
-  components: { Pagination },
+  components: { CollectibleFieldValueTable, Pagination },
 });
 </script>

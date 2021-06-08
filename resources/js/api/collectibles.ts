@@ -9,16 +9,18 @@ export interface Collectible {
   item_fields: Array<CollectibleFieldModel>;
 }
 
+export type CollectibleFieldValues = Record<string, unknown>;
+
 export interface CollectibleCategory {
   id: number;
   name: string;
-  field_values: Record<string, unknown>;
+  field_values: CollectibleFieldValues;
 }
 
 export interface CollectibleItem {
   id: number;
   name: string;
-  field_values: Record<string, unknown>;
+  field_values: CollectibleFieldValues;
 }
 
 export type CollectibleFieldInputType =
