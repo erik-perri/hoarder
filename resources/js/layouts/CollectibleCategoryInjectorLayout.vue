@@ -55,7 +55,10 @@ export default Vue.extend({
       const response = await getCategory(this.collectible.id, id);
       if (response?.status !== 'success') {
         // TODO Flash message
-        next({ name: 'collectibles.index' });
+        next({
+          name: 'collectibles.show',
+          params: { collectible: to.params.collectible },
+        });
         return;
       }
 
