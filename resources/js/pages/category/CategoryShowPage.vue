@@ -28,12 +28,26 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import { CollectibleItem, getItems } from '../../api/collectibles';
-import { ApiList } from '../../api/types';
+import { ListComponent } from '../../util/ListComponent';
+import {
+  Collectible,
+  CollectibleCategory,
+  CollectibleItem,
+  getItems,
+} from '../../api/collectibles';
 import { Pagination } from '../../components/Pagination';
+import { ApiList } from '../../api/types';
 
-export default Vue.extend({
+interface Data {
+  data: ApiList<CollectibleItem> | null;
+}
+
+interface Props {
+  collectible: Collectible;
+  category: CollectibleCategory;
+}
+
+export default ListComponent.extend<Data, {}, {}, Props>({
   props: {
     collectible: {
       type: Object,
@@ -44,53 +58,14 @@ export default Vue.extend({
       required: true,
     },
   },
-  data() {
-    return {
-      isLoading: false,
-      error: null as string | null,
-      data: null as ApiList<CollectibleItem> | null,
-    };
-  },
   computed: {
     isLoggedIn: function (): boolean {
       return this.$store.getters['auth/isLoggedIn'];
     },
   },
-  created() {
-    this.refreshList();
-  },
-  watch: {
-    $route: 'refreshList',
-  },
   methods: {
-    refreshList() {
-      this.fetchList(this.getPageFromRoute(1));
-    },
     async fetchList(page: number) {
-      this.isLoading = true;
-      this.error = null;
-      this.data = null;
-
-      const response = await getItems(
-        this.collectible.id,
-        this.category.id,
-        page
-      );
-      if (response.status === 'success' && response.data) {
-        this.data = response.data;
-      } else {
-        this.error = response.message || 'Unknown error.';
-      }
-
-      this.isLoading = false;
-    },
-    getPageFromRoute(defaultPage: number): number {
-      if (!this.$route.query.page) {
-        return defaultPage;
-      }
-
-      const page = parseInt(this.$route.query.page as string, 10);
-      return isNaN(page) ? defaultPage : page;
+      return await getItems(this.collectible.id, this.category.id, page);
     },
   },
   components: { Pagination },

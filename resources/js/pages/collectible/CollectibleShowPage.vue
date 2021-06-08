@@ -40,12 +40,24 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import { CollectibleCategory, getCategories } from '../../api/collectibles';
+import { ListComponent } from '../../util/ListComponent';
+import {
+  Collectible,
+  CollectibleCategory,
+  getCategories,
+} from '../../api/collectibles';
 import { Pagination } from '../../components/Pagination';
 import { ApiList } from '../../api/types';
 
-export default Vue.extend({
+interface Data {
+  data: ApiList<CollectibleCategory> | null;
+}
+
+interface Props {
+  collectible: Collectible;
+}
+
+export default ListComponent.extend<Data, {}, {}, Props>({
   props: {
     collectible: {
       type: Object,
@@ -57,44 +69,9 @@ export default Vue.extend({
       return this.$store.getters['auth/isLoggedIn'];
     },
   },
-  async created() {
-    await this.refreshList();
-  },
-  data() {
-    return {
-      isLoading: false,
-      error: null as string | null,
-      data: null as ApiList<CollectibleCategory> | null,
-    };
-  },
-  watch: {
-    $route: 'refreshList',
-  },
   methods: {
-    async refreshList() {
-      await this.fetchList(this.getPageFromRoute(1));
-    },
     async fetchList(page: number) {
-      this.isLoading = true;
-      this.error = null;
-      this.data = null;
-
-      const response = await getCategories(this.collectible.id, page);
-      if (response.status === 'success' && response.data) {
-        this.data = response.data;
-      } else {
-        this.error = response.message || 'Unknown error.';
-      }
-
-      this.isLoading = false;
-    },
-    getPageFromRoute(defaultPage: number): number {
-      if (!this.$route.query.page) {
-        return defaultPage;
-      }
-
-      const page = parseInt(this.$route.query.page as string, 10);
-      return isNaN(page) ? defaultPage : page;
+      return await getCategories(this.collectible.id, page);
     },
   },
   components: { Pagination },
