@@ -15,8 +15,8 @@ import {
 } from './pages';
 import {
   BaseLayout,
-  CategoryInjectorLayout,
   CollectibleInjectorLayout,
+  CollectibleCategoryInjectorLayout,
 } from './layouts';
 
 Vue.use(VueRouter);
@@ -87,7 +87,7 @@ export default new VueRouter({
             },
             {
               path: 'categories/:category',
-              component: CategoryInjectorLayout,
+              component: CollectibleCategoryInjectorLayout,
               children: [
                 {
                   path: '',
