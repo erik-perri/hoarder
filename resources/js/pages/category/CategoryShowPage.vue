@@ -21,6 +21,7 @@
       </tr>
     </CollectibleFieldValueTable>
 
+    <h3>Items</h3>
     <div v-if="isLoading">Loading...</div>
     <div v-else-if="error">An error has occurred: {{ error }}</div>
     <div v-else-if="data">

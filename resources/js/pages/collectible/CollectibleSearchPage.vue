@@ -3,14 +3,14 @@
     <h2>Search {{ collectible.name }}</h2>
 
     <form @submit.prevent="refreshList">
-      <h3>Category criteria</h3>
+      <h4>Category criteria</h4>
       <CriteriaBuilder
         :conditions="categoryCriteria"
         :fields="collectible.category_fields"
         @conditions-changed="setCategoryCriteria"
       />
 
-      <h3>Item criteria</h3>
+      <h4>Item criteria</h4>
       <CriteriaBuilder
         :conditions="itemCriteria"
         :fields="collectible.item_fields"
@@ -20,7 +20,7 @@
       <button type="submit">Search</button>
     </form>
 
-    <h2>Results</h2>
+    <h3>Results</h3>
     <div v-if="isLoading">Loading...</div>
     <div v-else-if="error">An error has occurred: {{ error }}</div>
     <div v-if="data">
