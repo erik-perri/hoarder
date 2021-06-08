@@ -7,6 +7,8 @@
     >
       {{ info.text }}
     </router-link>
+
+    <div v-if="totalPages > 1">Page {{ currentPage }} of {{ totalPages }}</div>
   </div>
 </template>
 
