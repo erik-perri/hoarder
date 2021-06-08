@@ -84,4 +84,28 @@ class Collectible extends Model
     {
         return $this->hasManyThrough(Collectible\Item::class, Collectible\Category::class);
     }
+
+    /**
+     * @param bool $includeFields
+     * @return array
+     */
+    public function toArray(bool $includeFields = true): array
+    {
+        if (! $includeFields) {
+            return parent::toArray();
+        }
+
+        $fields = $this->fields
+            ->map(fn (Collectible\Field $field) => $field->jsonSerialize())
+            ->groupBy('entity_type')
+            ->toArray();
+
+        return array_merge(
+            parent::toArray(),
+            [
+                'category_fields' => $fields['category'] ?? [],
+                'item_fields' => $fields['item'] ?? [],
+            ]
+        );
+    }
 }

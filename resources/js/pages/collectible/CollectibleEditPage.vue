@@ -1,16 +1,13 @@
 <template>
   <div>
     <h2>
-      {{
-        $route.params.collectible ? 'Edit Collectible' : 'Create Collectible'
-      }}
+      {{ collectible ? 'Edit Collectible' : 'Create Collectible' }}
     </h2>
 
     <CollectibleForm
-      v-if="collectible"
-      :collectible="collectible"
-      :categoryFields="JSON.parse(JSON.stringify(categoryFields))"
-      :itemFields="JSON.parse(JSON.stringify(itemFields))"
+      :collectible="collectible || { name: '' }"
+      :categoryFields="collectibleFields"
+      :itemFields="itemFields"
       :handle-submit="submit"
     />
   </div>
@@ -26,67 +23,39 @@ import {
   Collectible,
   CollectibleFieldEntityType,
   CollectibleFieldModel,
-  getCollectible,
   storeOrUpdateCollectible,
 } from '../../api/collectibles';
 import { FieldEditorItem } from '../../components/FieldEditor';
 
-// TODO Switch this to use the injected collectible, we'll likely want to move categoryFields and itemFields to be a
-//      part of Collectible.
 export default Vue.extend({
+  props: {
+    collectible: Object,
+  },
   data() {
     return {
+      collectibleFields: JSON.parse(
+        JSON.stringify(this.collectible?.category_fields || [])
+      ),
+      itemFields: JSON.parse(
+        JSON.stringify(this.collectible?.item_fields || [])
+      ),
       isLoading: false,
       errors: {},
-      collectible: null as Collectible | null,
-      categoryFields: [] as Array<CollectibleFieldModel>,
-      itemFields: [] as Array<CollectibleFieldModel>,
     };
   },
-  async created() {
-    await this.refreshCollectible();
-  },
-  watch: {
-    $route: 'refreshCollectible',
-  },
   methods: {
-    async refreshCollectible() {
-      if (!this.$route.params.collectible) {
-        this.collectible = {
-          name: '',
-        } as Collectible;
-        this.categoryFields = [];
-        this.itemFields = [];
-        return;
-      }
-
-      const id = parseInt(this.$route.params.collectible, 10);
-      if (id) {
-        this.isLoading = true;
-        this.errors = {};
-
-        const response = await getCollectible(id);
-        if (response.status === 'success' && response.data) {
-          this.collectible = response.data.collectible;
-          this.categoryFields = response.data.categoryFields;
-          this.itemFields = response.data.itemFields;
-        } else {
-          this.errors = response.errors || {};
-        }
-
-        this.isLoading = false;
-      }
-    },
     async submit(
       collectible: Collectible,
       categoryFields: Array<FieldEditorItem>,
       itemFields: Array<FieldEditorItem>
     ): Promise<CollectibleFormSubmitHandlerReturn> {
-      const response = await storeOrUpdateCollectible(
-        collectible,
-        categoryFields.map((f) => this.convertEditorItemToField(f, 'category')),
-        itemFields.map((f) => this.convertEditorItemToField(f, 'item'))
+      collectible.category_fields = categoryFields.map((f) =>
+        this.convertEditorItemToField(f, 'category')
       );
+      collectible.item_fields = itemFields.map((f) =>
+        this.convertEditorItemToField(f, 'item')
+      );
+      const response = await storeOrUpdateCollectible(collectible);
 
       if (response.status === 'success') {
         await this.$router.push({

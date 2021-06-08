@@ -5,6 +5,8 @@ import { ApiList, ApiResponse } from './types';
 export interface Collectible {
   id: number;
   name: string;
+  category_fields: Array<CollectibleFieldModel>;
+  item_fields: Array<CollectibleFieldModel>;
 }
 
 export interface CollectibleCategory {
@@ -56,8 +58,6 @@ export async function getCollectibles(
 
 export interface GetCollectibleResponse {
   collectible: Collectible;
-  categoryFields: Array<CollectibleFieldModel>;
-  itemFields: Array<CollectibleFieldModel>;
 }
 
 export async function getCollectible(
@@ -76,14 +76,10 @@ export interface StoreCollectibleResponse {
 }
 
 export async function storeOrUpdateCollectible(
-  collectible: Collectible,
-  categoryFields: Array<CollectibleFieldModel>,
-  itemFields: Array<CollectibleFieldModel>
+  collectible: Collectible
 ): Promise<ApiResponse<StoreCollectibleResponse>> {
   const data = {
     ...collectible,
-    category_fields: categoryFields,
-    item_fields: itemFields,
   };
   return await (collectible.id
     ? api.put(`/collectibles/${collectible.id}`, data)

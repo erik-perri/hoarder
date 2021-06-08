@@ -114,17 +114,10 @@ class CollectibleController extends Controller
     public function show(Collectible $collectible, Request $request)
     {
         if ($request->expectsJson()) {
-            $fields = $collectible->fields
-                ->map(fn (Collectible\Field $field) => $field->jsonSerialize())
-                ->groupBy('entity_type')
-                ->toArray();
-
             return response([
                 'status' => 'success',
                 'data' => [
                     'collectible' => $collectible->toArray(),
-                    'categoryFields' => $fields['category'] ?? [],
-                    'itemFields' => $fields['item'] ?? [],
                 ],
             ]);
         }
