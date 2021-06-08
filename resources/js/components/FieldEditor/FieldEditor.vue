@@ -1,21 +1,13 @@
 <template>
   <div class="field-editor">
     <ul>
-      <li>
-        <FieldInput
-          field-identifier="name"
-          field-name="Name"
-          input-type="text"
-          :is-required="true"
-          :is-disabled="true"
-        />
-      </li>
       <li v-for="field in this.fields" :key="field.code">
         <div class="field-item">
           <FieldInput
             :field-identifier="field.code"
             :field-name="field.name"
             :input-type="field.input_type"
+            :is-editable="field.code !== 'name'"
             :is-required="!!field.is_required"
             :is-disabled="field.is_removed"
             :is-new="field.is_new"

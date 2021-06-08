@@ -1,6 +1,6 @@
 <template>
   <div class="field-input">
-    <div v-if="isEditing">
+    <div v-if="isEditing && isEditable">
       <div class="field-input-group">
         <label :for="`fieldName-${fieldIdentifier}`">Name</label>
         <input
@@ -45,7 +45,7 @@
       ({{ `${inputTypeValue}${isRequiredValue ? '; Required' : ''}` }})
     </div>
 
-    <div v-if="!isDisabled">
+    <div v-if="!isDisabled && isEditable">
       <a href="#" @click.prevent="isEditing = true" v-if="!isEditing">Edit</a>
 
       <a href="#" @click.prevent="save" v-if="isEditing">Save</a>
@@ -73,6 +73,7 @@ export default Vue.extend({
       type: String,
       required: true,
     },
+    isEditable: Boolean,
     isRequired: Boolean,
     isDisabled: Boolean,
     isNew: Boolean,

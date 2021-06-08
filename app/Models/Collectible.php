@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Collectible\Enum\FieldInputType;
 use App\Models\Collectible\Category;
 use App\Models\Collectible\Field;
 use App\Models\Collectible\Item;
@@ -100,11 +101,35 @@ class Collectible extends Model
             ->groupBy('entity_type')
             ->toArray();
 
+        $categoryFields = array_merge(
+            [
+                [
+                    'name' => 'Name',
+                    'code' => 'name',
+                    'is_required' => true,
+                    'input_type' => FieldInputType::TEXT,
+                ],
+            ],
+            $fields['category'] ?? []
+        );
+
+        $itemFields = array_merge(
+            [
+                [
+                    'name' => 'Name',
+                    'code' => 'name',
+                    'is_required' => true,
+                    'input_type' => FieldInputType::TEXT,
+                ],
+            ],
+            $fields['item'] ?? []
+        );
+
         return array_merge(
             parent::toArray(),
             [
-                'category_fields' => $fields['category'] ?? [],
-                'item_fields' => $fields['item'] ?? [],
+                'category_fields' => $categoryFields,
+                'item_fields' => $itemFields,
             ]
         );
     }

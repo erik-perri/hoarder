@@ -228,6 +228,13 @@ class CollectibleController extends Controller
             foreach ($request->get($fieldRequestKey) as $fieldInfo) {
                 $fieldCode = $fieldInfo['code'];
 
+                // TODO Figure out a better way to handle the name field (or any other non-JSON fields we may add)
+                //      Right now we create the fake field in Collectible->toArray and check for the code in a few
+                //      places, that is not maintainable.
+                if ($fieldCode === 'name') {
+                    continue;
+                }
+
                 if (($fieldInfo['is_removed'] ?? 0) > 0) {
                     $fieldRepository->removeField($collectible, $fieldCode);
                     continue;
