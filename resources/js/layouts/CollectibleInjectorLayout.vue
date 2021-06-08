@@ -1,6 +1,10 @@
 <template>
   <div>
-    <router-view v-if="collectible" :collectible="collectible" />
+    <router-view
+      v-if="collectible"
+      :collectible="collectible"
+      v-on:refresh-collectible="needsRefresh = true"
+    />
   </div>
 </template>
 
@@ -13,6 +17,8 @@ export default Vue.extend({
   data() {
     return {
       collectible: null as Collectible | null,
+      // Whether a child has asked us to refresh the next time a page changes
+      needsRefresh: false,
     };
   },
   async beforeRouteEnter(to, from, next) {
@@ -31,7 +37,8 @@ export default Vue.extend({
   },
   async beforeRouteUpdate(to, from, next) {
     const id = parseInt(to.params.collectible, 10);
-    if (id !== this.collectible?.id) {
+    if (this.needsRefresh || id !== this.collectible?.id) {
+      this.needsRefresh = false;
       this.collectible = null;
       const response = await getCollectible(id);
       if (response?.status !== 'success') {

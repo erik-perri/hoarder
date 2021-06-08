@@ -4,6 +4,7 @@
       v-if="category"
       :category="category"
       :collectible="collectible"
+      v-on:refresh-category="needsRefresh = true"
     />
   </div>
 </template>
@@ -23,6 +24,8 @@ export default Vue.extend({
   data() {
     return {
       category: null as CollectibleCategory | null,
+      // Whether a child has asked us to refresh the next time a page changes
+      needsRefresh: false,
     };
   },
   async beforeRouteEnter(to, from, next) {
@@ -46,7 +49,8 @@ export default Vue.extend({
   },
   async beforeRouteUpdate(to, from, next) {
     const id = parseInt(to.params.category, 10);
-    if (id !== this.category?.id) {
+    if (this.needsRefresh || id !== this.category?.id) {
+      this.needsRefresh = false;
       this.category = null;
       const response = await getCategory(this.collectible.id, id);
       if (response?.status !== 'success') {

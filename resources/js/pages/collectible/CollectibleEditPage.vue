@@ -58,6 +58,7 @@ export default Vue.extend({
       const response = await storeOrUpdateCollectible(collectible);
 
       if (response.status === 'success') {
+        this.$emit('refresh-collectible');
         await this.$router.push({
           name: 'collectibles.show',
           params: { collectible: response.data.collectible.id.toString(10) },
