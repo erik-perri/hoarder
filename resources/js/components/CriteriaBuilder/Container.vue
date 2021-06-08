@@ -7,7 +7,6 @@
       group-type="and"
       @group-changed="groupChanged"
     />
-    <input type="hidden" :value="encodeForUrl(criteria)" :name="inputName" />
   </div>
 </template>
 
@@ -25,10 +24,6 @@ import {
 export default Vue.extend({
   components: { Group },
   props: {
-    inputName: {
-      type: String,
-      required: true,
-    },
     conditions: {
       type: Array,
       required: true,
@@ -48,7 +43,6 @@ export default Vue.extend({
       group: {
         group_conditions: [] as CriteriaConditions,
       } as CriteriaGroup,
-      criteria: this.conditions,
     };
   },
   methods: {
@@ -91,14 +85,11 @@ export default Vue.extend({
 
       return result;
     },
-    encodeForUrl(criteria: CriteriaConditions) {
-      return JSON.stringify(criteria);
-    },
     groupChanged(id: number, changed: CriteriaGroup) {
       const groupWithoutIds = this.removeIdsFromGroup(changed);
       // The group passes up a group structure but we only care about the
       // conditions at this level.
-      this.criteria = groupWithoutIds.group_conditions;
+      this.$emit('conditions-changed', groupWithoutIds.group_conditions);
     },
   },
 });

@@ -1,0 +1,144 @@
+<template>
+  <div>
+    <h2>Search {{ collectible.name }}</h2>
+
+    <form @submit.prevent="refreshList">
+      <h3>Category criteria</h3>
+      <CriteriaBuilder
+        :conditions="categoryCriteria"
+        :fields="collectible.category_fields"
+        @conditions-changed="setCategoryCriteria"
+      />
+
+      <h3>Item criteria</h3>
+      <CriteriaBuilder
+        :conditions="itemCriteria"
+        :fields="collectible.item_fields"
+        @conditions-changed="setItemCriteria"
+      />
+
+      <button type="submit">Search</button>
+    </form>
+
+    <h2>Results</h2>
+    <div v-if="isLoading">Loading...</div>
+    <div v-else-if="error">An error has occurred: {{ error }}</div>
+    <div v-if="data">
+      <ul v-if="data.items.length">
+        <li v-for="item in data.items" :key="item.id">
+          <router-link
+            :to="{
+              name: 'items.show',
+              params: {
+                collectible: item.collectible_id,
+                category: item.category_id,
+                item: item.id,
+              },
+            }"
+          >
+            {{ item.name }}
+          </router-link>
+        </li>
+      </ul>
+      <div v-else>No items found.</div>
+
+      <Pagination
+        :current-page="getPageFromRoute(1)"
+        :total-pages="data.meta.pages"
+        :route-parameters="{
+          name: 'collectibles.search',
+          params: { collectible: this.collectible.id },
+          hash: this.$route.hash,
+        }"
+      />
+    </div>
+  </div>
+</template>
+
+<script lang="ts">
+import { ListComponent } from '../../util/ListComponent';
+import {
+  Collectible,
+  CollectibleItem,
+  searchItems,
+} from '../../api/collectibles';
+import { Pagination } from '../../components/Pagination';
+import { ApiList, ApiResponse } from '../../api/types';
+import {
+  CriteriaBuilder,
+  CriteriaConditions,
+} from '../../components/CriteriaBuilder';
+
+interface Data {
+  data: ApiList<CollectibleItem> | null;
+  categoryCriteria: CriteriaConditions;
+  itemCriteria: CriteriaConditions;
+}
+
+interface Methods {
+  updateLocationHash: () => void;
+  fetchList: (page: number) => Promise<ApiResponse<ApiList<CollectibleItem>>>;
+  setCategoryCriteria: (criteria: CriteriaConditions) => void;
+  setItemCriteria: (criteria: CriteriaConditions) => void;
+}
+
+interface Props {
+  collectible: Collectible;
+}
+
+export default ListComponent.extend<Data, Methods, {}, Props>({
+  props: {
+    collectible: {
+      type: Object,
+      required: true,
+    },
+  },
+  data() {
+    return {
+      data: null,
+      categoryCriteria: [],
+      itemCriteria: [],
+    };
+  },
+  methods: {
+    updateLocationHash(): void {
+      this.$router.push({
+        hash: JSON.stringify({
+          category: this.categoryCriteria,
+          item: this.itemCriteria,
+        }),
+      });
+    },
+    async fetchList(page: number) {
+      const hash = decodeURIComponent(this.$route.hash.replace(/^#/, ''));
+      if (hash.length) {
+        const previous = JSON.parse(hash);
+        if (previous?.category) {
+          this.categoryCriteria = previous.category;
+        }
+        if (previous?.item) {
+          this.itemCriteria = previous.item;
+        }
+      }
+
+      return await searchItems(
+        this.collectible.id,
+        this.categoryCriteria,
+        this.itemCriteria,
+        page
+      );
+    },
+    setCategoryCriteria(criteria: CriteriaConditions): void {
+      this.categoryCriteria = criteria;
+
+      this.updateLocationHash();
+    },
+    setItemCriteria(criteria: CriteriaConditions): void {
+      this.itemCriteria = criteria;
+
+      this.updateLocationHash();
+    },
+  },
+  components: { CriteriaBuilder, Pagination },
+});
+</script>

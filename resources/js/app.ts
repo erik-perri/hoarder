@@ -2,8 +2,6 @@ import './bootstrap';
 import Vue from 'vue';
 import router from './router';
 import store from './store';
-import { CriteriaBuilder } from './components/CriteriaBuilder';
-import { FieldEditor } from './components/FieldEditor';
 import { getLoginRedirect, storeLoginRedirect } from './util/login';
 
 router.beforeEach((to, from, next) => {
@@ -38,8 +36,4 @@ new Vue({
   },
   router,
   store,
-  components: {
-    'criteria-builder': CriteriaBuilder,
-    'field-editor': FieldEditor,
-  },
 });

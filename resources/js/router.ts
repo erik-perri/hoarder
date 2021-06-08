@@ -4,6 +4,7 @@ import {
   CategoryShowPage,
   CollectibleEditPage,
   CollectibleIndexPage,
+  CollectibleSearchPage,
   CollectibleShowPage,
   ErrorPage404,
   ForgotPasswordPage,
@@ -80,6 +81,11 @@ export default new VueRouter({
               path: '',
               name: 'collectibles.show',
               component: CollectibleShowPage,
+            },
+            {
+              path: 'search',
+              name: 'collectibles.search',
+              component: CollectibleSearchPage,
             },
             {
               path: 'edit',

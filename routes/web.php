@@ -23,7 +23,7 @@ Route::get('/', fn () => view('home'))->name('home');
 
 require __DIR__.'/auth.php';
 
-Route::get('/collectible/{collectible}/search', [SearchController::class, 'search'])
+Route::any('/collectibles/{collectible}/search', [SearchController::class, 'search'])
      ->name('collectibles.search');
 
 Route::resource('collectibles', CollectibleController::class);

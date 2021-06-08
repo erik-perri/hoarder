@@ -2,8 +2,17 @@
   <div>
     <h2>{{ collectible.name }}</h2>
 
-    <div v-if="isLoggedIn">
+    <div>
       <router-link
+        :to="{
+          name: 'collectibles.search',
+          params: { collectible: collectible.id },
+        }"
+      >
+        Search collectible
+      </router-link>
+      <router-link
+        v-if="isLoggedIn"
         :to="{ name: 'collectibles.edit', params: { id: collectible.id } }"
       >
         Edit collectible

@@ -19,13 +19,13 @@ class SearchController extends Controller
      * @return Response|View
      * @throws \JsonException
      */
-    public function search(Collectible $collectible, Request $request, CriteriaFieldFactory $fieldFactory): View
+    public function search(Collectible $collectible, Request $request, CriteriaFieldFactory $fieldFactory)
     {
         $categoryFields = $fieldFactory->getCategoryFieldInfo($collectible);
-        $categoryCriteria = $this->getCriteriaFromRequest($request, 'category_criteria');
+        $categoryCriteria = $request->get('category_criteria');
 
         $itemFields = $fieldFactory->getItemFieldInfo($collectible);
-        $itemCriteria = $this->getCriteriaFromRequest($request, 'item_criteria');
+        $itemCriteria = $request->get('item_criteria');
 
         $searcher = new ItemSearcher();
 
@@ -39,6 +39,21 @@ class SearchController extends Controller
                 $itemCriteria,
                 $itemFields
             );
+        }
+
+        if ($request->expectsJson()) {
+            $items = $builder->paginate(30);
+
+            return response([
+                'status' => 'success',
+                'data' => [
+                    'meta' => [
+                        'items' => $items->total(),
+                        'pages' => $items->lastPage(),
+                    ],
+                    'items' => $items->items(),
+                ],
+            ]);
         }
 
         return view('collectible.search', [

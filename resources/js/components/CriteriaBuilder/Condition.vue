@@ -6,10 +6,10 @@
         <option value=""></option>
         <option
           v-for="field in availableFields"
-          :value="field.identifier"
-          :key="field.identifier"
+          :value="field.code"
+          :key="field.code"
         >
-          {{ field.display_name }}
+          {{ field.name }}
         </option>
       </select>
     </div>
@@ -31,7 +31,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { CollectibleField } from '../../types';
+import { CollectibleFieldModel } from '../../api/collectibles';
 import { ConditionOptions } from './types';
 import BooleanCondition from './Condition/BooleanCondition.vue';
 import DateCondition from './Condition/DateCondition.vue';
@@ -95,9 +95,9 @@ export default Vue.extend({
       this.$emit('condition-changed', this.id, { ...this.options });
       this.editing = false;
     },
-    getFieldInfo(): CollectibleField | undefined {
-      return (this.availableFields as CollectibleField[]).find(
-        (field) => field.identifier === this.options.field
+    getFieldInfo(): CollectibleFieldModel | undefined {
+      return (this.availableFields as CollectibleFieldModel[]).find(
+        (field) => field.code === this.options.field
       );
     },
   },
@@ -119,7 +119,7 @@ export default Vue.extend({
     fieldName(): string | undefined {
       const info = this.getFieldInfo();
 
-      return info?.display_name;
+      return info?.name;
     },
   },
 });

@@ -1,9 +1,5 @@
 import axios, { AxiosError } from 'axios';
-import {
-  ApiResponse,
-  isRequestValidationError,
-  isUnhandledExceptionError,
-} from './types';
+import { isRequestValidationError, isUnhandledExceptionError } from './types';
 
 // Setup the default API options.
 const api = axios.create({

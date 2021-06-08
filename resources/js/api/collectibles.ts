@@ -1,6 +1,7 @@
 import api from './api';
 import { AxiosResponse } from 'axios';
 import { ApiList, ApiResponse } from './types';
+import { CriteriaConditions } from '../components/CriteriaBuilder';
 
 export interface Collectible {
   id: number;
@@ -13,12 +14,15 @@ export type CollectibleFieldValues = Record<string, unknown>;
 
 export interface CollectibleCategory {
   id: number;
+  collectible_id: number;
   name: string;
   field_values: CollectibleFieldValues;
 }
 
 export interface CollectibleItem {
   id: number;
+  collectible_id: number;
+  category_id: number;
   name: string;
   field_values: CollectibleFieldValues;
 }
@@ -154,6 +158,23 @@ export async function getItem(
       `/collectibles/${collectibleId}/categories/${categoryId}/items/${itemId}`
     )
     .then((response: AxiosResponse<ApiResponse<GetItemResponse>>) => {
+      return response.data;
+    })
+    .catch((error: ApiResponse) => error);
+}
+
+export async function searchItems(
+  collectibleId: number,
+  categoryCriteria: CriteriaConditions,
+  itemCriteria: CriteriaConditions,
+  page: number = 1
+): Promise<ApiResponse<ApiList<CollectibleItem>>> {
+  return await api
+    .post(`/collectibles/${collectibleId}/search?page=${page}`, {
+      category_criteria: categoryCriteria,
+      item_criteria: itemCriteria,
+    })
+    .then((response: AxiosResponse<ApiResponse<ApiList<CollectibleItem>>>) => {
       return response.data;
     })
     .catch((error: ApiResponse) => error);
