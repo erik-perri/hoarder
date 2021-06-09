@@ -94,8 +94,8 @@ export default Vue.extend<Data, Methods, Computed, Props>({
         next({
           name: 'categories.show',
           params: {
-            collectible: this.collectible.id,
-            category: this.category.id,
+            collectible: to.params.collectible,
+            category: to.params.category,
           },
         });
         return;
