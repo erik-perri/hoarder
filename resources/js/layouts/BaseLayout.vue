@@ -3,14 +3,22 @@
     <header>
       Hoarder
 
-      <router-link to="/">Home</router-link>
-      <router-link to="/collectibles">Collectibles</router-link>
-      <router-link v-if="isLoggedIn" to="/collections">Collections</router-link>
+      <router-link :to="{ name: 'home' }">Home</router-link>
+      <router-link :to="{ name: 'collectibles.index' }">
+        Collectibles
+      </router-link>
+      <router-link v-if="isLoggedIn" :to="{ name: 'collections.index' }">
+        Collections
+      </router-link>
 
       <LogoutLink v-if="isLoggedIn">Logout</LogoutLink>
 
-      <router-link v-if="!isLoggedIn" to="/login">Login</router-link>
-      <router-link v-if="!isLoggedIn" to="/register">Register</router-link>
+      <router-link v-if="!isLoggedIn" :to="{ name: 'login' }">
+        Login
+      </router-link>
+      <router-link v-if="!isLoggedIn" :to="{ name: 'register' }">
+        Register
+      </router-link>
     </header>
 
     <router-view></router-view>

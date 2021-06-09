@@ -47,6 +47,7 @@ export default new VueRouter({
         },
         {
           path: 'register',
+          name: 'register',
           component: RegisterPage,
           meta: { requiresAuth: false },
         },
