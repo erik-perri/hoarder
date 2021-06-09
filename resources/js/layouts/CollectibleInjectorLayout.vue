@@ -10,10 +10,24 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { CombinedVueInstance } from 'vue/types/vue';
 import { Collectible, getCollectible } from '../api/collectibles';
 
+interface Data {
+  collectible: Collectible | null;
+  needsRefresh: boolean;
+}
+
+interface Methods {
+  setCollectible: (collectible: Collectible) => void;
+}
+
+interface Computed {}
+
+interface Props {}
+
 // TODO Figure out a better name/location for this
-export default Vue.extend({
+export default Vue.extend<Data, Methods, Computed, Props>({
   data() {
     return {
       collectible: null as Collectible | null,
@@ -31,9 +45,11 @@ export default Vue.extend({
       return;
     }
 
-    // @ts-ignore TODO Switch to `vm as unknown as { setCollectible: (collectible: Collectible) => void }` or figure out
-    //                 a better way?
-    next((vm) => vm.setCollectible(response.data.collectible));
+    next((vm) =>
+      (
+        vm as CombinedVueInstance<Vue, Data, Methods, Computed, Props>
+      ).setCollectible(response.data.collectible)
+    );
   },
   async beforeRouteUpdate(to, from, next) {
     const id = parseInt(to.params.collectible, 10);
