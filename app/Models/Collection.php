@@ -61,6 +61,16 @@ class Collection extends Model
         'is_default' => 'boolean',
     ];
 
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'user_id',
+        'collectible',
+    ];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

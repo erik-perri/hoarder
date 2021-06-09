@@ -70,6 +70,16 @@ class Stock extends Model
         'item.category',
     ];
 
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        // TODO Hide item here and figure out a better way to obtain the information in the stock response
+        'collection',
+    ];
+
     public function item(): BelongsTo
     {
         return $this->belongsTo(Item::class);

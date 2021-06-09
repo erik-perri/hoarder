@@ -6,6 +6,8 @@ import {
   CollectibleIndexPage,
   CollectibleSearchPage,
   CollectibleShowPage,
+  CollectionIndexPage,
+  CollectionShowPage,
   ErrorPage404,
   ForgotPasswordPage,
   HomePage,
@@ -20,6 +22,7 @@ import {
   CollectibleInjectorLayout,
   CollectibleCategoryInjectorLayout,
   CollectibleItemInjectorLayout,
+  CollectionInjectorLayout,
 } from './layouts';
 
 Vue.use(VueRouter);
@@ -114,6 +117,22 @@ export default new VueRouter({
                   ],
                 },
               ],
+            },
+          ],
+        },
+        {
+          path: 'collections',
+          name: 'collections.index',
+          component: CollectionIndexPage,
+        },
+        {
+          path: 'collections/:collection',
+          component: CollectionInjectorLayout,
+          children: [
+            {
+              path: '',
+              name: 'collections.show',
+              component: CollectionShowPage,
             },
           ],
         },

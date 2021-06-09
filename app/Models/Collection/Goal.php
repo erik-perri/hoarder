@@ -67,6 +67,17 @@ class Goal extends Model
         'stock_criteria' => 'array',
     ];
 
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'user_id',
+        'collectible',
+        'collection',
+    ];
+
     public function collection(): BelongsTo
     {
         return $this->belongsTo(Collection::class);

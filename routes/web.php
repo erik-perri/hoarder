@@ -6,6 +6,7 @@ use App\Http\Controllers\Collectible\ItemController;
 use App\Http\Controllers\Collectible\SearchController;
 use App\Http\Controllers\Collection\CollectionController;
 use App\Http\Controllers\Collection\GoalController;
+use App\Http\Controllers\Collection\StockController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,6 +26,8 @@ require __DIR__.'/auth.php';
 
 Route::any('/collectibles/{collectible}/search', [SearchController::class, 'search'])
      ->name('collectibles.search');
+Route::get('/collections/{collection}/stock', [StockController::class, 'index'])
+     ->name('collections.stock');
 
 Route::resource('collectibles', CollectibleController::class);
 Route::resource('collectibles.categories', CategoryController::class);

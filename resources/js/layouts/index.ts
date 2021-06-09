@@ -2,3 +2,4 @@ export { default as BaseLayout } from './BaseLayout.vue';
 export { default as CollectibleInjectorLayout } from './CollectibleInjectorLayout.vue';
 export { default as CollectibleCategoryInjectorLayout } from './CollectibleCategoryInjectorLayout.vue';
 export { default as CollectibleItemInjectorLayout } from './CollectibleItemInjectorLayout.vue';
+export { default as CollectionInjectorLayout } from './CollectionInjectorLayout.vue';

@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers\Collection;
 
-use App\Collectible\Search\ItemSearcher;
-use App\Collectible\Search\StockSearcher;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Collection\CollectionCreateRequest;
 use App\Http\Requests\Collection\CollectionEditRequest;
@@ -26,10 +24,23 @@ class CollectionController extends Controller
      *
      * @return Response|View
      */
-    public function index(Request $request): View
+    public function index(Request $request)
     {
         $user = $request->user();
         $collections = Collection::whereUserId($user->id)->latest()->paginate(30);
+
+        if ($request->expectsJson()) {
+            return response([
+                'status' => 'success',
+                'data' => [
+                    'meta' => [
+                        'items' => $collections->total(),
+                        'pages' => $collections->lastPage(),
+                    ],
+                    'items' => $collections->items(),
+                ],
+            ]);
+        }
 
         return view('collection.index', ['collections' => $collections]);
     }
@@ -88,15 +99,22 @@ class CollectionController extends Controller
      * Display the specified resource.
      *
      * @param Collection $collection
-     * @return View
+     * @param Request $request
+     * @return View|Response
      */
-    public function show(Collection $collection): View
+    public function show(Collection $collection, Request $request)
     {
+        if ($request->expectsJson()) {
+            return response([
+                'status' => 'success',
+                'data' => [
+                    'collection' => $collection,
+                ],
+            ]);
+        }
+
         $goals = Collection\Goal::whereCollectionId($collection->id)->get();
         $progress = [];
-        if (count($goals)) {
-            $progress = $this->getGoalsProgress($goals);
-        }
 
         return view('collection.show', [
             'collection' => $collection,
@@ -172,42 +190,5 @@ class CollectionController extends Controller
             $otherCollection->is_default = false;
             $otherCollection->save();
         }
-    }
-
-    /**
-     * @param Collection\Goal[]|\Illuminate\Database\Eloquent\Collection $goals
-     * @return array[]
-     */
-    private function getGoalsProgress(\Illuminate\Database\Eloquent\Collection $goals): array
-    {
-        $progress = [];
-        foreach ($goals as $goal) {
-            $itemSearcher = new ItemSearcher();
-            $items = $itemSearcher->search(
-                $goal->collection->collectible,
-                $goal->category_criteria,
-                $goal->item_criteria
-            );
-
-            $stockSearcher = new StockSearcher();
-            $stock = $stockSearcher->search(
-                $goal->collection,
-                $goal->category_criteria,
-                $goal->item_criteria,
-                $goal->stock_criteria
-            );
-
-            $total = $items ? $items->count('id') : 0;
-            $stocked = $stock ? $stock->distinct()->count('item_id') : 0;
-            $percent = ($total && $stocked ? round(($stocked / $total) * 100) : 0);
-
-            $progress[$goal->id] = [
-                'total' => $total,
-                'stocked' => $stocked,
-                'percent' => $percent,
-            ];
-        }
-
-        return $progress;
     }
 }

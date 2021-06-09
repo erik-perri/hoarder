@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Collection;
 
 use App\Collectible\CriteriaFieldFactory;
+use App\Collectible\Search\ItemSearcher;
+use App\Collectible\Search\StockSearcher;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Collection\GoalCreateRequest;
 use App\Http\Requests\Collection\GoalEditRequest;
@@ -10,6 +12,8 @@ use App\Models\Collection;
 use App\Models\Collection\Goal;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\View\View;
 
 class GoalController extends Controller
@@ -23,10 +27,38 @@ class GoalController extends Controller
      * Display a listing of the resource.
      *
      * @param Collection $collection
-     * @return RedirectResponse
+     * @param Request $request
+     * @return RedirectResponse|Response
      */
-    public function index(Collection $collection): RedirectResponse
+    public function index(Collection $collection, Request $request)
     {
+        if ($request->expectsJson()) {
+            $goals = Collection\Goal::whereCollectionId($collection->id)->paginate(10);
+            $progress = [];
+            if (! $goals->isEmpty()) {
+                $progress = $this->getGoalsProgress($goals);
+            }
+
+            $items = [];
+            foreach ($goals as $goal) {
+                $items[] = [
+                    'goal' => $goal,
+                    'progress' => $progress[$goal->id] ?? null,
+                ];
+            }
+
+            return response([
+                'status' => 'success',
+                'data' => [
+                    'meta' => [
+                        'items' => $goals->total(),
+                        'pages' => $goals->lastPage(),
+                    ],
+                    'items' => $items,
+                ],
+            ]);
+        }
+
         return redirect()->route('collections.show', ['collection' => $collection]);
     }
 
@@ -168,5 +200,42 @@ class GoalController extends Controller
         $goal->stock_criteria = $request->get('stock_criteria')
             ? json_decode($request->get('stock_criteria'), true, 12, JSON_THROW_ON_ERROR)
             : [];
+    }
+
+    /**
+     * @param $goals
+     * @return array[]
+     */
+    private function getGoalsProgress($goals): array
+    {
+        $progress = [];
+        foreach ($goals as $goal) {
+            $itemSearcher = new ItemSearcher();
+            $items = $itemSearcher->search(
+                $goal->collection->collectible,
+                $goal->category_criteria,
+                $goal->item_criteria
+            );
+
+            $stockSearcher = new StockSearcher();
+            $stock = $stockSearcher->search(
+                $goal->collection,
+                $goal->category_criteria,
+                $goal->item_criteria,
+                $goal->stock_criteria
+            );
+
+            $total = $items ? $items->count('id') : 0;
+            $stocked = $stock ? $stock->distinct()->count('item_id') : 0;
+            $percent = ($total && $stocked ? round(($stocked / $total) * 100, 2) : 0);
+
+            $progress[$goal->id] = [
+                'total' => $total,
+                'stocked' => $stocked,
+                'percent' => $percent,
+            ];
+        }
+
+        return $progress;
     }
 }
