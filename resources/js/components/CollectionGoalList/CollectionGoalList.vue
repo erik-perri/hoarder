@@ -17,10 +17,12 @@
               params: {
                 collectible: collection.collectible_id,
               },
-              hash: JSON.stringify({
-                category: info.goal.category_criteria,
-                item: info.goal.item_criteria,
-              }),
+              query: {
+                criteria: JSON.stringify({
+                  category: info.goal.category_criteria,
+                  item: info.goal.item_criteria,
+                }),
+              },
             }"
           >
             Search

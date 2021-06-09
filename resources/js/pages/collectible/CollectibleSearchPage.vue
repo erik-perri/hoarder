@@ -76,7 +76,7 @@ interface Data {
 }
 
 interface Methods {
-  updateLocationHash: () => void;
+  updateLocation: () => void;
   fetchList: (page: number) => Promise<ApiResponse<ApiList<CollectibleItem>>>;
   setCategoryCriteria: (criteria: CriteriaConditions) => void;
   setItemCriteria: (criteria: CriteriaConditions) => void;
@@ -101,18 +101,20 @@ export default ListComponent.extend<Data, Methods, {}, Props>({
     };
   },
   methods: {
-    updateLocationHash(): void {
+    updateLocation(): void {
       this.$router.push({
-        hash: JSON.stringify({
-          category: this.categoryCriteria,
-          item: this.itemCriteria,
-        }),
+        query: {
+          criteria: JSON.stringify({
+            category: this.categoryCriteria,
+            item: this.itemCriteria,
+          }),
+        },
       });
     },
     async fetchList(page: number) {
-      const hash = decodeURIComponent(this.$route.hash.replace(/^#/, ''));
-      if (hash.length) {
-        const previous = JSON.parse(hash);
+      const criteria = this.$route.query.criteria as string;
+      if (criteria?.length) {
+        const previous = JSON.parse(criteria);
         if (previous?.category) {
           this.categoryCriteria = previous.category;
         }
@@ -131,12 +133,12 @@ export default ListComponent.extend<Data, Methods, {}, Props>({
     setCategoryCriteria(criteria: CriteriaConditions): void {
       this.categoryCriteria = criteria;
 
-      this.updateLocationHash();
+      this.updateLocation();
     },
     setItemCriteria(criteria: CriteriaConditions): void {
       this.itemCriteria = criteria;
 
-      this.updateLocationHash();
+      this.updateLocation();
     },
   },
   components: { CriteriaBuilder, Pagination },
