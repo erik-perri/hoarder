@@ -2,6 +2,7 @@
 
 namespace App\Models\Collection;
 
+use App\Models\Collectible\Category;
 use App\Models\Collectible\Item;
 use App\Models\Collection;
 use Database\Factories\Collection\StockFactory;
@@ -9,6 +10,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Support\Carbon;
 
 /**
@@ -67,7 +69,7 @@ class Stock extends Model
      */
     protected $with = [
         'item',
-        'item.category',
+        'category',
     ];
 
     /**
@@ -76,13 +78,26 @@ class Stock extends Model
      * @var array
      */
     protected $hidden = [
-        // TODO Hide item here and figure out a better way to obtain the information in the stock response
         'collection',
+        'item',
+        'category',
     ];
 
     public function item(): BelongsTo
     {
         return $this->belongsTo(Item::class);
+    }
+
+    public function category(): HasOneThrough
+    {
+        return $this->hasOneThrough(
+            Category::class,
+            Item::class,
+            'id',
+            'id',
+            'item_id',
+            'category_id'
+        );
     }
 
     public function collection(): BelongsTo

@@ -2,7 +2,7 @@ import api from './api';
 import { AxiosResponse } from 'axios';
 import { ApiList, ApiResponse } from './types';
 import { CriteriaConditions } from '../components/CriteriaBuilder';
-import { CollectibleItem } from './collectibles';
+import { CollectibleCategory, CollectibleItem } from './collectibles';
 
 export interface Collection {
   id: number;
@@ -34,7 +34,6 @@ export interface Stock {
   condition: string;
   language: string;
   tags: Array<string>;
-  item: CollectibleItem;
 }
 
 export async function getCollections(
@@ -80,14 +79,21 @@ export async function getGoals(
     .catch((error: ApiResponse) => error);
 }
 
+export interface StockRelated {
+  item: CollectibleItem;
+  category: CollectibleCategory;
+}
+
 export async function getStock(
   collectionId: number,
   page: number = 1
-): Promise<ApiResponse<ApiList<Stock>>> {
+): Promise<ApiResponse<ApiList<Stock, StockRelated>>> {
   return await api
     .get(`/collections/${collectionId}/stock?page=${page}`)
-    .then((response: AxiosResponse<ApiResponse<ApiList<Stock>>>) => {
-      return response.data;
-    })
+    .then(
+      (response: AxiosResponse<ApiResponse<ApiList<Stock, StockRelated>>>) => {
+        return response.data;
+      }
+    )
     .catch((error: ApiResponse) => error);
 }

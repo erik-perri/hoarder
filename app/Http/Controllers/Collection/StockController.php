@@ -20,6 +20,6 @@ class StockController extends Controller
     {
         $stock = $collection->stock()->paginate(30);
 
-        return $responseFactory->createListFromPaginator($stock);
+        return $responseFactory->createListFromPaginator($stock, ['category', 'item']);
     }
 }

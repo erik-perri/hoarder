@@ -3,6 +3,7 @@
 namespace App\Http\Responses;
 
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Response;
 use Illuminate\Routing\ResponseFactory;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
@@ -93,28 +94,52 @@ class ApiResponseFactory
     }
 
     /**
+     * TODO Move this somewhere else.
+     *
      * @param array $items
      * @param int $totalItems
      * @param int $totalPages
+     * @param array $relatedEntityKeys
      * @return Response
      */
-    public function createList(array $items, int $totalItems, int $totalPages): Response
+    public function createList(array $items, int $totalItems, int $totalPages, array $relatedEntityKeys = []): Response
     {
+        $related = [];
+
+        if (count($relatedEntityKeys)) {
+            foreach ($items as $item) {
+                foreach ($relatedEntityKeys as $includedKey) {
+                    $includedEntity = $item->{$includedKey} ?? null;
+                    if ($includedEntity instanceof Model) {
+                        if (! isset($related[$includedKey][$includedEntity->getKey()])) {
+                            $related[$includedKey][$includedEntity->getKey()] = $includedEntity;
+                        }
+                    } else {
+                        throw new \InvalidArgumentException(
+                            'Expected "'.Model::class.'" when referencing "'.$includedKey.'" on '.get_class($item)
+                        );
+                    }
+                }
+            }
+        }
+
         return $this->createSuccess([
             'meta' => [
                 'items' => $totalItems,
                 'pages' => $totalPages,
             ],
             'items' => $items,
+            'related' => $related,
         ]);
     }
 
     /**
      * @param LengthAwarePaginator $items
+     * @param array $relatedEntityKeys
      * @return Response
      */
-    public function createListFromPaginator(LengthAwarePaginator $items): Response
+    public function createListFromPaginator(LengthAwarePaginator $items, array $relatedEntityKeys = []): Response
     {
-        return $this->createList($items->items(), $items->total(), $items->lastPage());
+        return $this->createList($items->items(), $items->total(), $items->lastPage(), $relatedEntityKeys);
     }
 }

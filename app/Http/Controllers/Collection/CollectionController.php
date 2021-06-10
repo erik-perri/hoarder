@@ -23,6 +23,8 @@ class CollectionController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
+     * @param ApiResponseFactory $responseFactory
      * @return Response|View
      */
     public function index(Request $request, ApiResponseFactory $responseFactory)

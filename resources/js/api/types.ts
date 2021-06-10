@@ -50,7 +50,8 @@ export interface ApiListMetaInfo {
   pages: number;
 }
 
-export interface ApiList<ItemType> {
+export interface ApiList<ItemType, RelatedType = never> {
   meta: ApiListMetaInfo;
   items: Array<ItemType>;
+  related?: RelatedType;
 }

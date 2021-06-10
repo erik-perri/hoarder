@@ -73,6 +73,18 @@ class Item extends Model
         'field_values' => 'array',
     ];
 
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'parent',
+        'child',
+        'category',
+        'collectible',
+    ];
+
     public function parent(): BelongsTo
     {
         return $this->belongsTo(static::class);
