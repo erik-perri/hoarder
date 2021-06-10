@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Collectible;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Collectible\CollectibleCreateRequest;
 use App\Http\Requests\Collectible\CollectibleEditRequest;
+use App\Http\Responses\ApiResponseFactory;
 use App\Models\Collectible;
 use App\Models\User;
 use App\Repository\Collectible\FieldRepository;
@@ -19,23 +20,15 @@ class CollectibleController extends Controller
      * Display a listing of the resource.
      *
      * @param Request $request
+     * @param ApiResponseFactory $responseFactory
      * @return Response|View
      */
-    public function index(Request $request)
+    public function index(Request $request, ApiResponseFactory $responseFactory)
     {
         $collectibles = Collectible::latest()->paginate(30);
 
         if ($request->expectsJson()) {
-            return response([
-                'status' => 'success',
-                'data' => [
-                    'meta' => [
-                        'items' => $collectibles->total(),
-                        'pages' => $collectibles->lastPage(),
-                    ],
-                    'items' => $collectibles->items(),
-                ],
-            ]);
+            return $responseFactory->createListFromPaginator($collectibles);
         }
 
         return view('collectible.index', ['collectibles' => $collectibles]);
@@ -63,12 +56,14 @@ class CollectibleController extends Controller
      * @param CollectibleCreateRequest $request
      * @param User $user
      * @param FieldRepository $fieldRepository
+     * @param ApiResponseFactory $responseFactory
      * @return RedirectResponse|Response
      */
     public function store(
         CollectibleCreateRequest $request,
         User $user,
-        FieldRepository $fieldRepository
+        FieldRepository $fieldRepository,
+        ApiResponseFactory $responseFactory
     ) {
         $collectible = new Collectible();
         $collectible->fill($request->validated());
@@ -76,10 +71,7 @@ class CollectibleController extends Controller
 
         if (! $collectible->save()) {
             if ($request->expectsJson()) {
-                return response([
-                    'status' => 'fail',
-                    'message' => __('collectible.messages.create_failed'),
-                ]);
+                return $responseFactory->createFailure(__('collectible.messages.create_failed'));
             }
 
             return redirect()->route('collectibles.create')
@@ -91,13 +83,8 @@ class CollectibleController extends Controller
         $this->handleFieldChanges($request, $fieldRepository, $collectible);
 
         if ($request->expectsJson()) {
-            return response([
-                'status' => 'success',
-                'message' => __('collectible.messages.create_success'),
-                'data' => [
-                    'collectible' => $collectible,
-                ],
-            ]);
+            return $responseFactory->createSuccess(['collectible' => $collectible],
+                __('collectible.messages.create_success'));
         }
 
         return redirect()->route('collectibles.show', ['collectible' => $collectible])
@@ -109,17 +96,13 @@ class CollectibleController extends Controller
      *
      * @param Collectible $collectible
      * @param Request $request
+     * @param ApiResponseFactory $responseFactory
      * @return View|Response
      */
-    public function show(Collectible $collectible, Request $request)
+    public function show(Collectible $collectible, Request $request, ApiResponseFactory $responseFactory)
     {
         if ($request->expectsJson()) {
-            return response([
-                'status' => 'success',
-                'data' => [
-                    'collectible' => $collectible->toArray(),
-                ],
-            ]);
+            return $responseFactory->createSuccess(['collectible' => $collectible->toArray()]);
         }
 
         $categories = Collectible\Category::whereCollectibleId($collectible->id)->paginate(30);
@@ -155,12 +138,14 @@ class CollectibleController extends Controller
      * @param CollectibleEditRequest $request
      * @param Collectible $collectible
      * @param FieldRepository $fieldRepository
+     * @param ApiResponseFactory $responseFactory
      * @return RedirectResponse|Response
      */
     public function update(
         CollectibleEditRequest $request,
         Collectible $collectible,
-        FieldRepository $fieldRepository
+        FieldRepository $fieldRepository,
+        ApiResponseFactory $responseFactory
     ) {
         $collectible->fill($request->validated());
 
@@ -168,10 +153,7 @@ class CollectibleController extends Controller
 
         if (! $collectible->save()) {
             if ($request->expectsJson()) {
-                return response([
-                    'status' => 'fail',
-                    'message' => __('collectible.messages.save_failed'),
-                ]);
+                return $responseFactory->createFailure(__('collectible.messages.save_failed'));
             }
 
             return redirect()->route('collectibles.create')
@@ -180,13 +162,10 @@ class CollectibleController extends Controller
         }
 
         if ($request->expectsJson()) {
-            return response([
-                'status' => 'success',
-                'message' => __('collectible.messages.save_success'),
-                'data' => [
-                    'collectible' => $collectible,
-                ],
-            ]);
+            return $responseFactory->createSuccess(
+                ['collectible' => $collectible],
+                __('collectible.messages.save_success')
+            );
         }
 
         return redirect()->route('collectibles.show', ['collectible' => $collectible])

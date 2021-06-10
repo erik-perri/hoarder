@@ -6,6 +6,7 @@ use App\Collectible\FieldValueProcessor;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Collectible\ItemCreateRequest;
 use App\Http\Requests\Collectible\ItemEditRequest;
+use App\Http\Responses\ApiResponseFactory;
 use App\Models\Collectible;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -20,26 +21,22 @@ class ItemController extends Controller
      * @param Collectible $collectible
      * @param Collectible\Category $category
      * @param Request $request
+     * @param ApiResponseFactory $responseFactory
      * @return RedirectResponse|Response
      */
-    public function index(Collectible $collectible, Collectible\Category $category, Request $request)
-    {
+    public function index(
+        Collectible $collectible,
+        Collectible\Category $category,
+        Request $request,
+        ApiResponseFactory $responseFactory
+    ) {
         if ($request->expectsJson()) {
             $items = Collectible\Item::where([
                 'collectible_id' => $collectible->id,
                 'category_id' => $category->id,
             ])->orderByRaw('CAST(field_values->>\'$.collector_number\' AS UNSIGNED)')->paginate(30);
 
-            return response([
-                'status' => 'success',
-                'data' => [
-                    'meta' => [
-                        'items' => $items->total(),
-                        'pages' => $items->lastPage(),
-                    ],
-                    'items' => $items->items(),
-                ],
-            ]);
+            return $responseFactory->createListFromPaginator($items);
         }
 
         return redirect()->route('collectibles.categories.show', [
@@ -112,21 +109,19 @@ class ItemController extends Controller
      * @param Collectible $collectible
      * @param Collectible\Category $category
      * @param Collectible\Item $item
+     * @param Request $request
+     * @param ApiResponseFactory $responseFactory
      * @return View|Response
      */
     public function show(
         Collectible $collectible,
         Collectible\Category $category,
         Collectible\Item $item,
-        Request $request
+        Request $request,
+        ApiResponseFactory $responseFactory
     ) {
         if ($request->expectsJson()) {
-            return response([
-                'status' => 'success',
-                'data' => [
-                    'item' => $item,
-                ],
-            ]);
+            return $responseFactory->createSuccess(['item' => $item]);
         }
 
         return view('collectible.item.show', [

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Responses\ApiResponseFactory;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Contracts\View\View;
@@ -30,16 +31,14 @@ class VerifyEmailController extends Controller
      * Send a new email verification notification.
      *
      * @param Request $request
+     * @param ApiResponseFactory $responseFactory
      * @return RedirectResponse|Response
      */
-    public function store(Request $request)
+    public function store(Request $request, ApiResponseFactory $responseFactory)
     {
         if ($request->user()->hasVerifiedEmail()) {
             if ($request->expectsJson()) {
-                return response([
-                    'status' => 'success',
-                    'message' => 'Your email is already verified.',
-                ]);
+                return $responseFactory->createSuccess(null, __('auth.email_verified_already'));
             }
 
             return redirect()->intended(RouteServiceProvider::HOME);
@@ -48,10 +47,7 @@ class VerifyEmailController extends Controller
         $request->user()->sendEmailVerificationNotification();
 
         if ($request->expectsJson()) {
-            return response([
-                'status' => 'success',
-                'message' => __('auth.verification_link_sent'),
-            ]);
+            return $responseFactory->createSuccess(null, __('auth.verification_link_sent'));
         }
 
         return back()->with('status', __('auth.verification_link_sent'));

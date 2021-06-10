@@ -8,6 +8,7 @@ use App\Collectible\Search\StockSearcher;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Collection\GoalCreateRequest;
 use App\Http\Requests\Collection\GoalEditRequest;
+use App\Http\Responses\ApiResponseFactory;
 use App\Models\Collection;
 use App\Models\Collection\Goal;
 use Illuminate\Foundation\Http\FormRequest;
@@ -28,9 +29,10 @@ class GoalController extends Controller
      *
      * @param Collection $collection
      * @param Request $request
+     * @param ApiResponseFactory $responseFactory
      * @return RedirectResponse|Response
      */
-    public function index(Collection $collection, Request $request)
+    public function index(Collection $collection, Request $request, ApiResponseFactory $responseFactory)
     {
         if ($request->expectsJson()) {
             $goals = Collection\Goal::whereCollectionId($collection->id)->paginate(10);
@@ -47,16 +49,7 @@ class GoalController extends Controller
                 ];
             }
 
-            return response([
-                'status' => 'success',
-                'data' => [
-                    'meta' => [
-                        'items' => $goals->total(),
-                        'pages' => $goals->lastPage(),
-                    ],
-                    'items' => $items,
-                ],
-            ]);
+            return $responseFactory->createList($items, $goals->total(), $goals->lastPage());
         }
 
         return redirect()->route('collections.show', ['collection' => $collection]);

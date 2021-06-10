@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\ForgotPasswordRequest;
+use App\Http\Responses\ApiResponseFactory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
@@ -25,9 +26,10 @@ class ForgotPasswordController extends Controller
      * Handle an incoming password reset link request.
      *
      * @param ForgotPasswordRequest $request
+     * @param ApiResponseFactory $responseFactory
      * @return RedirectResponse|Response
      */
-    public function store(ForgotPasswordRequest $request)
+    public function store(ForgotPasswordRequest $request, ApiResponseFactory $responseFactory)
     {
         // We will send the password reset link to this user. Once we have attempted
         // to send the link, we will examine the response then see the message we
@@ -38,16 +40,10 @@ class ForgotPasswordController extends Controller
 
         if ($request->expectsJson()) {
             if ($status === Password::RESET_LINK_SENT) {
-                return response([
-                    'status' => 'success',
-                    'message' => __($status),
-                ]);
+                return $responseFactory->createSuccess(null, __($status));
             }
 
-            return response([
-                'status' => 'fail',
-                'message' => __($status),
-            ]);
+            return $responseFactory->createFailure(__($status));
         }
 
         return $status === Password::RESET_LINK_SENT

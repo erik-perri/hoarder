@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Collectible;
 use App\Collectible\CriteriaFieldFactory;
 use App\Collectible\Search\ItemSearcher;
 use App\Http\Controllers\Controller;
+use App\Http\Responses\ApiResponseFactory;
 use App\Models\Collectible;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
@@ -16,11 +17,15 @@ class SearchController extends Controller
      * @param Collectible $collectible
      * @param Request $request
      * @param CriteriaFieldFactory $fieldFactory
+     * @param ApiResponseFactory $responseFactory
      * @return Response|View
-     * @throws \JsonException
      */
-    public function search(Collectible $collectible, Request $request, CriteriaFieldFactory $fieldFactory)
-    {
+    public function search(
+        Collectible $collectible,
+        Request $request,
+        CriteriaFieldFactory $fieldFactory,
+        ApiResponseFactory $responseFactory
+    ) {
         $categoryFields = $fieldFactory->getCategoryFieldInfo($collectible);
         $categoryCriteria = $request->get('category_criteria');
 
@@ -44,16 +49,7 @@ class SearchController extends Controller
         if ($request->expectsJson()) {
             $items = $builder->paginate(30);
 
-            return response([
-                'status' => 'success',
-                'data' => [
-                    'meta' => [
-                        'items' => $items->total(),
-                        'pages' => $items->lastPage(),
-                    ],
-                    'items' => $items->items(),
-                ],
-            ]);
+            return $responseFactory->createListFromPaginator($items);
         }
 
         return view('collectible.search', [
@@ -64,21 +60,5 @@ class SearchController extends Controller
             'itemCriteria' => $itemCriteria,
             'results' => $builder->paginate(30),
         ]);
-    }
-
-    /**
-     * @param Request $request
-     * @param string $requestKey
-     * @return array
-     * @throws \JsonException
-     */
-    private function getCriteriaFromRequest(Request $request, string $requestKey): array
-    {
-        $input = trim($request->get($requestKey));
-        if (! $input) {
-            return [];
-        }
-
-        return json_decode($input, true, 32, JSON_THROW_ON_ERROR);
     }
 }

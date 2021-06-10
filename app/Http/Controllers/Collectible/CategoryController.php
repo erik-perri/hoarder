@@ -6,6 +6,7 @@ use App\Collectible\FieldValueProcessor;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Collectible\CategoryCreateRequest;
 use App\Http\Requests\Collectible\CategoryEditRequest;
+use App\Http\Responses\ApiResponseFactory;
 use App\Models\Collectible;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -19,23 +20,15 @@ class CategoryController extends Controller
      *
      * @param Collectible $collectible
      * @param Request $request
+     * @param ApiResponseFactory $responseFactory
      * @return RedirectResponse|Response
      */
-    public function index(Collectible $collectible, Request $request)
+    public function index(Collectible $collectible, Request $request, ApiResponseFactory $responseFactory)
     {
         if ($request->expectsJson()) {
             $categories = Collectible\Category::whereCollectibleId($collectible->id)->paginate(30);
 
-            return response([
-                'status' => 'success',
-                'data' => [
-                    'meta' => [
-                        'items' => $categories->total(),
-                        'pages' => $categories->lastPage(),
-                    ],
-                    'items' => $categories->items(),
-                ],
-            ]);
+            return $responseFactory->createListFromPaginator($categories);
         }
 
         return redirect()->route('collectibles.show', ['collectible' => $collectible]);
@@ -95,16 +88,18 @@ class CategoryController extends Controller
      * @param Collectible $collectible
      * @param Collectible\Category $category
      * @param Request $request
+     * @param ApiResponseFactory $responseFactory
      * @return View|Response
      */
-    public function show(Collectible $collectible, Collectible\Category $category, Request $request)
-    {
+    public function show(
+        Collectible $collectible,
+        Collectible\Category $category,
+        Request $request,
+        ApiResponseFactory $responseFactory
+    ) {
         if ($request->expectsJson()) {
-            return response([
-                'status' => 'success',
-                'data' => [
-                    'category' => $category->toArray(),
-                ],
+            return $responseFactory->createSuccess([
+                'category' => $category->toArray(),
             ]);
         }
 

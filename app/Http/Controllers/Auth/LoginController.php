@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Responses\ApiResponseFactory;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -24,20 +25,18 @@ class LoginController extends Controller
 
     /**
      * @param LoginRequest $request
+     * @param ApiResponseFactory $responseFactory
      * @return RedirectResponse|Response
      * @throws ValidationException
      */
-    public function store(LoginRequest $request)
+    public function store(LoginRequest $request, ApiResponseFactory $responseFactory)
     {
         $request->authenticate();
 
         $request->session()->regenerate();
 
         if ($request->expectsJson()) {
-            return response([
-                'status' => 'success',
-                'data' => $request->user(),
-            ]);
+            return $responseFactory->createSuccess($request->user());
         }
 
         return redirect(RouteServiceProvider::HOME);
@@ -45,9 +44,10 @@ class LoginController extends Controller
 
     /**
      * @param Request $request
+     * @param ApiResponseFactory $responseFactory
      * @return RedirectResponse|Response
      */
-    public function destroy(Request $request)
+    public function destroy(Request $request, ApiResponseFactory $responseFactory)
     {
         Auth::guard('web')->logout();
 
@@ -56,7 +56,7 @@ class LoginController extends Controller
         $request->session()->regenerateToken();
 
         if ($request->expectsJson()) {
-            return response(['status' => 'success']);
+            return $responseFactory->createSuccess(null);
         }
 
         return redirect(RouteServiceProvider::HOME);

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\RegisterRequest;
+use App\Http\Responses\ApiResponseFactory;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
@@ -30,9 +31,10 @@ class RegisterController extends Controller
      * Handle an incoming registration request.
      *
      * @param RegisterRequest $request
+     * @param ApiResponseFactory $responseFactory
      * @return RedirectResponse|Response
      */
-    public function store(RegisterRequest $request)
+    public function store(RegisterRequest $request, ApiResponseFactory $responseFactory)
     {
         $user = User::create([
             'name' => $request->name,
@@ -49,12 +51,9 @@ class RegisterController extends Controller
             : RouteServiceProvider::HOME; // @phpstan-ignore-line
 
         if ($request->expectsJson()) {
-            return response([
-                'status' => 'success',
-                'data' => [
-                    'user' => $user,
-                    'redirect' => $redirectTo,
-                ],
+            return $responseFactory->createSuccess([
+                'user' => $user,
+                'redirect' => $redirectTo,
             ]);
         }
 

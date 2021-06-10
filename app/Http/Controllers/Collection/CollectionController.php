@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Collection;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Collection\CollectionCreateRequest;
 use App\Http\Requests\Collection\CollectionEditRequest;
+use App\Http\Responses\ApiResponseFactory;
 use App\Models\Collectible;
 use App\Models\Collection;
 use Illuminate\Contracts\View\View;
@@ -24,22 +25,13 @@ class CollectionController extends Controller
      *
      * @return Response|View
      */
-    public function index(Request $request)
+    public function index(Request $request, ApiResponseFactory $responseFactory)
     {
         $user = $request->user();
         $collections = Collection::whereUserId($user->id)->latest()->paginate(30);
 
         if ($request->expectsJson()) {
-            return response([
-                'status' => 'success',
-                'data' => [
-                    'meta' => [
-                        'items' => $collections->total(),
-                        'pages' => $collections->lastPage(),
-                    ],
-                    'items' => $collections->items(),
-                ],
-            ]);
+            return $responseFactory->createListFromPaginator($collections);
         }
 
         return view('collection.index', ['collections' => $collections]);
@@ -100,17 +92,13 @@ class CollectionController extends Controller
      *
      * @param Collection $collection
      * @param Request $request
+     * @param ApiResponseFactory $responseFactory
      * @return View|Response
      */
-    public function show(Collection $collection, Request $request)
+    public function show(Collection $collection, Request $request, ApiResponseFactory $responseFactory)
     {
         if ($request->expectsJson()) {
-            return response([
-                'status' => 'success',
-                'data' => [
-                    'collection' => $collection,
-                ],
-            ]);
+            return $responseFactory->createSuccess(['collection' => $collection]);
         }
 
         $goals = Collection\Goal::whereCollectionId($collection->id)->get();

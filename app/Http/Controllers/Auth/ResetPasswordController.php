@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\ResetPasswordRequest;
+use App\Http\Responses\ApiResponseFactory;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -30,9 +31,10 @@ class ResetPasswordController extends Controller
      * Handle an incoming new password request.
      *
      * @param ResetPasswordRequest $request
+     * @param ApiResponseFactory $responseFactory
      * @return RedirectResponse|Response
      */
-    public function store(ResetPasswordRequest $request)
+    public function store(ResetPasswordRequest $request, ApiResponseFactory $responseFactory)
     {
         // Here we will attempt to reset the user's password. If it is successful we
         // will update the password on an actual user model and persist it to the
@@ -51,19 +53,13 @@ class ResetPasswordController extends Controller
 
         if ($request->expectsJson()) {
             if ($status === Password::PASSWORD_RESET) {
-                return response([
-                    'status' => 'success',
-                    'message' => __($status),
-                    'data' => [
-                        'redirect' => route('login', [], false),
-                    ],
-                ]);
+                return $responseFactory->createSuccess(
+                    ['redirect' => route('login', [], false)],
+                    __($status)
+                );
             }
 
-            return response([
-                'status' => 'fail',
-                'errors' => ['email' => [__($status)]],
-            ], 422);
+            return $responseFactory->createFailure(__($status));
         }
 
         // If the password was successfully reset, we will redirect the user back to
