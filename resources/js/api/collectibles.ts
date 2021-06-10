@@ -131,16 +131,14 @@ export async function getItems(
   collectibleId: number,
   categoryId: number,
   page: number = 1
-): Promise<ApiResponse<ApiList<CollectibleCategory>>> {
+): Promise<ApiResponse<ApiList<CollectibleItem>>> {
   return await api
     .get(
       `/collectibles/${collectibleId}/categories/${categoryId}/items?page=${page}`
     )
-    .then(
-      (response: AxiosResponse<ApiResponse<ApiList<CollectibleCategory>>>) => {
-        return response.data;
-      }
-    )
+    .then((response: AxiosResponse<ApiResponse<ApiList<CollectibleItem>>>) => {
+      return response.data;
+    })
     .catch((error: ApiResponse) => error);
 }
 
