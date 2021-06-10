@@ -89,7 +89,7 @@ export default Vue.extend<Data, Methods, Computed, Props>({
     next();
   },
   methods: {
-    async setCategory(category: CollectibleCategory) {
+    setCategory(category: CollectibleCategory): void {
       this.category = category;
     },
   },

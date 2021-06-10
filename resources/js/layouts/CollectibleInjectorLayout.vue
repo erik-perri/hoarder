@@ -68,7 +68,7 @@ export default Vue.extend<Data, Methods, Computed, Props>({
     next();
   },
   methods: {
-    async setCollectible(collectible: Collectible) {
+    setCollectible(collectible: Collectible): void {
       this.collectible = collectible;
     },
   },
