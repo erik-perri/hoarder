@@ -25,7 +25,30 @@ import {
 } from '../../api/collectibles';
 import { FieldEditorItem } from '../../components/FieldEditor';
 
-export default Vue.extend({
+interface Data {
+  isLoading: boolean;
+  errors: Record<string, string[]>;
+}
+
+interface Methods {
+  submit: (
+    collectible: Collectible,
+    categoryFields: Array<FieldEditorItem>,
+    itemFields: Array<FieldEditorItem>
+  ) => Promise<CollectibleFormSubmitHandlerReturn>;
+  convertEditorItemToField: (
+    item: FieldEditorItem,
+    entityType: CollectibleFieldEntityType
+  ) => CollectibleFieldModel;
+}
+
+interface Computed {}
+
+interface Props {
+  collectible: Collectible;
+}
+
+export default Vue.extend<Data, Methods, Computed, Props>({
   props: {
     collectible: Object,
   },

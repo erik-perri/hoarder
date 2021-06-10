@@ -20,7 +20,24 @@
 <script lang="ts">
 import Vue from 'vue';
 
-export default Vue.extend({
+interface Data {
+  attributes: Record<string, string>;
+}
+
+interface Methods {}
+
+interface Computed {}
+
+interface Props {
+  id: string;
+  name: string;
+  value: string;
+  disabled: boolean;
+  label: string;
+  errors: Array<string>;
+}
+
+export default Vue.extend<Data, Methods, Computed, Props>({
   props: {
     id: {
       type: String,

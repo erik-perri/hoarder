@@ -40,7 +40,17 @@
 import Vue from 'vue';
 import BaseCondition from './BaseCondition.vue';
 
-export default Vue.extend({
+interface Data {
+  comparisonOptions: Record<string, string>;
+}
+
+interface Methods {}
+
+interface Computed {}
+
+interface Props {}
+
+export default Vue.extend<Data, Methods, Computed, Props>({
   extends: BaseCondition,
   data() {
     return {
@@ -50,7 +60,7 @@ export default Vue.extend({
         date_after: 'after',
         date_on_or_before: 'on or before',
         date_on_or_after: 'on or after',
-      } as Record<string, string>,
+      },
     };
   },
 });

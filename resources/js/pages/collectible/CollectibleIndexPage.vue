@@ -39,13 +39,23 @@ import Vue from 'vue';
 import { ListComponent } from '../../util/ListComponent';
 import { Collectible, getCollectibles } from '../../api/collectibles';
 import { Pagination } from '../../components/Pagination';
-import { ApiList } from '../../api/types';
+import { ApiList, ApiResponse } from '../../api/types';
 
 interface Data {
   data: ApiList<Collectible> | null;
 }
 
-export default Vue.extend<Data, {}, {}, {}>({
+interface Methods {
+  fetchList: (page: number) => Promise<ApiResponse<ApiList<Collectible>>>;
+}
+
+interface Computed {
+  isLoggedIn: boolean;
+}
+
+interface Props {}
+
+export default Vue.extend<Data, Methods, Computed, Props>({
   extends: ListComponent,
   computed: {
     isLoggedIn: function (): boolean {
@@ -53,7 +63,7 @@ export default Vue.extend<Data, {}, {}, {}>({
     },
   },
   methods: {
-    async fetchList(page: number) {
+    async fetchList(page: number): Promise<ApiResponse<ApiList<Collectible>>> {
       return await getCollectibles(page);
     },
   },

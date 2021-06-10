@@ -68,7 +68,7 @@ export default Vue.extend<Data, Methods, Computed, Props>({
     next();
   },
   methods: {
-    setCollection(collection: Collection) {
+    setCollection(collection: Collection): void {
       this.collection = collection;
     },
   },

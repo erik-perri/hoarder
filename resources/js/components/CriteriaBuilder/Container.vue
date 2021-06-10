@@ -20,8 +20,26 @@ import {
   isCriteriaCondition,
   isCriteriaGroup,
 } from './types';
+import { CollectibleFieldModel } from '../../api/collectibles';
 
-export default Vue.extend({
+interface Data {
+  group: CriteriaGroup;
+}
+
+interface Methods {
+  addIdsToGroup: (group: CriteriaGroup) => CriteriaGroup;
+  removeIdsFromGroup: (group: CriteriaGroup) => CriteriaGroup;
+  groupChanged: (id: number, changed: CriteriaGroup) => void;
+}
+
+interface Computed {}
+
+interface Props {
+  conditions: CriteriaConditions;
+  fields: Array<CollectibleFieldModel>;
+}
+
+export default Vue.extend<Data, Methods, Computed, Props>({
   props: {
     conditions: {
       type: Array,
@@ -40,8 +58,9 @@ export default Vue.extend({
   data() {
     return {
       group: {
+        group_type: 'and',
         group_conditions: [] as CriteriaConditions,
-      } as CriteriaGroup,
+      },
     };
   },
   methods: {
@@ -84,7 +103,7 @@ export default Vue.extend({
 
       return result;
     },
-    groupChanged(id: number, changed: CriteriaGroup) {
+    groupChanged(id: number, changed: CriteriaGroup): void {
       const groupWithoutIds = this.removeIdsFromGroup(changed);
       // The group passes up a group structure but we only care about the
       // conditions at this level.

@@ -59,7 +59,34 @@
 import Vue from 'vue';
 import { FieldInputUpdate } from './types';
 
-export default Vue.extend({
+interface Data {
+  isEditing: boolean;
+  fieldTypes: Record<string, string>;
+  fieldNameValue: string;
+  inputTypeValue: string;
+  isRequiredValue: boolean;
+}
+
+interface Methods {
+  save: () => void;
+  remove: () => void;
+  emitRemove: () => void;
+  emitUpdate: () => void;
+}
+
+interface Computed {}
+
+interface Props {
+  fieldIdentifier: string;
+  fieldName: string;
+  inputType: string;
+  isEditable: boolean;
+  isRequired: boolean;
+  isDisabled: boolean;
+  isNew: boolean;
+}
+
+export default Vue.extend<Data, Methods, Computed, Props>({
   props: {
     fieldIdentifier: {
       type: String,
@@ -96,7 +123,7 @@ export default Vue.extend({
     };
   },
   methods: {
-    save() {
+    save(): void {
       if (!this.fieldNameValue) {
         (this.$refs.fieldName as HTMLElement)?.focus();
         return;
@@ -111,15 +138,15 @@ export default Vue.extend({
 
       this.emitUpdate();
     },
-    remove() {
+    remove(): void {
       this.isEditing = false;
 
       this.emitRemove();
     },
-    emitRemove() {
+    emitRemove(): void {
       this.$emit('removeField', this.fieldIdentifier);
     },
-    emitUpdate() {
+    emitUpdate(): void {
       this.$emit('updateField', this.fieldIdentifier, {
         fieldName: this.fieldNameValue,
         inputType: this.inputTypeValue,

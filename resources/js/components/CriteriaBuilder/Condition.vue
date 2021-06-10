@@ -39,7 +39,33 @@ import NumberCondition from './Condition/NumberCondition.vue';
 import TagCondition from './Condition/TagCondition.vue';
 import TextCondition from './Condition/TextCondition.vue';
 
-export default Vue.extend({
+interface Data {
+  editing: boolean;
+  options: ConditionOptions;
+  fieldMapping: Record<string, string>;
+}
+
+interface Methods {
+  deleteItem: () => void;
+  emitChanges: (changes: Partial<ConditionOptions>) => void;
+  getFieldInfo: () => CollectibleFieldModel | undefined;
+}
+
+interface Computed {
+  fieldTypeComponent: string | undefined;
+  fieldName: string | undefined;
+}
+
+interface Props {
+  id: string;
+  startEditing: boolean;
+  availableFields: Array<CollectibleFieldModel>;
+  field: string;
+  comparison: string;
+  value: string;
+}
+
+export default Vue.extend<Data, Methods, Computed, Props>({
   props: {
     id: String,
     startEditing: Boolean,
@@ -55,7 +81,7 @@ export default Vue.extend({
         field: this.field || '',
         comparison: this.comparison,
         value: this.value,
-      } as ConditionOptions,
+      },
       fieldMapping: {
         text: 'TextCondition',
         textarea: 'TextCondition',
@@ -64,7 +90,7 @@ export default Vue.extend({
         number: 'NumberCondition',
         tags: 'TagCondition',
         boolean: 'BooleanCondition',
-      } as { [key: string]: string },
+      },
     };
   },
   watch: {

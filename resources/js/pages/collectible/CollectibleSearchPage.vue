@@ -83,11 +83,13 @@ interface Methods {
   setItemCriteria: (criteria: CriteriaConditions) => void;
 }
 
+interface Computed {}
+
 interface Props {
   collectible: Collectible;
 }
 
-export default Vue.extend<Data, Methods, {}, Props>({
+export default Vue.extend<Data, Methods, Computed, Props>({
   extends: ListComponent,
   props: {
     collectible: {
@@ -113,7 +115,9 @@ export default Vue.extend<Data, Methods, {}, Props>({
         },
       });
     },
-    async fetchList(page: number) {
+    async fetchList(
+      page: number
+    ): Promise<ApiResponse<ApiList<CollectibleItem>>> {
       const criteria = this.$route.query.criteria as string;
       if (criteria?.length) {
         const previous = JSON.parse(criteria);

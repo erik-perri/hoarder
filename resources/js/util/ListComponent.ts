@@ -1,7 +1,23 @@
 import Vue from 'vue';
 import { ApiList, ApiResponse } from '../api/types';
 
-export const ListComponent = Vue.extend({
+interface Data {
+  isLoading: boolean;
+  error: string | null;
+  data: ApiList<unknown> | null;
+}
+
+interface Methods {
+  refreshList: () => Promise<void>;
+  fetchList: (page: number) => Promise<ApiResponse<ApiList<unknown>>>;
+  getPageFromRoute: (defaultPage: number) => number;
+}
+
+interface Computed {}
+
+interface Props {}
+
+export const ListComponent = Vue.extend<Data, Methods, Computed, Props>({
   data() {
     return {
       isLoading: false,

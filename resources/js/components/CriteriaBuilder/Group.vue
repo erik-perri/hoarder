@@ -53,8 +53,33 @@ import {
   isCriteriaGroup,
 } from './types';
 import Condition from './Condition.vue';
+import { CollectibleFieldModel } from '../../api/collectibles';
 
-export default Vue.extend({
+interface Data {
+  items: CriteriaConditions;
+}
+
+interface Methods {
+  deleteGroup: () => void;
+  addGroup: (type: 'or' | 'and') => void;
+  addCondition: () => void;
+  groupChanged: (modifiedId: string, changes: CriteriaGroup) => void;
+  conditionChanged: (modifiedId: string, changes: ConditionOptions) => void;
+  emitChanges: () => void;
+  deleteItem: (index: number) => void;
+}
+
+interface Computed {}
+
+interface Props {
+  id: string;
+  conditions: CriteriaConditions;
+  fields: Array<CollectibleFieldModel>;
+  groupType: string;
+  canDelete: boolean;
+}
+
+export default Vue.extend<Data, Methods, Computed, Props>({
   props: {
     id: String,
     conditions: Array,
@@ -67,27 +92,27 @@ export default Vue.extend({
   },
   data() {
     return {
-      items: this.conditions as CriteriaConditions,
+      items: this.conditions,
     };
   },
   methods: {
-    deleteGroup() {
+    deleteGroup(): void {
       this.$emit('delete-group', this.id);
     },
-    addGroup(type: 'or' | 'and') {
+    addGroup(type: 'or' | 'and'): void {
       this.items.push({
         id: uuid(),
         group_type: type,
         group_conditions: [],
       } as CriteriaGroup);
     },
-    addCondition() {
+    addCondition(): void {
       this.items.push({
         id: uuid(),
         match_field: '',
       } as CriteriaCondition);
     },
-    groupChanged(modifiedId: string, changes: CriteriaGroup) {
+    groupChanged(modifiedId: string, changes: CriteriaGroup): void {
       const index = this.items.findIndex((item) => item.id === modifiedId);
       if (!isCriteriaGroup(this.items[index])) {
         throw new Error('groupChanged called on non-group item');
@@ -101,7 +126,7 @@ export default Vue.extend({
 
       this.emitChanges();
     },
-    conditionChanged(modifiedId: string, changes: ConditionOptions) {
+    conditionChanged(modifiedId: string, changes: ConditionOptions): void {
       const index = this.items.findIndex((item) => item.id === modifiedId);
       if (!isCriteriaCondition(this.items[index])) {
         throw new Error('conditionChanged called on non-condition item');
@@ -116,13 +141,13 @@ export default Vue.extend({
 
       this.emitChanges();
     },
-    emitChanges() {
+    emitChanges(): void {
       this.$emit('group-changed', this.id, {
         group_type: this.groupType,
         group_conditions: JSON.parse(JSON.stringify(this.items)),
       });
     },
-    deleteItem(index: number) {
+    deleteItem(index: number): void {
       this.items.splice(index, 1);
       this.emitChanges();
     },

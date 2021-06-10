@@ -67,10 +67,18 @@ import {
 } from '../../api/collectibles';
 import { Pagination } from '../../components/Pagination';
 import { CollectibleFieldValueTable } from '../../components/CollectibleFieldValueTable';
-import { ApiList } from '../../api/types';
+import { ApiList, ApiResponse } from '../../api/types';
 
 interface Data {
   data: ApiList<CollectibleItem> | null;
+}
+
+interface Methods {
+  fetchList(page: number): Promise<ApiResponse<ApiList<CollectibleItem>>>;
+}
+
+interface Computed {
+  isLoggedIn: boolean;
 }
 
 interface Props {
@@ -78,7 +86,7 @@ interface Props {
   category: CollectibleCategory;
 }
 
-export default Vue.extend<Data, {}, {}, Props>({
+export default Vue.extend<Data, Methods, Computed, Props>({
   extends: ListComponent,
   props: {
     collectible: {
@@ -96,7 +104,9 @@ export default Vue.extend<Data, {}, {}, Props>({
     },
   },
   methods: {
-    async fetchList(page: number) {
+    async fetchList(
+      page: number
+    ): Promise<ApiResponse<ApiList<CollectibleItem>>> {
       return await getItems(this.collectible.id, this.category.id, page);
     },
   },

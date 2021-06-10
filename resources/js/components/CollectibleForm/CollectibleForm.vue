@@ -34,9 +34,26 @@
 import Vue from 'vue';
 import { TextInput } from '../../components/Forms';
 import { FieldEditor } from '../../components/FieldEditor';
-import { CollectibleFieldModel } from '../../api/collectibles';
+import { Collectible, CollectibleFieldModel } from '../../api/collectibles';
+import { CollectibleFormErrors, CollectibleFormSubmitHandler } from './index';
 
-export default Vue.extend({
+interface Data {
+  collectibleNameValue: string;
+  categoryFieldsValue: Array<CollectibleFieldModel>;
+  itemFieldsValue: Array<CollectibleFieldModel>;
+  errors?: CollectibleFormErrors;
+}
+
+interface Methods {}
+
+interface Computed {}
+
+interface Props {
+  collectible: Collectible;
+  handleSubmit: CollectibleFormSubmitHandler;
+}
+
+export default Vue.extend<Data, Methods, Computed, Props>({
   props: {
     collectible: {
       type: Object,
@@ -74,8 +91,8 @@ export default Vue.extend({
     );
     return {
       collectibleNameValue: this.collectible.name || '',
-      categoryFieldsValue: categoryFields as Array<CollectibleFieldModel>,
-      itemFieldsValue: itemFields as Array<CollectibleFieldModel>,
+      categoryFieldsValue: categoryFields,
+      itemFieldsValue: itemFields,
       errors: {},
     };
   },

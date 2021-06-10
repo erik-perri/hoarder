@@ -14,8 +14,28 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { Location } from 'vue-router/types/router';
 
-export default Vue.extend({
+interface PaginationLink {
+  text: string;
+  link: Location;
+}
+
+interface Data {}
+
+interface Methods {
+  getPaginationLinks: () => Array<PaginationLink>;
+}
+
+interface Computed {}
+
+interface Props {
+  totalPages: number;
+  currentPage: number;
+  routeParameters: Location;
+}
+
+export default Vue.extend<Data, Methods, Computed, Props>({
   props: {
     totalPages: {
       type: Number,
@@ -31,7 +51,7 @@ export default Vue.extend({
     },
   },
   methods: {
-    getPaginationLinks() {
+    getPaginationLinks(): Array<PaginationLink> {
       const links = [];
 
       if (this.currentPage > 1) {
@@ -41,7 +61,7 @@ export default Vue.extend({
             ...this.routeParameters,
             query: {
               ...(this.routeParameters.query || {}),
-              page: this.currentPage - 1,
+              page: (this.currentPage - 1).toString(10),
             },
           },
         });
@@ -54,7 +74,7 @@ export default Vue.extend({
             ...this.routeParameters,
             query: {
               ...(this.routeParameters.query || {}),
-              page: this.currentPage + 1,
+              page: (this.currentPage + 1).toString(10),
             },
           },
         });

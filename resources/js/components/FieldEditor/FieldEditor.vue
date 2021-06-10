@@ -37,11 +37,31 @@ import { v4 as uuid } from 'uuid';
 import FieldInput from './FieldInput.vue';
 import { FieldEditorItem, FieldEditorItems, FieldInputUpdate } from './types';
 
-export default Vue.extend({
+interface Data {
+  fields: FieldEditorItems;
+}
+
+interface Methods {
+  addField: () => void;
+  findField: (identifier: string) => FieldEditorItem;
+  restoreField: (identifier: string) => void;
+  removeField: (identifier: string) => void;
+  updateField: (identifier: string, values: FieldInputUpdate) => void;
+  emitFields: () => void;
+}
+
+interface Computed {}
+
+interface Props {
+  inputName: string;
+  items: FieldEditorItems;
+}
+
+export default Vue.extend<Data, Methods, Computed, Props>({
   data() {
     const fields: FieldEditorItems = [];
 
-    (this.items as FieldEditorItems).forEach((item) => {
+    this.items.forEach((item) => {
       fields.push({
         ...item,
         is_new: false,

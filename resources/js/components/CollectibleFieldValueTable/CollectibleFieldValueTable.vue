@@ -43,12 +43,18 @@ import {
   CollectibleFieldValues,
 } from '../../api/collectibles';
 
+interface Data {}
+
+interface Methods {}
+
+interface Computed {}
+
 interface Props {
   fields: Array<CollectibleFieldModel>;
   values: CollectibleFieldValues;
 }
 
-export default Vue.extend<{}, {}, {}, Props>({
+export default Vue.extend<Data, Methods, Computed, Props>({
   props: {
     fields: {
       type: Array,

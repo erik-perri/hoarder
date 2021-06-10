@@ -45,13 +45,21 @@ import {
 } from '../../api/collectibles';
 import { CollectibleFieldValueTable } from '../../components/CollectibleFieldValueTable';
 
+interface Data {}
+
+interface Methods {}
+
+interface Computed {
+  isLoggedIn: boolean;
+}
+
 interface Props {
   collectible: Collectible;
   category: CollectibleCategory;
   item: CollectibleItem;
 }
 
-export default Vue.extend<{}, {}, {}, Props>({
+export default Vue.extend<Data, Methods, Computed, Props>({
   props: {
     collectible: {
       type: Object,
