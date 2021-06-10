@@ -54,8 +54,6 @@ import {
 } from './types';
 import Condition from './Condition.vue';
 
-let highestGroupId = 0;
-
 export default Vue.extend({
   components: { Condition },
   props: {
@@ -70,7 +68,6 @@ export default Vue.extend({
   },
   data() {
     return {
-      instanceId: highestGroupId++,
       items: this.conditions as CriteriaConditions,
     };
   },
