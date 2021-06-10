@@ -6,6 +6,7 @@
         type="checkbox"
         :id="id"
         :name="name"
+        :checked="value"
         v-bind:value="value"
         v-on:input="$emit('input', $event.target.checked)"
       />
