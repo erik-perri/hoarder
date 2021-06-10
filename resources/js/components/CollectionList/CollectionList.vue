@@ -27,6 +27,7 @@
 </template>
 
 <script lang="ts">
+import Vue from 'vue';
 import { ListComponent } from '../../util/ListComponent';
 import { Collection, getCollections } from '../../api/collections';
 import { ApiList, ApiResponse } from '../../api/types';
@@ -44,7 +45,8 @@ interface Computed {}
 
 interface Props {}
 
-export default ListComponent.extend<Data, Methods, Computed, Props>({
+export default Vue.extend<Data, Methods, Computed, Props>({
+  extends: ListComponent,
   methods: {
     async fetchList(page: number) {
       return await getCollections(page);

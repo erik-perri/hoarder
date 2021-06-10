@@ -35,6 +35,7 @@
 </template>
 
 <script lang="ts">
+import Vue from 'vue';
 import { ListComponent } from '../../util/ListComponent';
 import { Collectible, getCollectibles } from '../../api/collectibles';
 import { Pagination } from '../../components/Pagination';
@@ -44,7 +45,8 @@ interface Data {
   data: ApiList<Collectible> | null;
 }
 
-export default ListComponent.extend<Data, {}, {}, {}>({
+export default Vue.extend<Data, {}, {}, {}>({
+  extends: ListComponent,
   computed: {
     isLoggedIn: function (): boolean {
       return this.$store.getters['auth/isLoggedIn'];

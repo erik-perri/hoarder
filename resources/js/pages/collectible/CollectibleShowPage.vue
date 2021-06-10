@@ -49,6 +49,7 @@
 </template>
 
 <script lang="ts">
+import Vue from 'vue';
 import { ListComponent } from '../../util/ListComponent';
 import {
   Collectible,
@@ -66,7 +67,8 @@ interface Props {
   collectible: Collectible;
 }
 
-export default ListComponent.extend<Data, {}, {}, Props>({
+export default Vue.extend<Data, {}, {}, Props>({
+  extends: ListComponent,
   props: {
     collectible: {
       type: Object,

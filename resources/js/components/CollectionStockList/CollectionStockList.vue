@@ -32,6 +32,7 @@
 </template>
 
 <script lang="ts">
+import Vue from 'vue';
 import { ListComponent } from '../../util/ListComponent';
 import { Collection, getStock, Stock } from '../../api/collections';
 import { ApiList, ApiResponse } from '../../api/types';
@@ -50,7 +51,8 @@ interface Props {
   collection: Collection;
 }
 
-export default ListComponent.extend<Data, Methods, Computed, Props>({
+export default Vue.extend<Data, Methods, Computed, Props>({
+  extends: ListComponent,
   props: {
     collection: {
       type: Object,
