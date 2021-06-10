@@ -22,7 +22,6 @@ import {
 } from './types';
 
 export default Vue.extend({
-  components: { Group },
   props: {
     conditions: {
       type: Array,
@@ -92,6 +91,7 @@ export default Vue.extend({
       this.$emit('conditions-changed', groupWithoutIds.group_conditions);
     },
   },
+  components: { Group },
 });
 </script>
 

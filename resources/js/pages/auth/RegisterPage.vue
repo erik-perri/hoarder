@@ -62,12 +62,6 @@ import { registerUser } from '../../api/user';
 import { getLoginRedirect } from '../../util/login';
 
 export default Vue.extend({
-  components: {
-    CheckboxInput,
-    EmailInput,
-    PasswordInput,
-    TextInput,
-  },
   data() {
     return {
       loading: false,
@@ -103,6 +97,12 @@ export default Vue.extend({
 
       this.loading = false;
     },
+  },
+  components: {
+    CheckboxInput,
+    EmailInput,
+    PasswordInput,
+    TextInput,
   },
 });
 </script>

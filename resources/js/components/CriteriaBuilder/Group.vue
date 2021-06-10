@@ -55,7 +55,6 @@ import {
 import Condition from './Condition.vue';
 
 export default Vue.extend({
-  components: { Condition },
   props: {
     id: String,
     conditions: Array,
@@ -128,6 +127,7 @@ export default Vue.extend({
       this.emitChanges();
     },
   },
+  components: { Condition },
   // Since we can't define Group in components, due to TS causing a type error
   // when we attempt to assign it to 'this', we name it so Phpstorm knows what
   // we're referencing in the template above (Vue seems to know either way).

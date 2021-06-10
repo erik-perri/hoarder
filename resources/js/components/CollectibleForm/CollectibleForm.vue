@@ -37,7 +37,6 @@ import { FieldEditor } from '../../components/FieldEditor';
 import { CollectibleFieldModel } from '../../api/collectibles';
 
 export default Vue.extend({
-  components: { FieldEditor, TextInput },
   props: {
     collectible: {
       type: Object,
@@ -99,5 +98,6 @@ export default Vue.extend({
         )) || {};
     },
   },
+  components: { FieldEditor, TextInput },
 });
 </script>

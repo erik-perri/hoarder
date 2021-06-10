@@ -30,11 +30,11 @@ import Vue from 'vue';
 import { LogoutLink } from '../components/LogoutLink';
 
 export default Vue.extend({
-  components: { LogoutLink },
   computed: {
     isLoggedIn: function (): boolean {
       return this.$store.getters['auth/isLoggedIn'];
     },
   },
+  components: { LogoutLink },
 });
 </script>

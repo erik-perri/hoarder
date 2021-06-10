@@ -49,7 +49,6 @@ interface Props {
 }
 
 export default Vue.extend<{}, {}, {}, Props>({
-  components: { FieldEditor, TextInput },
   props: {
     fields: {
       type: Array,
@@ -60,6 +59,7 @@ export default Vue.extend<{}, {}, {}, Props>({
       required: true,
     },
   },
+  components: { FieldEditor, TextInput },
 });
 </script>
 

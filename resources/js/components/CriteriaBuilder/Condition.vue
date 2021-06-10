@@ -40,13 +40,6 @@ import TagCondition from './Condition/TagCondition.vue';
 import TextCondition from './Condition/TextCondition.vue';
 
 export default Vue.extend({
-  components: {
-    BooleanCondition,
-    DateCondition,
-    NumberCondition,
-    TagCondition,
-    TextCondition,
-  },
   props: {
     id: String,
     startEditing: Boolean,
@@ -121,6 +114,13 @@ export default Vue.extend({
 
       return info?.name;
     },
+  },
+  components: {
+    BooleanCondition,
+    DateCondition,
+    NumberCondition,
+    TagCondition,
+    TextCondition,
   },
 });
 </script>

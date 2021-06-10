@@ -38,7 +38,6 @@ import FieldInput from './FieldInput.vue';
 import { FieldEditorItem, FieldEditorItems, FieldInputUpdate } from './types';
 
 export default Vue.extend({
-  components: { FieldInput },
   data() {
     const fields: FieldEditorItems = [];
 
@@ -114,6 +113,7 @@ export default Vue.extend({
       this.$emit('update', JSON.parse(JSON.stringify(this.fields)));
     },
   },
+  components: { FieldInput },
 });
 </script>
 
