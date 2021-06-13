@@ -39,17 +39,7 @@
 import Vue from 'vue';
 import BaseCondition from './BaseCondition.vue';
 
-interface Data {
-  comparisonOptions: Record<string, string>;
-}
-
-interface Methods {}
-
-interface Computed {}
-
-interface Props {}
-
-export default Vue.extend<Data, Methods, Computed, Props>({
+export default Vue.extend({
   extends: BaseCondition,
   data() {
     return {
@@ -59,7 +49,7 @@ export default Vue.extend<Data, Methods, Computed, Props>({
         number_greater_than_or_equal: 'greater than or equal',
         number_less_than: 'less than',
         number_less_than_or_equal: 'less than or equal',
-      },
+      } as Record<string, string>,
     };
   },
 });

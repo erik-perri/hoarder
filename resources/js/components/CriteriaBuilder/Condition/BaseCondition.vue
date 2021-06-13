@@ -1,43 +1,24 @@
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
 import { v4 as uuid } from 'uuid';
 
-interface Data {
-  id: string;
-  currentComparison: string;
-  currentValue: string;
-}
-
-interface Methods {
-  emitSave: () => void;
-  validateAndSave: () => void;
-}
-
-interface Computed {}
-
-interface Props {
-  editing: boolean;
-  comparison: string;
-  value: string;
-}
-
-export default Vue.extend<Data, Methods, Computed, Props>({
+export default Vue.extend({
   props: {
-    editing: Boolean,
+    editing: Boolean as PropType<boolean>,
     comparison: {
-      type: String,
+      type: String as PropType<string>,
       required: true,
     },
     value: {
-      type: String,
+      type: String as PropType<string>,
       required: true,
     },
   },
   data() {
     return {
-      id: uuid(),
-      currentComparison: this.comparison,
-      currentValue: this.value,
+      id: uuid() as string,
+      currentComparison: this.comparison as string,
+      currentValue: this.value as string,
     };
   },
   methods: {

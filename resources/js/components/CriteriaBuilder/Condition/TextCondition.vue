@@ -39,17 +39,7 @@
 import Vue from 'vue';
 import BaseCondition from './BaseCondition.vue';
 
-interface Data {
-  comparisonOptions: Record<string, string>;
-}
-
-interface Methods {}
-
-interface Computed {}
-
-interface Props {}
-
-export default Vue.extend<Data, Methods, Computed, Props>({
+export default Vue.extend({
   extends: BaseCondition,
   data() {
     return {
@@ -62,7 +52,7 @@ export default Vue.extend<Data, Methods, Computed, Props>({
         text_does_not_contain: 'does not contains',
         text_does_not_start_with: 'does not start',
         text_does_not_end_with: 'does not end with',
-      },
+      } as Record<string, string>,
     };
   },
 });

@@ -42,24 +42,14 @@
 import Vue from 'vue';
 import BaseCondition from './BaseCondition.vue';
 
-interface Data {
-  comparisonOptions: Record<string, string>;
-}
-
-interface Methods {}
-
-interface Computed {}
-
-interface Props {}
-
-export default Vue.extend<Data, Methods, Computed, Props>({
+export default Vue.extend({
   extends: BaseCondition,
   data() {
     return {
       comparisonOptions: {
         boolean_is: 'is',
         boolean_is_not: 'is not',
-      },
+      } as Record<string, string>,
     };
   },
 });

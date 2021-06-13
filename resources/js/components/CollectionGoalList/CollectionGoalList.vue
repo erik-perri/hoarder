@@ -35,35 +35,28 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
 import { ListComponent } from '../../util/ListComponent';
 import { Collection, getGoals, GetGoalsResponse } from '../../api/collections';
 import { ApiList, ApiResponse } from '../../api/types';
 
-interface Data {
-  data: ApiList<GetGoalsResponse> | null;
-}
-
-interface Methods {
-  fetchList: (page: number) => Promise<ApiResponse<ApiList<GetGoalsResponse>>>;
-}
-
-interface Computed {}
-
-interface Props {
-  collection: Collection;
-}
-
-export default Vue.extend<Data, Methods, Computed, Props>({
+export default Vue.extend({
   extends: ListComponent,
   props: {
     collection: {
-      type: Object,
+      type: Object as PropType<Collection>,
       required: true,
     },
   },
+  data() {
+    return {
+      data: null as ApiList<GetGoalsResponse> | null,
+    };
+  },
   methods: {
-    async fetchList(page: number) {
+    async fetchList(
+      page: number
+    ): Promise<ApiResponse<ApiList<GetGoalsResponse>>> {
       return await getGoals(this.collection.id, page);
     },
   },

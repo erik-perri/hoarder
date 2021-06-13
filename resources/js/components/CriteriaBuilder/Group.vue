@@ -42,7 +42,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
 import { v4 as uuid } from 'uuid';
 import {
   CriteriaCondition,
@@ -55,44 +55,20 @@ import {
 import Condition from './Condition.vue';
 import { CollectibleFieldModel } from '../../api/collectibles';
 
-interface Data {
-  items: CriteriaConditions;
-}
-
-interface Methods {
-  deleteGroup: () => void;
-  addGroup: (type: 'or' | 'and') => void;
-  addCondition: () => void;
-  groupChanged: (modifiedId: string, changes: CriteriaGroup) => void;
-  conditionChanged: (modifiedId: string, changes: ConditionOptions) => void;
-  emitChanges: () => void;
-  deleteItem: (index: number) => void;
-}
-
-interface Computed {}
-
-interface Props {
-  id: string;
-  conditions: CriteriaConditions;
-  fields: Array<CollectibleFieldModel>;
-  groupType: string;
-  canDelete: boolean;
-}
-
-export default Vue.extend<Data, Methods, Computed, Props>({
+export default Vue.extend({
   props: {
-    id: String,
-    conditions: Array,
-    fields: Array,
-    groupType: String,
+    id: String as PropType<string>,
+    conditions: Array as PropType<CriteriaConditions>,
+    fields: Array as PropType<Array<CollectibleFieldModel>>,
+    groupType: String as PropType<string>,
     canDelete: {
-      type: Boolean,
+      type: Boolean as PropType<boolean>,
       default: true,
     },
   },
   data() {
     return {
-      items: this.conditions,
+      items: this.conditions as CriteriaConditions,
     };
   },
   methods: {

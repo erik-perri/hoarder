@@ -35,7 +35,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
 import { TextInput } from '../../components/Forms';
 import { FieldEditor } from '../../components/FieldEditor';
 import {
@@ -43,25 +43,14 @@ import {
   CollectibleFieldValues,
 } from '../../api/collectibles';
 
-interface Data {}
-
-interface Methods {}
-
-interface Computed {}
-
-interface Props {
-  fields: Array<CollectibleFieldModel>;
-  values: CollectibleFieldValues;
-}
-
-export default Vue.extend<Data, Methods, Computed, Props>({
+export default Vue.extend({
   props: {
     fields: {
-      type: Array,
+      type: Array as PropType<Array<CollectibleFieldModel>>,
       required: true,
     },
     values: {
-      type: Object,
+      type: Object as PropType<CollectibleFieldValues>,
       required: true,
     },
   },

@@ -18,48 +18,31 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
 
-interface Data {
-  attributes: Record<string, string>;
-}
-
-interface Methods {}
-
-interface Computed {}
-
-interface Props {
-  id: string;
-  name: string;
-  value: string;
-  disabled: boolean;
-  label: string;
-  errors: Array<string>;
-}
-
-export default Vue.extend<Data, Methods, Computed, Props>({
+export default Vue.extend({
   props: {
     id: {
-      type: String,
+      type: String as PropType<string>,
       required: true,
     },
     name: {
-      type: String,
+      type: String as PropType<string>,
       required: true,
     },
     value: {
-      type: String,
+      type: String as PropType<string>,
       required: true,
     },
-    disabled: Boolean,
-    label: String,
-    errors: Array,
+    disabled: Boolean as PropType<boolean>,
+    label: String as PropType<string>,
+    errors: Array as PropType<Array<string>>,
   },
   data() {
     return {
       attributes: {
         type: 'text',
-      },
+      } as Record<string, string>,
     };
   },
 });

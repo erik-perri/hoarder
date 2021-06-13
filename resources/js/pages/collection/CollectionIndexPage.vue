@@ -10,15 +10,7 @@
 import Vue from 'vue';
 import { CollectionList } from '../../components/CollectionList';
 
-interface Data {}
-
-interface Methods {}
-
-interface Computed {}
-
-interface Props {}
-
-export default Vue.extend<Data, Methods, Computed, Props>({
+export default Vue.extend({
   components: { CollectionList },
 });
 </script>

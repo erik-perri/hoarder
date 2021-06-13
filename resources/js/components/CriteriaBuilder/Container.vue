@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
 import { v4 as uuid } from 'uuid';
 import Group from './Group.vue';
 import {
@@ -22,31 +22,14 @@ import {
 } from './types';
 import { CollectibleFieldModel } from '../../api/collectibles';
 
-interface Data {
-  group: CriteriaGroup;
-}
-
-interface Methods {
-  addIdsToGroup: (group: CriteriaGroup) => CriteriaGroup;
-  removeIdsFromGroup: (group: CriteriaGroup) => CriteriaGroup;
-  groupChanged: (id: number, changed: CriteriaGroup) => void;
-}
-
-interface Computed {}
-
-interface Props {
-  conditions: CriteriaConditions;
-  fields: Array<CollectibleFieldModel>;
-}
-
-export default Vue.extend<Data, Methods, Computed, Props>({
+export default Vue.extend({
   props: {
     conditions: {
-      type: Array,
+      type: Array as PropType<CriteriaConditions>,
       required: true,
     },
     fields: {
-      type: Array,
+      type: Array as PropType<Array<CollectibleFieldModel>>,
       required: true,
     },
   },
@@ -60,7 +43,7 @@ export default Vue.extend<Data, Methods, Computed, Props>({
       group: {
         group_type: 'and',
         group_conditions: [] as CriteriaConditions,
-      },
+      } as CriteriaGroup,
     };
   },
   methods: {

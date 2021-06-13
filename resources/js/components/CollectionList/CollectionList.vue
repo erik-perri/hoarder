@@ -33,22 +33,15 @@ import { Collection, getCollections } from '../../api/collections';
 import { ApiList, ApiResponse } from '../../api/types';
 import { Pagination } from '../Pagination';
 
-interface Data {
-  data: ApiList<Collection> | null;
-}
-
-interface Methods {
-  fetchList: (page: number) => Promise<ApiResponse<ApiList<Collection>>>;
-}
-
-interface Computed {}
-
-interface Props {}
-
-export default Vue.extend<Data, Methods, Computed, Props>({
+export default Vue.extend({
   extends: ListComponent,
+  data() {
+    return {
+      data: null as ApiList<Collection> | null,
+    };
+  },
   methods: {
-    async fetchList(page: number) {
+    async fetchList(page: number): Promise<ApiResponse<ApiList<Collection>>> {
       return await getCollections(page);
     },
   },

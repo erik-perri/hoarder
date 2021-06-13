@@ -56,58 +56,31 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
 import { FieldInputUpdate } from './types';
 
-interface Data {
-  isEditing: boolean;
-  fieldTypes: Record<string, string>;
-  fieldNameValue: string;
-  inputTypeValue: string;
-  isRequiredValue: boolean;
-}
-
-interface Methods {
-  save: () => void;
-  remove: () => void;
-  emitRemove: () => void;
-  emitUpdate: () => void;
-}
-
-interface Computed {}
-
-interface Props {
-  fieldIdentifier: string;
-  fieldName: string;
-  inputType: string;
-  isEditable: boolean;
-  isRequired: boolean;
-  isDisabled: boolean;
-  isNew: boolean;
-}
-
-export default Vue.extend<Data, Methods, Computed, Props>({
+export default Vue.extend({
   props: {
     fieldIdentifier: {
-      type: String,
+      type: String as PropType<string>,
       required: true,
     },
     fieldName: {
-      type: String,
+      type: String as PropType<string>,
       required: true,
     },
     inputType: {
-      type: String,
+      type: String as PropType<string>,
       required: true,
     },
-    isEditable: Boolean,
-    isRequired: Boolean,
-    isDisabled: Boolean,
-    isNew: Boolean,
+    isEditable: Boolean as PropType<boolean>,
+    isRequired: Boolean as PropType<boolean>,
+    isDisabled: Boolean as PropType<boolean>,
+    isNew: Boolean as PropType<boolean>,
   },
   data() {
     return {
-      isEditing: this.isNew,
+      isEditing: this.isNew as boolean,
       fieldTypes: {
         text: 'Text',
         textarea: 'Text area',
@@ -116,10 +89,10 @@ export default Vue.extend<Data, Methods, Computed, Props>({
         number: 'Number',
         tags: 'Tags',
         boolean: 'Boolean', // TODO Yes/No?
-      },
-      fieldNameValue: this.fieldName,
-      inputTypeValue: this.inputType,
-      isRequiredValue: this.isRequired,
+      } as Record<string, string>,
+      fieldNameValue: this.fieldName as string,
+      inputTypeValue: this.inputType as string,
+      isRequiredValue: this.isRequired as boolean,
     };
   },
   methods: {

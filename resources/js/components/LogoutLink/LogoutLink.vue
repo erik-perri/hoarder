@@ -7,17 +7,7 @@
 <script lang="ts">
 import Vue from 'vue';
 
-interface Data {}
-
-interface Methods {
-  logout: () => Promise<void>;
-}
-
-interface Computed {}
-
-interface Props {}
-
-export default Vue.extend<Data, Methods, Computed, Props>({
+export default Vue.extend({
   methods: {
     async logout(): Promise<void> {
       await this.$store.dispatch('auth/tryLogout');

@@ -49,7 +49,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
 import { ListComponent } from '../../util/ListComponent';
 import {
   Collectible,
@@ -59,31 +59,18 @@ import {
 import { Pagination } from '../../components/Pagination';
 import { ApiList, ApiResponse } from '../../api/types';
 
-interface Data {
-  data: ApiList<CollectibleCategory> | null;
-}
-
-interface Methods {
-  fetchList: (
-    page: number
-  ) => Promise<ApiResponse<ApiList<CollectibleCategory>>>;
-}
-
-interface Computed {
-  isLoggedIn: boolean;
-}
-
-interface Props {
-  collectible: Collectible;
-}
-
-export default Vue.extend<Data, Methods, Computed, Props>({
+export default Vue.extend({
   extends: ListComponent,
   props: {
     collectible: {
-      type: Object,
+      type: Object as PropType<Collectible>,
       required: true,
     },
+  },
+  data() {
+    return {
+      data: null as ApiList<CollectibleCategory> | null,
+    };
   },
   computed: {
     isLoggedIn: function (): boolean {

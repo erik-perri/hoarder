@@ -56,7 +56,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
 import { ListComponent } from '../../util/ListComponent';
 import {
   Collectible,
@@ -70,38 +70,19 @@ import {
   CriteriaConditions,
 } from '../../components/CriteriaBuilder';
 
-interface Data {
-  data: ApiList<CollectibleItem> | null;
-  categoryCriteria: CriteriaConditions;
-  itemCriteria: CriteriaConditions;
-}
-
-interface Methods {
-  updateLocation: () => void;
-  fetchList: (page: number) => Promise<ApiResponse<ApiList<CollectibleItem>>>;
-  setCategoryCriteria: (criteria: CriteriaConditions) => void;
-  setItemCriteria: (criteria: CriteriaConditions) => void;
-}
-
-interface Computed {}
-
-interface Props {
-  collectible: Collectible;
-}
-
-export default Vue.extend<Data, Methods, Computed, Props>({
+export default Vue.extend({
   extends: ListComponent,
   props: {
     collectible: {
-      type: Object,
+      type: Object as PropType<Collectible>,
       required: true,
     },
   },
   data() {
     return {
-      data: null,
-      categoryCriteria: [],
-      itemCriteria: [],
+      data: null as ApiList<CollectibleItem> | null,
+      categoryCriteria: [] as CriteriaConditions,
+      itemCriteria: [] as CriteriaConditions,
     };
   },
   methods: {

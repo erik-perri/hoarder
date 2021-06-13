@@ -31,36 +31,20 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
 import { TextInput } from '../../components/Forms';
 import { FieldEditor } from '../../components/FieldEditor';
 import { Collectible, CollectibleFieldModel } from '../../api/collectibles';
 import { CollectibleFormErrors, CollectibleFormSubmitHandler } from './index';
 
-interface Data {
-  collectibleNameValue: string;
-  categoryFieldsValue: Array<CollectibleFieldModel>;
-  itemFieldsValue: Array<CollectibleFieldModel>;
-  errors?: CollectibleFormErrors;
-}
-
-interface Methods {}
-
-interface Computed {}
-
-interface Props {
-  collectible: Collectible;
-  handleSubmit: CollectibleFormSubmitHandler;
-}
-
-export default Vue.extend<Data, Methods, Computed, Props>({
+export default Vue.extend({
   props: {
     collectible: {
-      type: Object,
+      type: Object as PropType<Collectible>,
       required: true,
     },
     handleSubmit: {
-      type: Function,
+      type: Function as PropType<CollectibleFormSubmitHandler>,
       required: true,
     },
   },
@@ -90,10 +74,10 @@ export default Vue.extend<Data, Methods, Computed, Props>({
       )
     );
     return {
-      collectibleNameValue: this.collectible.name || '',
-      categoryFieldsValue: categoryFields,
-      itemFieldsValue: itemFields,
-      errors: {},
+      collectibleNameValue: (this.collectible.name || '') as string,
+      categoryFieldsValue: categoryFields as Array<CollectibleFieldModel>,
+      itemFieldsValue: itemFields as Array<CollectibleFieldModel>,
+      errors: {} as CollectibleFormErrors,
     };
   },
   methods: {

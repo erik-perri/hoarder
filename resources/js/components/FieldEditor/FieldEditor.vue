@@ -32,32 +32,12 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
 import { v4 as uuid } from 'uuid';
 import FieldInput from './FieldInput.vue';
 import { FieldEditorItem, FieldEditorItems, FieldInputUpdate } from './types';
 
-interface Data {
-  fields: FieldEditorItems;
-}
-
-interface Methods {
-  addField: () => void;
-  findField: (identifier: string) => FieldEditorItem;
-  restoreField: (identifier: string) => void;
-  removeField: (identifier: string) => void;
-  updateField: (identifier: string, values: FieldInputUpdate) => void;
-  emitFields: () => void;
-}
-
-interface Computed {}
-
-interface Props {
-  inputName: string;
-  items: FieldEditorItems;
-}
-
-export default Vue.extend<Data, Methods, Computed, Props>({
+export default Vue.extend({
   data() {
     const fields: FieldEditorItems = [];
 
@@ -69,15 +49,15 @@ export default Vue.extend<Data, Methods, Computed, Props>({
       });
     });
 
-    return { fields };
+    return { fields: fields as FieldEditorItems };
   },
   props: {
     inputName: {
-      type: String,
+      type: String as PropType<string>,
       required: true,
     },
     items: {
-      type: Array,
+      type: Array as PropType<FieldEditorItems>,
       required: true,
     },
   },

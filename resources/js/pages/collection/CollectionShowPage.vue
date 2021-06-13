@@ -8,25 +8,15 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
 import { CollectionGoalList } from '../../components/CollectionGoalList';
 import { CollectionStockList } from '../../components/CollectionStockList';
 import { Collection } from '../../api/collections';
 
-interface Data {}
-
-interface Methods {}
-
-interface Computed {}
-
-interface Props {
-  collection: Collection;
-}
-
-export default Vue.extend<Data, Methods, Computed, Props>({
+export default Vue.extend({
   props: {
     collection: {
-      type: Object,
+      type: Object as PropType<Collection>,
       required: true,
     },
   },

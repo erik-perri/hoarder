@@ -30,7 +30,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
 import { CollectibleFieldModel } from '../../api/collectibles';
 import { ConditionOptions } from './types';
 import BooleanCondition from './Condition/BooleanCondition.vue';
@@ -39,49 +39,23 @@ import NumberCondition from './Condition/NumberCondition.vue';
 import TagCondition from './Condition/TagCondition.vue';
 import TextCondition from './Condition/TextCondition.vue';
 
-interface Data {
-  editing: boolean;
-  options: ConditionOptions;
-  fieldMapping: Record<string, string>;
-}
-
-interface Methods {
-  deleteItem: () => void;
-  emitChanges: (changes: Partial<ConditionOptions>) => void;
-  getFieldInfo: () => CollectibleFieldModel | undefined;
-}
-
-interface Computed {
-  fieldTypeComponent: string | undefined;
-  fieldName: string | undefined;
-}
-
-interface Props {
-  id: string;
-  startEditing: boolean;
-  availableFields: Array<CollectibleFieldModel>;
-  field: string;
-  comparison: string;
-  value: string;
-}
-
-export default Vue.extend<Data, Methods, Computed, Props>({
+export default Vue.extend({
   props: {
-    id: String,
-    startEditing: Boolean,
-    availableFields: Array,
-    field: String,
-    comparison: String,
-    value: String,
+    id: String as PropType<string>,
+    startEditing: Boolean as PropType<boolean>,
+    availableFields: Array as PropType<Array<CollectibleFieldModel>>,
+    field: String as PropType<string>,
+    comparison: String as PropType<string>,
+    value: String as PropType<string>,
   },
   data() {
     return {
-      editing: this.startEditing || false,
+      editing: (this.startEditing || false) as boolean,
       options: {
         field: this.field || '',
         comparison: this.comparison,
         value: this.value,
-      },
+      } as ConditionOptions,
       fieldMapping: {
         text: 'TextCondition',
         textarea: 'TextCondition',
@@ -90,7 +64,7 @@ export default Vue.extend<Data, Methods, Computed, Props>({
         number: 'NumberCondition',
         tags: 'TagCondition',
         boolean: 'BooleanCondition',
-      },
+      } as Record<string, string>,
     };
   },
   watch: {
@@ -101,10 +75,10 @@ export default Vue.extend<Data, Methods, Computed, Props>({
     },
   },
   methods: {
-    deleteItem() {
+    deleteItem(): void {
       this.$emit('delete-item', this.id);
     },
-    emitChanges(changes: Partial<ConditionOptions>) {
+    emitChanges(changes: Partial<ConditionOptions>): void {
       this.options = {
         ...this.options,
         ...changes,

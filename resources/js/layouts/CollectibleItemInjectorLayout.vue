@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
 import { CombinedVueInstance } from 'vue/types/vue';
 import {
   Collectible,
@@ -20,31 +20,19 @@ import {
   getItem,
 } from '../api/collectibles';
 
-interface Data {
-  item: CollectibleItem | null;
-  needsRefresh: boolean;
-}
-
 interface Methods {
   setItem: (item: CollectibleItem) => void;
 }
 
-interface Computed {}
-
-interface Props {
-  collectible: Collectible;
-  category: CollectibleCategory;
-}
-
 // TODO Figure out a better name/location for this
-export default Vue.extend<Data, Methods, Computed, Props>({
+export default Vue.extend({
   props: {
     collectible: {
-      type: Object,
+      type: Object as PropType<Collectible>,
       required: true,
     },
     category: {
-      type: Object,
+      type: Object as PropType<CollectibleCategory>,
       required: true,
     },
   },
@@ -52,7 +40,7 @@ export default Vue.extend<Data, Methods, Computed, Props>({
     return {
       item: null as CollectibleItem | null,
       // Whether a child has asked us to refresh the next time a page changes
-      needsRefresh: false,
+      needsRefresh: false as boolean,
     };
   },
   async beforeRouteEnter(to, from, next) {
@@ -78,7 +66,7 @@ export default Vue.extend<Data, Methods, Computed, Props>({
     }
 
     next((vm) =>
-      (vm as CombinedVueInstance<Vue, Data, Methods, Computed, Props>).setItem(
+      (vm as CombinedVueInstance<Vue, {}, Methods, {}, {}>).setItem(
         response.data.item
       )
     );

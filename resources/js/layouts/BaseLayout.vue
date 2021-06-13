@@ -29,17 +29,7 @@
 import Vue from 'vue';
 import { LogoutLink } from '../components/LogoutLink';
 
-interface Data {}
-
-interface Methods {}
-
-interface Computed {
-  isLoggedIn: boolean;
-}
-
-interface Props {}
-
-export default Vue.extend<Data, Methods, Computed, Props>({
+export default Vue.extend({
   computed: {
     isLoggedIn(): boolean {
       return this.$store.getters['auth/isLoggedIn'];

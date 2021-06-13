@@ -37,7 +37,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
 import {
   Collectible,
   CollectibleCategory,
@@ -45,32 +45,18 @@ import {
 } from '../../api/collectibles';
 import { CollectibleFieldValueTable } from '../../components/CollectibleFieldValueTable';
 
-interface Data {}
-
-interface Methods {}
-
-interface Computed {
-  isLoggedIn: boolean;
-}
-
-interface Props {
-  collectible: Collectible;
-  category: CollectibleCategory;
-  item: CollectibleItem;
-}
-
-export default Vue.extend<Data, Methods, Computed, Props>({
+export default Vue.extend({
   props: {
     collectible: {
-      type: Object,
+      type: Object as PropType<Collectible>,
       required: true,
     },
     category: {
-      type: Object,
+      type: Object as PropType<CollectibleCategory>,
       required: true,
     },
     item: {
-      type: Object,
+      type: Object as PropType<CollectibleItem>,
       required: true,
     },
   },

@@ -49,33 +49,15 @@ import Vue from 'vue';
 import { EmailInput, PasswordInput } from '../../components/Forms';
 import { resetPassword } from '../../api/user';
 
-interface Data {
-  loading: boolean;
-  message: string | undefined;
-  errors: Record<string, string[]>;
-  email: string;
-  password: string;
-  password_confirmation: string;
-}
-
-interface Methods {
-  submit: () => Promise<void>;
-}
-
-interface Computed {}
-
-interface Props {}
-
-export default Vue.extend<Data, Methods, Computed, Props>({
+export default Vue.extend({
   data() {
     return {
-      loading: false,
-      message: undefined,
-      errors: {},
-
+      loading: false as boolean,
+      message: undefined as string | undefined,
+      errors: {} as Record<string, string[]>,
       email: this.$route.query.email as string,
-      password: '',
-      password_confirmation: '',
+      password: '' as string,
+      password_confirmation: '' as string,
     };
   },
   methods: {

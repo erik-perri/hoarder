@@ -52,33 +52,15 @@ import {
 } from '../../components/Forms';
 import { getLastLoginState, getLoginRedirect } from '../../util/login';
 
-interface Data {
-  loading: boolean;
-  message: string | undefined;
-  errors: Record<string, string[]>;
-  email: string;
-  password: string;
-  remember: boolean;
-}
-
-interface Methods {
-  submit: () => Promise<void>;
-}
-
-interface Computed {}
-
-interface Props {}
-
-export default Vue.extend<Data, Methods, Computed, Props>({
+export default Vue.extend({
   data() {
     return {
-      loading: false,
+      loading: false as boolean,
       message: undefined as string | undefined,
-      errors: {},
-
-      email: getLastLoginState().email || '',
-      password: '',
-      remember: false,
+      errors: {} as Record<string, string[]>,
+      email: (getLastLoginState().email || '') as string,
+      password: '' as string,
+      remember: false as boolean,
     };
   },
   methods: {

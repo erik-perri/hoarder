@@ -61,35 +61,16 @@ import {
 import { registerUser } from '../../api/user';
 import { getLoginRedirect } from '../../util/login';
 
-interface Data {
-  loading: boolean;
-  message: string | undefined;
-  errors: Record<string, string[]>;
-  name: string;
-  email: string;
-  password: string;
-  password_confirmation: string;
-}
-
-interface Methods {
-  submit: () => Promise<void>;
-}
-
-interface Computed {}
-
-interface Props {}
-
-export default Vue.extend<Data, Methods, Computed, Props>({
+export default Vue.extend({
   data() {
     return {
-      loading: false,
-      message: undefined,
-      errors: {},
-
-      name: '',
-      email: '',
-      password: '',
-      password_confirmation: '',
+      loading: false as boolean,
+      message: undefined as string | undefined,
+      errors: {} as Record<string, string[]>,
+      name: '' as string,
+      email: '' as string,
+      password: '' as string,
+      password_confirmation: '' as string,
     };
   },
   methods: {

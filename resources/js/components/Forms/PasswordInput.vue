@@ -2,23 +2,13 @@
 import Vue from 'vue';
 import TextInput from './TextInput.vue';
 
-interface Data {
-  attributes: Record<string, string>;
-}
-
-interface Methods {}
-
-interface Computed {}
-
-interface Props {}
-
-export default Vue.extend<Data, Methods, Computed, Props>({
+export default Vue.extend({
   extends: TextInput,
   data() {
     return {
       attributes: {
         type: 'password',
-      },
+      } as Record<string, string>,
     };
   },
 });

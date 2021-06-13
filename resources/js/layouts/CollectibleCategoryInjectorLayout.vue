@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
 import { CombinedVueInstance } from 'vue/types/vue';
 import {
   Collectible,
@@ -18,26 +18,15 @@ import {
   getCategory,
 } from '../api/collectibles';
 
-interface Data {
-  category: CollectibleCategory | null;
-  needsRefresh: boolean;
-}
-
 interface Methods {
   setCategory: (category: CollectibleCategory) => void;
 }
 
-interface Computed {}
-
-interface Props {
-  collectible: Collectible;
-}
-
 // TODO Figure out a better name/location for this
-export default Vue.extend<Data, Methods, Computed, Props>({
+export default Vue.extend({
   props: {
     collectible: {
-      type: Object,
+      type: Object as PropType<Collectible>,
       required: true,
     },
   },
@@ -45,7 +34,7 @@ export default Vue.extend<Data, Methods, Computed, Props>({
     return {
       category: null as CollectibleCategory | null,
       // Whether a child has asked us to refresh the next time a page changes
-      needsRefresh: false,
+      needsRefresh: false as boolean,
     };
   },
   async beforeRouteEnter(to, from, next) {
@@ -64,9 +53,9 @@ export default Vue.extend<Data, Methods, Computed, Props>({
     }
 
     next((vm) =>
-      (
-        vm as CombinedVueInstance<Vue, Data, Methods, Computed, Props>
-      ).setCategory(response.data.category)
+      (vm as CombinedVueInstance<Vue, {}, Methods, {}, {}>).setCategory(
+        response.data.category
+      )
     );
   },
   async beforeRouteUpdate(to, from, next) {

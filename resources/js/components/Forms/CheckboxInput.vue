@@ -16,37 +16,24 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
 
-interface Data {}
-
-interface Methods {}
-
-interface Computed {}
-
-interface Props {
-  id: string;
-  name: string;
-  label: string;
-  value: boolean;
-}
-
-export default Vue.extend<Data, Methods, Computed, Props>({
+export default Vue.extend({
   props: {
     id: {
-      type: String,
+      type: String as PropType<string>,
       required: true,
     },
     name: {
-      type: String,
+      type: String as PropType<string>,
       required: true,
     },
     label: {
-      type: String,
+      type: String as PropType<string>,
       required: true,
     },
     value: {
-      type: Boolean,
+      type: Boolean as PropType<boolean>,
       required: true,
     },
   },

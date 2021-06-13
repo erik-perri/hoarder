@@ -39,17 +39,7 @@
 import Vue from 'vue';
 import BaseCondition from './BaseCondition.vue';
 
-interface Data {
-  comparisonOptions: Record<string, string>;
-}
-
-interface Methods {}
-
-interface Computed {}
-
-interface Props {}
-
-export default Vue.extend<Data, Methods, Computed, Props>({
+export default Vue.extend({
   extends: BaseCondition,
   data() {
     return {
@@ -57,7 +47,7 @@ export default Vue.extend<Data, Methods, Computed, Props>({
         tag_contains_only: 'contains only',
         tag_contains_any: 'contains any',
         tag_contains_all: 'contains all',
-      },
+      } as Record<string, string>,
     };
   },
 });

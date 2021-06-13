@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
 import {
   CollectibleForm,
   CollectibleFormSubmitHandlerReturn,
@@ -25,37 +25,14 @@ import {
 } from '../../api/collectibles';
 import { FieldEditorItem } from '../../components/FieldEditor';
 
-interface Data {
-  isLoading: boolean;
-  errors: Record<string, string[]>;
-}
-
-interface Methods {
-  submit: (
-    collectible: Collectible,
-    categoryFields: Array<FieldEditorItem>,
-    itemFields: Array<FieldEditorItem>
-  ) => Promise<CollectibleFormSubmitHandlerReturn>;
-  convertEditorItemToField: (
-    item: FieldEditorItem,
-    entityType: CollectibleFieldEntityType
-  ) => CollectibleFieldModel;
-}
-
-interface Computed {}
-
-interface Props {
-  collectible: Collectible;
-}
-
-export default Vue.extend<Data, Methods, Computed, Props>({
+export default Vue.extend({
   props: {
-    collectible: Object,
+    collectible: Object as PropType<Collectible>,
   },
   data() {
     return {
-      isLoading: false,
-      errors: {},
+      isLoading: false as boolean,
+      errors: {} as Record<string, string[]>,
     };
   },
   methods: {

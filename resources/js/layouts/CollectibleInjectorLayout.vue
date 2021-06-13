@@ -13,26 +13,17 @@ import Vue from 'vue';
 import { CombinedVueInstance } from 'vue/types/vue';
 import { Collectible, getCollectible } from '../api/collectibles';
 
-interface Data {
-  collectible: Collectible | null;
-  needsRefresh: boolean;
-}
-
 interface Methods {
   setCollectible: (collectible: Collectible) => void;
 }
 
-interface Computed {}
-
-interface Props {}
-
 // TODO Figure out a better name/location for this
-export default Vue.extend<Data, Methods, Computed, Props>({
+export default Vue.extend({
   data() {
     return {
       collectible: null as Collectible | null,
       // Whether a child has asked us to refresh the next time a page changes
-      needsRefresh: false,
+      needsRefresh: false as boolean,
     };
   },
   async beforeRouteEnter(to, from, next) {
@@ -46,9 +37,9 @@ export default Vue.extend<Data, Methods, Computed, Props>({
     }
 
     next((vm) =>
-      (
-        vm as CombinedVueInstance<Vue, Data, Methods, Computed, Props>
-      ).setCollectible(response.data.collectible)
+      (vm as CombinedVueInstance<Vue, {}, Methods, {}, {}>).setCollectible(
+        response.data.collectible
+      )
     );
   },
   async beforeRouteUpdate(to, from, next) {

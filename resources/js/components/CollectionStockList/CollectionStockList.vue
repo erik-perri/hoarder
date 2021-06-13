@@ -38,7 +38,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
 import { ListComponent } from '../../util/ListComponent';
 import {
   Collection,
@@ -48,29 +48,18 @@ import {
 } from '../../api/collections';
 import { ApiList, ApiResponse } from '../../api/types';
 
-interface Data {
-  data: ApiList<Stock> | null;
-}
-
-interface Methods {
-  fetchList: (
-    page: number
-  ) => Promise<ApiResponse<ApiList<Stock, StockRelated>>>;
-}
-
-interface Computed {}
-
-interface Props {
-  collection: Collection;
-}
-
-export default Vue.extend<Data, Methods, Computed, Props>({
+export default Vue.extend({
   extends: ListComponent,
   props: {
     collection: {
-      type: Object,
+      type: Object as PropType<Collection>,
       required: true,
     },
+  },
+  data() {
+    return {
+      data: null as ApiList<Stock> | null,
+    };
   },
   methods: {
     async fetchList(

@@ -13,7 +13,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
 import { Location } from 'vue-router/types/router';
 
 interface PaginationLink {
@@ -21,32 +21,18 @@ interface PaginationLink {
   link: Location;
 }
 
-interface Data {}
-
-interface Methods {
-  getPaginationLinks: () => Array<PaginationLink>;
-}
-
-interface Computed {}
-
-interface Props {
-  totalPages: number;
-  currentPage: number;
-  routeParameters: Location;
-}
-
-export default Vue.extend<Data, Methods, Computed, Props>({
+export default Vue.extend({
   props: {
     totalPages: {
-      type: Number,
+      type: Number as PropType<number>,
       required: true,
     },
     currentPage: {
-      type: Number,
+      type: Number as PropType<number>,
       required: true,
     },
     routeParameters: {
-      type: Object,
+      type: Object as PropType<Location>,
       required: true,
     },
   },
