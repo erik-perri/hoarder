@@ -14,8 +14,8 @@
     "dependencies": {
         "storage-factory": "0.2.0",
         "uuid": "8.3.2",
-        "vue": "2.6.13",
-        "vue-router": "3.5.1",
+        "vue": "2.6.14",
+        "vue-router": "3.5.2",
         "vuex": "3.6.2"
     },
     "devDependencies": {
@@ -37,7 +37,7 @@
         "typescript": "4.3.2",
         "vue-jest": "3.0.7",
         "vue-loader": "15.9.7",
-        "vue-template-compiler": "2.6.13",
+        "vue-template-compiler": "2.6.14",
         "webpack": "5.38.1"
     },
     "lint-staged": {
